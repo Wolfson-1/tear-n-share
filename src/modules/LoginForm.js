@@ -4,13 +4,27 @@ import useFetchDoc from '../hooks/useFetchDoc';
 
 export default function LoginForm() {
 
-  const testData = useFetchDoc(db,['test','eB6OR2AIVvIZlrAUqPOL']);
+  //   firebase data test fetch 
+  // const testData = useFetchDoc(db,['test','eB6OR2AIVvIZlrAUqPOL']);
+
+  //submit form function
+  const submitForm = (event) => {
+    event.preventDefault();
+    };
 
   return (
-    <>
-    {testData ? <div>
-      {testData.test}
-    </div>: null}
-    </>
+  <div>
+    <form>
+        <label>
+            Email    
+            <input type='text' id='email' name='email'></input>
+        </label>
+        <label>
+            Password
+            <input type='password' id='password' name='password'></input>
+        </label>
+        <input type='submit' value='login' onClick={submitForm}></input>
+    </form>
+  </div>
   )
-}
+};
