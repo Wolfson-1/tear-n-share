@@ -1,3 +1,4 @@
+import './css/mainstylesheet.css';
 import LoginPage from './pages/LoginPage';
 
 function App() {

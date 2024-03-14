@@ -13,7 +13,6 @@ export default function LoginForm() {
     };
 
   return (
-  <div>
     <form>
         <label>
             Email    
@@ -25,6 +24,5 @@ export default function LoginForm() {
         </label>
         <input type='submit' value='login' onClick={submitForm}></input>
     </form>
-  </div>
   )
 };
