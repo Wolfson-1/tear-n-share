@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import LoginForm from '../modules/LoginForm'
+import React, { useState } from 'react';
+import LoginForm from '../modules/LoginForm';
+import UserRegistration from '../modules/UserRegistration';
 import '../css/login.css';
 
 export default function LoginPage() {
-    // state for registration page pop up modal.
+    // state for registration pop up modal.
     const [shouldRegister,setShouldRegister] = useState(false);
 
     return (
@@ -12,6 +13,7 @@ export default function LoginPage() {
         <h3>Tear N' Share</h3>
         <LoginForm/>
         <button onClick={()=>{setShouldRegister(true)}}>Register</button>
+        {shouldRegister && <UserRegistration setShouldRegister={setShouldRegister}/>}
       </div>
     </div>
   )

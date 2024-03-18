@@ -9,6 +9,11 @@ export default function LoginForm() {
   const [password,setPassword] = useState(null);
   const [loginError,setLoginError] = useState(null);
 
+  // Clear error if present for on click of input field
+    const clearError = () => {
+      if (loginError) setLoginError(null);
+    };
+
   //submit user data function
   const submitForm = (event) => {
     event.preventDefault();
@@ -37,7 +42,7 @@ export default function LoginForm() {
     <form>
         <label>
             Email    
-            <input type='email' id='email' name='email' placeholder='example@gmail.com' value={email} onClick={() => {setLoginError(null)}} onChange={(e)=>{setEmail(e.target.value)}}></input>
+            <input type='email' id='email' name='email' placeholder='example@gmail.com' value={email} onClick={clearError} onChange={(e)=>{setEmail(e.target.value)}}></input>
         </label>
         <label>
             Password

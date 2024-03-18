@@ -28,6 +28,6 @@ function App() {
     <LoginPage user={user} setUser={setUser}/>
     )
   }  
-}
+};
 
 export default App;
