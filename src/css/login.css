@@ -63,3 +63,7 @@
 .user-reg-modal {
     background-color: white;
 }
+
+.user-reg-error {
+    background-color: white;
+}
