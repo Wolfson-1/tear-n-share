@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {ContextUser} from '../context/ContextUser';
 import { useContext } from 'react';
+import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/UserWelcome';
 import userSignOut from '../utils/userSignOut';
 
@@ -28,9 +29,17 @@ export default function Home() {
 
     return (
     <div>
-      <p>welcome {user.displayName}</p>
-      <button className='logout' onClick={userSignOut}>logout</button>
       {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
+      <p>{user.displayName}</p>
+      <button className='logout' onClick={userSignOut}>logout</button>
+      <main className='main-map-nav-container'>
+        <MainMap/>
+        <div className='nav-button-container'> 
+          <button>Account</button>
+          <button>map</button>
+          <button>Breat Buds</button>
+        </div>
+      </main>
     </div>
   )
 }

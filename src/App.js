@@ -7,14 +7,18 @@ import authUserCheck from './utils/authUserCheck';
 
 function App() {
   // State for user Login
-  const [user,setUser] = useState({loggedIn:false, user:'', email:''});
+  const [user,setUser] = useState({loggedIn:'', user:'', email:''});
 
   //Auth user check for if user is logged in. if logged in sets state for user
   useEffect(()=> {
     authUserCheck(setUser);
   },[]);
 
-  // 
+  // wait for user logIn status before render 
+  if(user.loggedIn === null) {
+    return
+  }
+
   if(user.loggedIn === true) {
     return (
     <>
