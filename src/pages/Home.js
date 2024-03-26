@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {ContextUser} from '../context/ContextUser';
 import { useContext } from 'react';
 import UserWelcome from '../modules/UserWelcome';
@@ -9,14 +9,28 @@ export default function Home() {
     //access user status from context
     const user = useContext(ContextUser);
 
-    // state for Welcome modal
-    const [welcomeModal, setWelcomeModal] = useState(true);
+    // state for Welcome modal/first login in Local storage
+    const [isFirstLogin, setIsFirstLogin] = useState(!localStorage.getItem("firstLogin") ? true : localStorage.getItem("firstLogin"));
+    const [firstLoginCheck, setFirstLoginCheck] = useState(null);
+
+    //useEffect for first login local storage change
+    useEffect(() => {
+        localStorage.setItem('firstLogin', isFirstLogin);
+    },[isFirstLogin]);
+
+    //get firstlogin variable to reference for UserWelcome modal on mount & change in welcomeModal
+    useEffect(() => {
+        const items = localStorage.getItem('firstLogin');
+        if (items) {
+        setFirstLoginCheck(items);
+        }
+    }, [isFirstLogin]);
 
     return (
     <div>
       <p>welcome {user.displayName}</p>
       <button className='logout' onClick={userSignOut}>logout</button>
-      {welcomeModal && <UserWelcome setWelcomeModal={setWelcomeModal}/>}
+      {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
     </div>
   )
 }
