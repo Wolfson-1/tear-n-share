@@ -3,7 +3,7 @@ import LoginForm from '../modules/LoginForm';
 import UserRegistration from '../modules/UserRegistration';
 import '../css/login.css';
 
-export default function LoginPage() {
+export default function LoginPage({setUser}) {
     // state for registration pop up modal.
     const [shouldRegister,setShouldRegister] = useState(false);
 
@@ -13,7 +13,7 @@ export default function LoginPage() {
         <h3>Tear N' Share</h3>
         <LoginForm/>
         <button onClick={()=>{setShouldRegister(true)}}>Register</button>
-        {shouldRegister && <UserRegistration setShouldRegister={setShouldRegister}/>}
+        {shouldRegister && <UserRegistration setShouldRegister={setShouldRegister} setUser={setUser}/>}
       </div>
     </div>
   )

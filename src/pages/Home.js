@@ -12,8 +12,6 @@ export default function Home() {
     // state for Welcome modal
     const [welcomeModal, setWelcomeModal] = useState(true);
 
-    console.log(user.uid);
-
     return (
     <div>
       <p>welcome {user.displayName}</p>

@@ -25,7 +25,7 @@ function App() {
     );
   } else if (user.loggedIn === false) {
     return (
-    <LoginPage user={user} setUser={setUser}/>
+    <LoginPage setUser={setUser}/>
     )
   }  
 };
