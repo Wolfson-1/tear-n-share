@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/UserWelcome';
 import userSignOut from '../utils/userSignOut';
+import useWindowDimentions from '../hooks/useWindowDimentions';
 
 export default function Home() {
 
@@ -27,13 +28,16 @@ export default function Home() {
         }
     }, [isFirstLogin]);
 
+    //state for map dinmentions
+    const {width,height} = useWindowDimentions();
+
     return (
     <div>
       {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
-      <p>{user.displayName}</p>
-      <button className='logout' onClick={userSignOut}>logout</button>
+      {/* <p>{user.displayName}</p>
+      <button className='logout' onClick={userSignOut}>logout</button> */}
       <main className='main-map-nav-container'>
-        <MainMap/>
+        <MainMap width={width} height={height}/>
         <div className='nav-button-container'> 
           <button>Account</button>
           <button>map</button>
