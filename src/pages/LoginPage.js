@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import LoginForm from '../modules/LoginForm';
-import UserRegistration from '../modules/UserRegistration';
+import LoginForm from '../modules/login/LoginForm';
+import UserRegistration from '../modules/login/UserRegistration';
 import '../css/login.css';
 
 export default function LoginPage({setUser}) {

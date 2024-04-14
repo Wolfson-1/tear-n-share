@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import formUploadCheck from '../utils/formUploadCheck';
+import formUploadCheck from '../../utils/formUploadCheck';
 
 export default function UserRegistration({setShouldRegister, setUser}) {
     //state for registration input fields

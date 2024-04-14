@@ -23,8 +23,6 @@ main {
     height: 100%;
 }
 
-
-
  /* main page
  --------------------------- */
  /* Map properties to set layering order priority */
@@ -41,8 +39,7 @@ main {
     top: 85%;
     right: 0;
     left: 0;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     width: 300px;
     height: 70px;
     display: flex;
@@ -58,4 +55,24 @@ main {
     background-color: var(--accent);
     border-radius: 100%;
     width: fit-content;
+}
+
+/* Main pull out sections CSS */
+
+.my-account-main {
+    height: 100%;
+    width: 25%;
+    position: absolute;
+    left: 0;
+    top:0;
+    background-color: rgba(5, 23, 35, 0.825);
+}
+
+.my-buddies-main {
+    height: 100%;
+    width: 25%;
+    position: absolute;
+    right: 0;
+    top:0;
+    background-color: rgba(5, 23, 35, 0.825);
 }

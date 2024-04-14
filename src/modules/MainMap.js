@@ -16,6 +16,5 @@ export default function MainMap() {
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
   </MapContainer>
   </div>
-  
   )
 }

@@ -1,6 +1,6 @@
-import React, {useState } from 'react'
-import {auth} from '../firebase/config';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, {useState} from 'react'
+import {auth} from '../../firebase/config';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 export default function LoginForm() {
 
@@ -46,7 +46,7 @@ export default function LoginForm() {
         </label>
         <label>
             Password
-            <input type='password' id='password' name='password' placeholder='enter password' value={password} onClick={() => {setLoginError(null)}} onChange={(e)=>{setPassword(e.target.value)}}></input>
+            <input type='password' id='password' name='password' placeholder='enter password' value={password} onClick={clearError} onChange={(e)=>{setPassword(e.target.value)}}></input>
         </label>
         <input type='submit' value='login' onClick={submitForm}></input>
         {loginError && <p>{loginError}</p>}

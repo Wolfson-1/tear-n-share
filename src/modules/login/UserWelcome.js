@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import {ContextUser} from '../context/ContextUser'
+import {ContextUser} from '../../context/ContextUser'
 
 export default function UserWelcome({setIsFirstLogin}) {
 
