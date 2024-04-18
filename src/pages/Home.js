@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import {ContextUser} from '../context/ContextUser';
-import { useContext } from 'react';
+import React, {useState, useEffect} from 'react'
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
-import userSignOut from '../utils/userSignOut';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
 import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
 
 export default function Home() {
-
-    //access user status from context
-    const user = useContext(ContextUser);
-
     // state for Welcome modal/first login in Local storage
     const [isFirstLogin, setIsFirstLogin] = useState(!localStorage.getItem("firstLogin") ? true : localStorage.getItem("firstLogin"));
     const [firstLoginCheck, setFirstLoginCheck] = useState(null);
@@ -35,8 +28,6 @@ export default function Home() {
     return (
     <div>
       {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
-      {/* <p>{user.displayName}</p>
-      <button className='logout' onClick={userSignOut}>logout</button> */}
       <main>
         <MainMap/>
         {myAccount && <MyAccountMain setMyAccount={setMyAccount}/>}

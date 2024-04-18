@@ -3,10 +3,8 @@ import { useContext } from 'react';
 import {ContextUser} from '../../context/ContextUser'
 
 export default function UserWelcome({setIsFirstLogin}) {
-
-    //access user from context
-    const user = useContext(ContextUser);
-
+  //access user from context
+  const user = useContext(ContextUser);
     
   return (
     <div className='modal-background'>
