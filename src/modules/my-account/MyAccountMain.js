@@ -14,13 +14,18 @@ export default function MyAccountMain({setMyAccount}) {
         <img alt='user-profile-image'></img>
       </div>
       <button>Profile Settings</button>
-      <div>
-        <p>Lookin for bread</p>
-        <button type='slider'></button>  
+      <div className='showing-switch'>
+        <label class="switch">
+          Show?
+          <input type="checkbox"/>
+          <span class="slider round"></span>
+      </label>
       </div>
       <div className='range-slider'>
-        <p>Distance</p>
-        <button>Slider</button>
+        <label>
+          Distance
+          <input type="range" min="1" max="100" value="50"/>
+        </label>
       </div>
       <button className='user-signout' onClick={userSignOut}>logout</button>
     </div>

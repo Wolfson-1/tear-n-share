@@ -1,0 +1,67 @@
+/* topline styling for buddies section
+------------------------------------------ */
+
+.my-buddies-main {
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.buddies-close {
+    align-self: flex-start;
+    margin: 5px;
+}
+
+.sections-selector {
+    display: flex;
+    width: 90%;
+    margin-top: 2%;
+}
+
+.sections-selector button {
+    align-self: flex-start;
+}
+
+.sections-container {
+    width: 90%;
+    height: 90%;
+    border: white dashed 0.5px;
+    border-radius: 10px;
+}
+
+.buddies-container {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ height: 100%;
+ width: 100%;
+}
+
+/* advert section styling 
+------------------------------------------ */
+
+
+.buddies-container.advert .add-advert {
+    display: flex;
+    margin: 5%;
+    height: 80px;
+    width: 95%;
+    align-items: center;
+    justify-content: center;
+    border: white dashed 0.5px;
+    border-radius: 10px;
+}
+
+.add-advert button {
+    background: none;
+    border-radius: 50%;
+    border: white dashed 0.5px;
+    color: white;
+    width: 30px;
+    height: 30px;
+
+}
+
+.add-advert button:hover {
+    background-color: rgba(255, 255, 255, 0.096);
+}
