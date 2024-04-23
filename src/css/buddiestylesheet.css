@@ -65,3 +65,15 @@
 .add-advert button:hover {
     background-color: rgba(255, 255, 255, 0.096);
 }
+
+/* new advert modal styling */
+
+.new-advert-modal-form-container {
+    height: 80%;
+    width: 30%;
+    background-color: aqua;
+}
+
+.modal-form {
+    overflow: scroll;
+}

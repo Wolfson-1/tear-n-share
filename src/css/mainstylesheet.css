@@ -5,31 +5,6 @@ body {
     margin: 0;
 }
 
-/* standard modal styling */
-
-.modal-background {
-    width: 100vw;
-    height: 100vh;
-    z-index: 2;
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top:0;
-    left: 0;
-    background:rgba(0, 0, 0, 0.418);
-    overflow: hidden;
-}
-
-.modal-form-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-form-container.close-modal {
-    align-self: flex-end;
-}
-
 
 main {
     width: 100%;
@@ -89,3 +64,73 @@ main {
     top:0;
     background-color: rgba(5, 23, 35, 0.825);
 }
+
+/* standard modal styling */
+
+.modal-background {
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:0;
+    left: 0;
+    background:rgba(0, 0, 0, 0.418);
+    overflow: hidden;
+}
+
+.modal-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.modal-form-container .close-modal {
+    align-self: flex-end;
+    margin: 10px;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* form input slider default styling */
+
+label {
+    display: flex;
+    flex-direction: column;
+}
+
+datalist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    writing-mode: vertical-lr;
+    width: 200px;
+  }
+
+  option {
+    padding: 0;
+  }
+  
+  input[type="range"] {
+    width: 200px;
+    margin: 0;
+  }
+
+  /* Form checkbox basic styleing */
+
+  .form-checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    list-style-type: circle;
+  }
+
+  .form-checkbox-list li {
+    margin: 3%;
+  }
