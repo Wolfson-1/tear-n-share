@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
+import * as formHandlingUtils from '../../utils/formHandlingUtils';
 
-export default function FormCheckboxList({listArr}) {
+export default function FormCheckboxList({listArr, valueName, formData, setFormData}) {
 
     // array for state of checked/unchecked status on state change
     const [checkedState, setCheckedState] = useState(
@@ -13,9 +14,18 @@ export default function FormCheckboxList({listArr}) {
         const updatedCheckedState = checkedState.map((item, index) =>
         index === position ? !item : item
         );
-        //set new modified array to checkedState
+
+        // new array for checked values based of new checkedState
+        const checkedValues = [];
+        listArr.forEach((item, index) => 
+          updatedCheckedState[index] === true ? checkedValues.push(item) : null
+        );
+
+        //set new arrays for checkedState & checked values
         setCheckedState(updatedCheckedState);
-    }
+        // Update master formData with checkedValues
+        formHandlingUtils.addFormData(checkedValues,formData,setFormData,valueName);
+    };
 
     return (
     <>

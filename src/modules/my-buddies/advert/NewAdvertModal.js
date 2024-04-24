@@ -4,21 +4,17 @@ import BunBagelForm from './bread-forms/BunBagelForm';
 import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
+import * as formHandlingUtils from '../../../utils/formHandlingUtils';
 
 export default function NewAdvertModal( {closeModal} ) {
 
-    // state for form inputs
-    const [breadType,setBreadType] = useState('');
-    const [breadSpecificData,setBreadSpecific] = useState('');
-    const [generalData,setGeneralData] = useState('');
+    // master state for all form input values
+    const [formData,setFormData] = useState({});
 
     // form data handle function
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        for(let i = 0; i <= e.target.form.length; i++) {
-            console.log(e.target.form[i].value);
-        }
+        // code here to manage formData on submit  
     };
 
   return (
@@ -33,7 +29,7 @@ export default function NewAdvertModal( {closeModal} ) {
                         id="breadType"
                         selected='null'
                         onChange={(e) => {
-                        setBreadType(e.target.value);
+                            formHandlingUtils.onChangeHandle(e,formData,setFormData,'breadType');
                         }}
                     >
                         <option value="" selected disabled hidden>Choose bread type</option>
@@ -43,14 +39,16 @@ export default function NewAdvertModal( {closeModal} ) {
                         <option value='others'>Others</option>
                     </select>
                 </label>
-                {breadType === 'loaf' ? <LoafForm setBreadSpecific={setBreadSpecific}/> : null}
-                {breadType === 'bunsBagels' ? <BunBagelForm/> : null}
-                {breadType === 'pastry' ? <PastryForm/> : null}
-                {breadType === 'others' ? <OtherBreadForm/> : null}
-                <GeneralFormSliders/>
+                {formData.breadType === 'loaf' ? <LoafForm formData={formData} setFormData={setFormData}/> : null}
+                {formData.breadType === 'bunsBagels' ? <BunBagelForm/> : null}
+                {formData.breadType === 'pastry' ? <PastryForm/> : null}
+                {formData.breadType === 'others' ? <OtherBreadForm/> : null}
+                <GeneralFormSliders formData={formData} setFormData={setFormData}/>
                 <label>
                     Reduced Hunter
-                    <input type='checkbox'></input>   
+                    <input type='checkbox' onChange={(e) => {
+                            formHandlingUtils.onChangeHandle(e,formData,setFormData,'reduced');
+                        }}></input>   
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
