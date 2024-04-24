@@ -7,8 +7,19 @@ import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 
 export default function NewAdvertModal( {closeModal} ) {
 
-    // state for bread form inputs select
+    // state for form inputs
     const [breadType,setBreadType] = useState('');
+    const [breadSpecificData,setBreadSpecific] = useState('');
+    const [generalData,setGeneralData] = useState('');
+
+    // form data handle function
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        for(let i = 0; i <= e.target.form.length; i++) {
+            console.log(e.target.form[i].value);
+        }
+    };
 
   return (
     <div className='modal-background'>
@@ -32,7 +43,7 @@ export default function NewAdvertModal( {closeModal} ) {
                         <option value='others'>Others</option>
                     </select>
                 </label>
-                {breadType === 'loaf' ? <LoafForm/> : null}
+                {breadType === 'loaf' ? <LoafForm setBreadSpecific={setBreadSpecific}/> : null}
                 {breadType === 'bunsBagels' ? <BunBagelForm/> : null}
                 {breadType === 'pastry' ? <PastryForm/> : null}
                 {breadType === 'others' ? <OtherBreadForm/> : null}
@@ -41,7 +52,7 @@ export default function NewAdvertModal( {closeModal} ) {
                     Reduced Hunter
                     <input type='checkbox'></input>   
                 </label>
-                <input type='submit'></input>
+                <input onClick={handleSubmit} type='submit'></input>
             </form>
         </div>
     </div>

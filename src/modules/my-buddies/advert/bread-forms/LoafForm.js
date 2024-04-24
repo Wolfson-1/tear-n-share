@@ -1,14 +1,24 @@
 import React, { useState } from 'react'
 import FormCheckboxList from '../../../multi-use-modules/FormCheckboxList';
 
-export default function Loafdiv() {
+export default function Loafdiv({setBreadSpecific}) {
 
-    // arrays for checkbox form inputs
-    const storeTypes = ['Sainsburys', 'Asda', 'Tescos','Morrisons','Lidl/Aldi','Co-op','Waitrose/M&S','Convenience Stores','Ind. Bakery',];
+    // multiple check box value arrays
+    const storeTypes = ['Sainsburys', 'Asda', 'Tescos','Morrisons','Lidl/Aldi','Co-op','Waitrose/M&S','Convenience Stores','Ind. Bakery'];
     const slicedType = ['unsliced','sliced-any','sliced-thick','sliced-thin'];
 
     //state for loaf values 
-    const [loafType,setLoafType] = useState(null);
+    const [formData,setFormData] = useState({loafType:'White',storeTypes:['morrisons','Asda','Aldi/Lidl'],slicedType:['unsliced','sliced-any']});
+
+    // what i need this obkect to look like
+    const exampObject = {loafType:'White',storeTypes:['morrisons','Asda','Aldi/Lidl'],slicedType:['unsliced','sliced-any']};
+
+    //formhandle to update object containing form data
+    const formhandle = (e,object,setObject,keyValue) => {
+        setObject({...object,[keyValue]: e.target.value});
+        console.log(object);
+    };
+
 
 return (
     <>
@@ -18,7 +28,8 @@ return (
             id="loafType"
             selected='null'
             onChange={(e) => {
-                setLoafType(e.target.value);
+               // setLoafType(e.target.value);
+               formhandle(e,formData,setFormData,'loafType');
             }}
         >
             <option value="" selected disabled hidden>Choose loaf type</option>
