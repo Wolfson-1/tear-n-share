@@ -16,7 +16,7 @@ return (
             id="loafType"
             selected='null'
             onChange={(e) => {
-               formHandlingUtils.onChangeHandle(e,formData,setFormData,'loafType');
+               formHandlingUtils.onChangeHandle(e,formData,setFormData);
             }}
         >
             <option value="" selected disabled hidden>Choose loaf type</option>

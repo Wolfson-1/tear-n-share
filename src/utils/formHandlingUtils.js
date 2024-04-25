@@ -1,13 +1,11 @@
     //formhandle to update object containing form data
-    export const onChangeHandle = (e,object,setObject,keyValue) => {
-        // if value is checkbox use checked instead of value
+    export const onChangeHandle = (e,object,setObject) => {
         if (e.target.type === 'checkbox') {
-            setObject({...object,[keyValue]: e.target.checked});
+            setObject({...object,[e.target.id]: e.target.checked});
             console.log(object);
             return;
         } else {
-            setObject({...object,[keyValue]: e.target.value});
-            console.log(object);
+            setObject({...object,[e.target.id]: e.target.value});
         };
     };
 

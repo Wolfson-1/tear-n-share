@@ -7,8 +7,8 @@ export default function GeneralFormSliders({formData,setFormData}) {
     <>
     <label>
         Bread Split %
-        <input type="range" step='25' min="25" max="75" value={formData.breadSplit} list='splitValues' onChange={(e) => {
-                                                                                                      formHandlingUtils.onChangeHandle(e,formData,setFormData,'breadSplit');
+        <input type="range" step='25' min="25" max="75" value={formData.breadSplit} list='splitValues' id='breadSplit' onChange={(e) => {
+                                                                                                      formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>
         <datalist id="splitValues">
             <option value='25' label='25%'></option>
@@ -19,8 +19,8 @@ export default function GeneralFormSliders({formData,setFormData}) {
 
         <label>
         How Often Needed per week
-        <input type="range" min="1" max="4" value={formData.breadFrequency} list='freqValues' onChange={(e) => {
-                                                                                                    formHandlingUtils.onChangeHandle(e,formData,setFormData,'breadFrequency');
+        <input type="range" min="1" max="4" value={formData.breadFrequency} list='freqValues' id='breadFrequency' onChange={(e) => {
+                                                                                                    formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>
         <datalist id="freqValues">
             <option value="1" label='1'></option>
@@ -32,8 +32,8 @@ export default function GeneralFormSliders({formData,setFormData}) {
 
         <label>
         Max Price £
-        <input type="range" step='0.05' min="0.00" max="5.00" value={formData.breadSpend} list='spendValues' onChange={(e) => {
-                                                                                                    formHandlingUtils.onChangeHandle(e,formData,setFormData,'breadSpend');
+        <input type="range" step='0.05' min="0.00" max="5.00" value={formData.breadSpend} id='breadSpend' list='spendValues' onChange={(e) => {
+                                                                                                    formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>
         <datalist id="spendValues">
             <option value="0" label='£0'></option>
