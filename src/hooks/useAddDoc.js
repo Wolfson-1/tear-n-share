@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { serverTimestamp, addDoc, collection } from 'firebase/firestore';
 
 export default function useAddDoc(uploadObjs,database,path) {
-    // upload objects must be an array of objects.
+    // NOTE FOR USE: upload object(s) must be an array.
 
     //  isComplete process complete check
     const [isComplete, setIsComplete] = useState(false);

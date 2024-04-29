@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import * as formHandlingUtils from '../../../../utils/formHandlingUtils';
 
 export default function GeneralFormSliders({formData,setFormData}) {
-
+  
   return (
     <>
     <label>

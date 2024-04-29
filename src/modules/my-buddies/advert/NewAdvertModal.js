@@ -8,33 +8,42 @@ import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
+import { reauthenticateWithCredential } from 'firebase/auth';
 
 export default function NewAdvertModal( {closeModal} ) {
 
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
-    const [formError,setFormError] = useState({error:false,message:''});
-    const [uploadData,setUploadData] = useState('');
+    const [formError,setFormError] = useState(null);
+    const [uploadData,setUploadData] = useState(null);
 
     // context for user info 
-    // const user = useContext(ContextUser);
-    console.log('render');
+    const user = useContext(ContextUser);
 
-    // // Pre load state for checkbox values in form that will false by default
-    // useEffect (() => {
-    //     setFormData({...formData,reduced:false}); 
-    // },[]);
+    // Pre load state & initial default form data where default values exist
+    useEffect (() => {
+        setFormData({...formData,reduced:false,
+                     breadSplit:50,
+                     breadFrequency:1,
+                     breadSpend:0}
+                     ); 
+    },[]);
 
-    // useAddDoc([uploadData],db,['userData',]);
+    // hook for addition of of formData to userDatabse 
+    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
 
-    // useEffect(() => {
-    //     //use effect for closing out modal once Complete is set
-    // },[])
+    useEffect(() => {
+     //use effect for closing out modal once Complete is set
+        if(uploadNewAd.isComplete === true) closeModal(false);
+    },[uploadNewAd.isComplete]);
 
     // form data handle function
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        //initi variable for errors & clear state for previous existing error
+        let error = false;
+        setFormError(null);
+    
         // init array for checking variables are filled
         let fieldsCheckArr = [];
 
@@ -50,17 +59,19 @@ export default function NewAdvertModal( {closeModal} ) {
         
         // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
-            return !formData[item.name] ? setFormError({...formError,error: true}) : null
+            console.log(formData[item.name]);
+            if(formData[item.name] === undefined){
+                error = true
+                setFormError('Please fill all fields to create a new advert');
+                return;
+            };
         });
+    
+        //if error is true following form check, return
+        if(error === true) return;
 
-        // if error is true set error message & return
-        if (formError === true) {
-            setFormError({...formError,message:'Please fill all fields to create a new advert'});
-            return;
-        };
-
-        // Create new advert by sending to the back end as a new ad.
-         // set variable for firebase hook to upload docs
+        // if formError is untrue after checks, set state of new Advert to be added to database
+        setUploadData([formData]);
     };
 
   return (
@@ -95,7 +106,7 @@ export default function NewAdvertModal( {closeModal} ) {
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
-            {formError && <p>{formError.message}</p>}
+            {formError && <p>{formError}</p>}
         </div>
     </div>
   )

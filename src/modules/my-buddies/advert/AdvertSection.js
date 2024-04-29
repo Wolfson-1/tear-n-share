@@ -11,8 +11,7 @@ export default function AdvertSection() {
   return (
     <div className='buddies-container advert'>
       <div className='add-advert'>
-        <button onClick={() => {setNewAdvert(true) 
-                                console.log(newAdvert)}}>
+        <button onClick={() => {setNewAdvert(true)}}>
           +
         </button>
       </div>
