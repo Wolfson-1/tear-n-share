@@ -5,7 +5,7 @@ const authUserCheck = (setUser) => {
     
     const listen = onAuthStateChanged(auth, (user) => {
         if (user) {
-            setUser({loggedIn:true,email:user.email, displayName:user.displayName});
+            setUser({loggedIn:true, userUid: user.uid, email:user.email, displayName:user.displayName});
         } else {
             setUser({loggedIn:false,email:'', displayName:''});
         }

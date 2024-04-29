@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import {db} from '../../../firebase/config';
+import {ContextUser} from '../../../context/ContextUser';
 import useAddDoc from '../../../hooks/useAddDoc';
 import LoafForm from './bread-forms/LoafForm';
 import BunBagelForm from './bread-forms/BunBagelForm';
@@ -9,15 +11,25 @@ import * as formHandlingUtils from '../../../utils/formHandlingUtils';
 
 export default function NewAdvertModal( {closeModal} ) {
 
-    // master state for all form input values
+    // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
-    //error state
-    const [formError,setFormError] = useState(false);
+    const [formError,setFormError] = useState({error:false,message:''});
+    const [uploadData,setUploadData] = useState('');
 
-    useEffect (() => {
-        // pre load state for checkbox values that are either true/false
-        setFormData({...formData,reduced:false}); 
-    },[]);
+    // context for user info 
+    // const user = useContext(ContextUser);
+    console.log('render');
+
+    // // Pre load state for checkbox values in form that will false by default
+    // useEffect (() => {
+    //     setFormData({...formData,reduced:false}); 
+    // },[]);
+
+    // useAddDoc([uploadData],db,['userData',]);
+
+    // useEffect(() => {
+    //     //use effect for closing out modal once Complete is set
+    // },[])
 
     // form data handle function
     const handleSubmit = (e) => {
@@ -26,34 +38,30 @@ export default function NewAdvertModal( {closeModal} ) {
         // init array for checking variables are filled
         let fieldsCheckArr = [];
 
-        // loop through form data to load form inputs & type into fieldsCheckArr
+        // loop through form data to load form inputs & input type into fieldsCheckArr
         for (let i = 0; i < e.target.form.length - 1; i++) {
             const inArr = fieldsCheckArr.find(item => {
                 return item.name === e.target.form[i].id;
             });
             
-            // if logic to ensure no duplicates are added for multiple option checkboxes
+            // if logic to ensure no duplicates are added (where multiple options expist for checkboxes)
             if(inArr === undefined) fieldsCheckArr.push({name: e.target.form[i].id, type: e.target.form[i].type});
         };
         
-        // cheack each item against form state to ensure all fields have values
+        // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
-            !formData[item.name] ? setFormError('true') : null
+            return !formData[item.name] ? setFormError({...formError,error: true}) : null
         });
 
         // if error is true set error message & return
         if (formError === true) {
-            setErrorMessage('Please fill all fields to create a new advert');
+            setFormError({...formError,message:'Please fill all fields to create a new advert'});
             return;
         };
 
-        // Create new advert by sending to the back end as a new ad. 
+        // Create new advert by sending to the back end as a new ad.
          // set variable for firebase hook to upload docs
     };
-
-    useEffect(() => {
-        //use effect for closing out modal once Complete is set
-    },[])
 
   return (
     <div className='modal-background'>
@@ -87,7 +95,8 @@ export default function NewAdvertModal( {closeModal} ) {
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
+            {formError && <p>{formError.message}</p>}
         </div>
     </div>
   )
-}
+};
