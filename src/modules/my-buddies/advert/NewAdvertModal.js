@@ -8,7 +8,6 @@ import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
-import { reauthenticateWithCredential } from 'firebase/auth';
 
 export default function NewAdvertModal( {closeModal} ) {
 
