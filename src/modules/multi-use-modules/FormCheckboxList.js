@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import * as formHandlingUtils from '../../utils/formHandlingUtils';
 
 export default function FormCheckboxList({listArr, valueName, formData, setFormData}) {
@@ -7,6 +7,20 @@ export default function FormCheckboxList({listArr, valueName, formData, setFormD
     const [checkedState, setCheckedState] = useState(
         new Array(listArr.length).fill(false)
     );
+
+    //useEffect to run if formData exists already to pre-populate this in checkboxes
+    useEffect(() => {
+      //if form data for valueName exists verify which values where checked & add to checkedState array
+      if(formData[valueName]) {
+        const updateCheckedState = listArr.map((listItem) => {
+          return formData[valueName].find((formItem) => {
+            return formItem === listItem
+          }) ? true : false
+        })
+        //update current state for checked values based on formData
+        setCheckedState(updateCheckedState);
+      };
+    },[formData[valueName]]);
 
     // function to handle state change of each index as checkbox ticked
     const handleOnChange = (position) => {

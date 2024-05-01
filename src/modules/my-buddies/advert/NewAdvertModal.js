@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useAddDoc from '../../../hooks/useAddDoc';
+import useFetchDoc from '../../../hooks/useFetchDoc';
 import LoafForm from './bread-forms/LoafForm';
 import BunBagelForm from './bread-forms/BunBagelForm';
 import PastryForm from './bread-forms/PastryForm';
@@ -9,7 +10,7 @@ import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
 
-export default function NewAdvertModal( {closeModal} ) {
+export default function NewAdvertModal( {closeModal,advertId} ) {
 
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
@@ -19,14 +20,23 @@ export default function NewAdvertModal( {closeModal} ) {
     // context for user info 
     const user = useContext(ContextUser);
 
+    // hook for pulling in existing advert data if advertId exists
+    const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'activeAdverts',advertId]);
+
     // Pre load state & initial default form data where default values exist
     useEffect (() => {
-        setFormData({...formData,reduced:false,
-                     breadSplit:50,
-                     breadFrequency:1,
-                     breadSpend:0}
-                     ); 
-    },[]);
+        console.log(existingAdvertData);
+        console.log(advertId);
+        if(advertId) {
+            setFormData(existingAdvertData);
+        } if (existingAdvertData === null) {
+            setFormData({...formData,reduced:false,
+                breadSplit:50,
+                breadFrequency:1,
+                breadSpend:0}
+                ); 
+        }
+    },[existingAdvertData]);
 
     // hook for addition of of formData to userDatabse 
     const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
@@ -84,7 +94,7 @@ export default function NewAdvertModal( {closeModal} ) {
                     <select
                         id="breadType"
                         name="breadType"
-                        selected='null'
+                        value={formData.breadType}
                         onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}
                     >
                         <option value="" selected disabled hidden>Choose bread type</option>
@@ -101,7 +111,7 @@ export default function NewAdvertModal( {closeModal} ) {
                 <GeneralFormSliders formData={formData} setFormData={setFormData}/>
                 <label>
                     Reduced Hunter
-                    <input type='checkbox' id='reduced' name='reduced' onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>   
+                    <input type='checkbox' id='reduced' name='reduced' checked={formData.reduced} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>   
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>

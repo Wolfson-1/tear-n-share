@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
 export default function useFetchDocs(database,path,order) {
+  //NOTES FOR USE
+  // path & order need to be in their own arrays. 
+  // format for order arr: ['variable','desc']
 
   const [dataExport, setData] = useState([]);
 
@@ -21,6 +24,7 @@ export default function useFetchDocs(database,path,order) {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+    console.log(dataExport);
   }
 
     // run get data function

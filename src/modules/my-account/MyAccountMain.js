@@ -15,7 +15,7 @@ export default function MyAccountMain({setMyAccount}) {
       </div>
       <button>Profile Settings</button>
       <div className='showing-switch'>
-        <label class="switch">
+      <label class="switch">
           Show?
           <input type="checkbox"/>
           <span class="slider round"></span>

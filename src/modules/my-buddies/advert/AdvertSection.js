@@ -9,23 +9,22 @@ export default function AdvertSection() {
 
   const user = useContext(ContextUser);
 
-  // state for modal to add a new advert
-  const [newAdvert, setNewAdvert] = useState(false);
+  // state for advert modal to add a new advert
+  const [advertModal, setAdvertModal] = useState(false);
+  const [existingAdId,setExistingAdId] = useState(null);
 
   // pull data for current adds dependant on user
   const adData = useFetchDocs(db,['userData',user.userUid,'activeAdverts'],['createdAt','desc']);
 
-  console.log(adData);
-
   return (
     <div className='buddies-container advert'>
-      {adData && <AdvertList adverts={adData}/>}
+      {adData && <AdvertList adverts={adData} setAdvertModal={setAdvertModal} setExistingAdId={setExistingAdId}/>}
       <div className='add-advert'>
-        <button onClick={() => {setNewAdvert(true)}}>
+        <button onClick={() => {setAdvertModal(true)}}>
           +
         </button>
       </div>
-      {newAdvert ? <NewAdvertModal closeModal={setNewAdvert}/> : null}
+      {advertModal ? <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId}/> : null}
     </div>
   )
 }

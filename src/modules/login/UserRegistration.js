@@ -45,7 +45,7 @@ export default function UserRegistration({setShouldRegister, setUser}) {
                 displayName: userName,
             });
             //setUser details manually for first render
-            setUser({loggedIn:true, email:email, displayName:userName});
+            setUser({loggedIn:true, email:email, displayName:userName,userUid:user.uid});
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;

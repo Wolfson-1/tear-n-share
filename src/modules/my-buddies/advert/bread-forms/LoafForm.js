@@ -15,6 +15,7 @@ return (
         <select
             id="loafType"
             selected='null'
+            value={formData.loafType}
             onChange={(e) => {
                formHandlingUtils.onChangeHandle(e,formData,setFormData);
             }}
