@@ -9,13 +9,15 @@ import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
+import useUpdateDoc from '../../../hooks/useUpdateDoc';
 
-export default function NewAdvertModal( {closeModal,advertId} ) {
+export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
 
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
     const [formError,setFormError] = useState(null);
     const [uploadData,setUploadData] = useState(null);
+    const [updateData,setUpdateData] = useState(null);
 
     // context for user info 
     const user = useContext(ContextUser);
@@ -25,8 +27,6 @@ export default function NewAdvertModal( {closeModal,advertId} ) {
 
     // Pre load state & initial default form data where default values exist
     useEffect (() => {
-        console.log(existingAdvertData);
-        console.log(advertId);
         if(advertId) {
             setFormData(existingAdvertData);
         } if (existingAdvertData === null) {
@@ -38,18 +38,19 @@ export default function NewAdvertModal( {closeModal,advertId} ) {
         }
     },[existingAdvertData]);
 
-    // hook for addition of of formData to userDatabse 
+    // hooks for addition of formData to userDatabse 
     const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
+    const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'activeAdverts',advertId]);
 
+    //use effect for closing out modal once upload of form data is somplete
     useEffect(() => {
-     //use effect for closing out modal once Complete is set
-        if(uploadNewAd.isComplete === true) closeModal(false);
-    },[uploadNewAd.isComplete]);
+        if(uploadNewAd.isComplete === true || updateExistingAd.isComplete === true) closeModal(false);
+    },[uploadNewAd.isComplete,updateExistingAd.isComplete]);
 
     // form data handle function
     const handleSubmit = (e) => {
         e.preventDefault();
-        //initi variable for errors & clear state for previous existing error
+        //init variables for errors & clear state for any previous existing error
         let error = false;
         setFormError(null);
     
@@ -79,14 +80,17 @@ export default function NewAdvertModal( {closeModal,advertId} ) {
         //if error is true following form check, return
         if(error === true) return;
 
-        // if formError is untrue after checks, set state of new Advert to be added to database
-        setUploadData([formData]);
+        // if formError is false after checks, set state of new Advert to be added to database
+        advertId ? setUpdateData(formData) : setUploadData([formData]);
     };
 
   return (
     <div className='modal-background'>
         <div className='modal-form-container new-advert-modal-form-container'>
-            <button onClick={() => {closeModal(false)}} className='close-modal'>x</button>
+            <button onClick={() => {
+                                    setAdvertId(null)
+                                    closeModal(false)
+                                    }} className='close-modal'>x</button>
             <h3>Create a New Advert</h3>
             <form className='modal-form'>
                 <label>

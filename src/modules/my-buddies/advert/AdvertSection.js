@@ -11,9 +11,9 @@ export default function AdvertSection() {
 
   // state for advert modal to add a new advert
   const [advertModal, setAdvertModal] = useState(false);
-  const [existingAdId,setExistingAdId] = useState(null);
+  const [existingAdId,setExistingAdId] = useState(null);  
 
-  // pull data for current adds dependant on user
+  // pull data for current ads dependant on user
   const adData = useFetchDocs(db,['userData',user.userUid,'activeAdverts'],['createdAt','desc']);
 
   return (
@@ -24,7 +24,7 @@ export default function AdvertSection() {
           +
         </button>
       </div>
-      {advertModal ? <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId}/> : null}
+      {advertModal ? <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId} setAdvertId={setExistingAdId}/> : null}
     </div>
   )
 }
