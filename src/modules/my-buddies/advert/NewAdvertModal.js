@@ -3,6 +3,7 @@ import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useAddDoc from '../../../hooks/useAddDoc';
 import useFetchDoc from '../../../hooks/useFetchDoc';
+import useDeleteDoc from '../../../hooks/useDeleteDoc';
 import LoafForm from './bread-forms/LoafForm';
 import BunBagelForm from './bread-forms/BunBagelForm';
 import PastryForm from './bread-forms/PastryForm';
@@ -13,19 +14,40 @@ import useUpdateDoc from '../../../hooks/useUpdateDoc';
 
 export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
 
+    /* State 
+    ----------------------------------------*/
+
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
     const [formError,setFormError] = useState(null);
+
+    // State for use in firebase hooks to communicate with backend 
     const [uploadData,setUploadData] = useState(null);
     const [updateData,setUpdateData] = useState(null);
+    const [discardData,setDiscardData] = useState(null);
+    const [deleteData,setDeleteData] = useState(null);
 
     // context for user info 
     const user = useContext(ContextUser);
 
+    /* Custom firebase hooks 
+    ----------------------------------------*/
+
     // hook for pulling in existing advert data if advertId exists
     const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'activeAdverts',advertId]);
 
-    // Pre load state & initial default form data where default values exist
+    // hooks for addition of formData to userDatabse 
+    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
+    const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'activeAdverts',advertId]);
+
+    //hooks for writing advert to discarded & deleting from active onClick of discard
+    const discardAdvert = useAddDoc(discardData,db,['userData',user.userUid,'inactiveAdverts']);
+    const deleteAdvert = useDeleteDoc(deleteData,db,['userData',user.userUid,'activeAdverts']);
+
+    /*useEffects
+    --------------------------------------- */
+
+    // Pre load state of initial form data where default values exist
     useEffect (() => {
         if(advertId) {
             setFormData(existingAdvertData);
@@ -34,18 +56,20 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
                 breadSplit:50,
                 breadFrequency:1,
                 breadSpend:0}
-                ); 
+                );
         }
     },[existingAdvertData]);
 
-    // hooks for addition of formData to userDatabse 
-    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
-    const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'activeAdverts',advertId]);
-
-    //use effect for closing out modal once upload of form data is somplete
+    //useEffect for closing out modal once upload/update/delete of form data is complete
     useEffect(() => {
-        if(uploadNewAd.isComplete === true || updateExistingAd.isComplete === true) closeModal(false);
-    },[uploadNewAd.isComplete,updateExistingAd.isComplete]);
+        if(uploadNewAd.isComplete === true || updateExistingAd.isComplete === true || discardAdvert.isComplete === true ) {
+            closeModal(false) 
+            setAdvertId(null);
+        };
+    },[uploadNewAd.isComplete,updateExistingAd.isComplete,discardAdvert.isComplete]);
+
+    /* Form handling
+    --------------------------------------- */ 
 
     // form data handle function
     const handleSubmit = (e) => {
@@ -119,6 +143,10 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
+            {advertId && <button onClick={()=>{
+                                                setDiscardData([existingAdvertData])
+                                                setDeleteData(existingAdvertData)
+                                              }}>Discard Advert</button>}
             {formError && <p>{formError}</p>}
         </div>
     </div>
