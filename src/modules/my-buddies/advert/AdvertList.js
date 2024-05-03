@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AdvertList({adverts,setAdvertModal, setExistingAdId}) {
+export default function AdvertList({adverts,setAdvertModal, setExistingAdId, activeStatus}) {
 
     //function to repoen modal with loaded ad data. passes down existing Id to do this
     const editAd = (id) => {
@@ -21,7 +21,8 @@ export default function AdvertList({adverts,setAdvertModal, setExistingAdId}) {
                         </div>
                         {advert.reduced === true ? <span>Reduced</span> : null}
                     </div>
-                    <button onClick={()=>{editAd(advert.id)}}>{`Info & Edit`}</button>
+                    {activeStatus === 'activeAdverts' && <button onClick={()=>{editAd(advert.id)}}>{`Info & Edit`}</button>}
+                    {activeStatus === 'inactiveAdverts' && <button >Re-Activate</button>}
                </div>
     }))
 }

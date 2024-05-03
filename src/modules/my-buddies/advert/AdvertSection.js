@@ -11,19 +11,24 @@ export default function AdvertSection() {
 
   // state for advert modal to add a new advert
   const [advertModal, setAdvertModal] = useState(false);
-  const [existingAdId,setExistingAdId] = useState(null);  
+  const [existingAdId,setExistingAdId] = useState(null);
+  const [activeStatus,setActiveStatus] = useState('activeAdverts')
 
   // pull data for current ads dependant on user
-  const adData = useFetchDocs(db,['userData',user.userUid,'activeAdverts'],['createdAt','desc']);
+  const adData = useFetchDocs(db,['userData',user.userUid],['createdAt','desc'],activeStatus);
 
   return (
     <div className='buddies-container advert'>
-      {adData && <AdvertList adverts={adData} setAdvertModal={setAdvertModal} setExistingAdId={setExistingAdId}/>}
-      <div className='add-advert'>
+      <div>
+        <button onClick={()=>{if(activeStatus !== 'activeAdverts') setActiveStatus('activeAdverts')}}>Active adverts</button>
+        <button onClick={()=>{if(activeStatus !== 'inactiveAdverts') setActiveStatus('inactiveAdverts')}}>Deactivated Adverts</button>
+      </div>
+      {adData && <AdvertList adverts={adData} setAdvertModal={setAdvertModal} setExistingAdId={setExistingAdId} activeStatus={activeStatus}/>}
+      {activeStatus === 'activeAdverts' && <div className='add-advert'>
         <button onClick={() => {setAdvertModal(true)}}>
           +
         </button>
-      </div>
+      </div>}
       {advertModal ? <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId} setAdvertId={setExistingAdId}/> : null}
     </div>
   )
