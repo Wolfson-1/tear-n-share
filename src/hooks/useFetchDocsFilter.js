@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, where, query } from 'firebase/firestore';
 
-export default function useFetchDocs(database,path,order) {
+export default function useFetchDocsFilter(database,path,filter,filterParam) {
   //NOTES FOR USE
   // path & order need to be in their own arrays. 
   // format for order arr: ['variable','desc']
@@ -12,7 +12,7 @@ export default function useFetchDocs(database,path,order) {
   const getData = async () => {
     try {
       // fetch data using get docs
-      const q = query(collection(database, ...path), orderBy(...order));
+      const q = query(collection(database, ...path), where(filter, '==', filterParam));
       const data = onSnapshot(q, (collection) => {
         const filteredData = collection.docs.map((doc) => ({
           ...doc.data(),
@@ -29,7 +29,7 @@ export default function useFetchDocs(database,path,order) {
 
     // run get data function
     getData();
-  }, []);
+  },[filterParam]);
 
   // return data only when it's available
   return dataExport.length > 0 ? dataExport : null;

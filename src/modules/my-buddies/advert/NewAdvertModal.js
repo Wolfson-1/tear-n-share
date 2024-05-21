@@ -3,16 +3,14 @@ import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useAddDoc from '../../../hooks/useAddDoc';
 import useFetchDoc from '../../../hooks/useFetchDoc';
-import useDeleteDoc from '../../../hooks/useDeleteDoc';
 import LoafForm from './bread-forms/LoafForm';
 import BunBagelForm from './bread-forms/BunBagelForm';
 import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
-import useUpdateDoc from '../../../hooks/useUpdateDoc';
 
-export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
+export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpdateData} ) {
 
     /* State 
     ----------------------------------------*/
@@ -21,11 +19,8 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
     const [formData,setFormData] = useState({});
     const [formError,setFormError] = useState(null);
 
-    // State for use in firebase hooks to communicate with backend 
+    // State for use in firebase hooks to upload new data based on form
     const [uploadData,setUploadData] = useState(null);
-    const [updateData,setUpdateData] = useState(null);
-    const [discardData,setDiscardData] = useState(null);
-    const [deleteData,setDeleteData] = useState(null);
 
     // context for user info 
     const user = useContext(ContextUser);
@@ -34,15 +29,10 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
     ----------------------------------------*/
 
     // hook for pulling in existing advert data if advertId exists
-    const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'activeAdverts',advertId]);
+    const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts',advertId]);
 
-    // hooks for addition of formData to userDatabse 
-    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'activeAdverts']);
-    const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'activeAdverts',advertId]);
-
-    //hooks for writing advert to discarded & deleting from active onClick of discard
-    const discardAdvert = useAddDoc(discardData,db,['userData',user.userUid,'inactiveAdverts']);
-    const deleteAdvert = useDeleteDoc(deleteData,db,['userData',user.userUid,'activeAdverts']);
+    // hooks for addition of formData to userDatabse
+    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'adverts']);
 
     /*useEffects
     --------------------------------------- */
@@ -55,18 +45,19 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
             setFormData({...formData,reduced:false,
                 breadSplit:50,
                 breadFrequency:1,
-                breadSpend:0}
+                breadSpend:0,
+                active:true}
                 );
         }
     },[existingAdvertData]);
 
     //useEffect for closing out modal once upload/update/delete of form data is complete
     useEffect(() => {
-        if(uploadNewAd.isComplete === true || updateExistingAd.isComplete === true || discardAdvert.isComplete === true ) {
+        if(uploadNewAd.isComplete === true) {
             closeModal(false) 
             setAdvertId(null);
         };
-    },[uploadNewAd.isComplete,updateExistingAd.isComplete,discardAdvert.isComplete]);
+    },[uploadNewAd.isComplete]);
 
     /* Form handling
     --------------------------------------- */ 
@@ -93,7 +84,6 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
         
         // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
-            console.log(formData[item.name]);
             if(formData[item.name] === undefined){
                 error = true
                 setFormError('Please fill all fields to create a new advert');
@@ -144,8 +134,7 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId} ) {
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
             {advertId && <button onClick={()=>{
-                                                setDiscardData([existingAdvertData])
-                                                setDeleteData(existingAdvertData)
+                                                setUpdateData({active:false});
                                               }}>Discard Advert</button>}
             {formError && <p>{formError}</p>}
         </div>
