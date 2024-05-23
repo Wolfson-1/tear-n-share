@@ -7,6 +7,8 @@ export default function useUpdateDoc(updateObj,database,path) {
     const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
+        //set state as false incase preexisting true still in place from previous execution of function
+        setIsComplete(false);
         if(!updateObj || updateObj === null) return;
 
         const updateFunction = async () => {
@@ -17,6 +19,7 @@ export default function useUpdateDoc(updateObj,database,path) {
                 ...updateObj
               });
 
+              //set isComplete to true for use as feedback from function for completion
               setIsComplete(true);
         }
         updateFunction();

@@ -36,11 +36,22 @@ export default function AdvertSection() {
 
   // useEffect to close out modal & clear selected ad ID if update of ad data is complete
   useEffect(() => {
-    if(updateExistingAd.isComplete === true) {
+    // if condition for completion of setting an advert to active
+   if(updateExistingAd.isComplete === false) return;
+
+    console.log(updateData);
+    if(updateExistingAd.isComplete === true && updateData.active === true) {
       console.log('woo')
-      setAdvertModal(false)
+      setUpdateData(null)
       setExistingAdId(null)
       console.log('woo2')
+    // if condition for completion of setting an advert to inactive
+    } else if (updateExistingAd.isComplete === true && updateData.active === false) {
+      console.log('poo')
+      setAdvertModal(false)
+      setUpdateData(null)
+      setExistingAdId(null)
+      console.log('poo2')
     }
   },[updateExistingAd.isComplete]);
   
