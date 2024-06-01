@@ -7,12 +7,12 @@ export default function useUpdateDoc(updateObj,database,path) {
     const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
-        //set state as false incase preexisting true still in place from previous execution of function
-        setIsComplete(false);
+        //set isComplete back to to false if true from a previous run
+        if(isComplete === true) setIsComplete(false);
+        //if updateObj is blank
         if(!updateObj || updateObj === null) return;
 
         const updateFunction = async () => {
-            
             const docRef = doc(database,...path);
 
             await updateDoc(docRef, {

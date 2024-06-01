@@ -21,9 +21,7 @@ export default function AdvertSection() {
   //state to update ad data for active status & changes to info on edit.
   const [updateData,setUpdateData] = useState(null);
 
-  /*----------------------*/
-
-  /* Hooks   
+  /* Hooks
   ----------------------*/
   
   // pull data for current ads dependant on user
@@ -32,28 +30,37 @@ export default function AdvertSection() {
   //updating ad data (new data & advert active status) 
   const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'adverts',existingAdId]);
 
-  /*----------------------*/
+  /* useEffects
+  ----------------------*/
 
   // useEffect to close out modal & clear selected ad ID if update of ad data is complete
   useEffect(() => {
     // if condition for completion of setting an advert to active
-   if(updateExistingAd.isComplete === false) return;
-
-    console.log(updateData);
-    if(updateExistingAd.isComplete === true && updateData.active === true) {
-      console.log('woo')
-      setUpdateData(null)
-      setExistingAdId(null)
-      console.log('woo2')
-    // if condition for completion of setting an advert to inactive
-    } else if (updateExistingAd.isComplete === true && updateData.active === false) {
-      console.log('poo')
-      setAdvertModal(false)
-      setUpdateData(null)
-      setExistingAdId(null)
-      console.log('poo2')
-    }
+   if(updateExistingAd.isComplete === false) {
+    return;
+   }
+   
+   if (updateExistingAd.isComplete === true) {
+    console.log('fucking fowerkqsfwe')
+    setUpdateData(null);
+    setExistingAdId(null);
+   };
   },[updateExistingAd.isComplete]);
+
+  /* functions for advert manipulation
+  ------------------------------------------*/
+
+  //update active staus of advert either by reactivating or discarding
+    const toggleAd = (id,status) => {
+      setExistingAdId(id);
+      setUpdateData({active:status});
+  };
+
+  //repoen modal for new advert with loaded ad data of existing ad to edit
+    const editAd = (id) => {
+        setExistingAdId(id);
+        setAdvertModal(true);
+    };
   
   return (
     <div className='buddies-container advert'>
@@ -61,7 +68,7 @@ export default function AdvertSection() {
         <button onClick={()=>{if(activeStatus !== true) setActiveStatus(true)}}>Active adverts</button>
         <button onClick={()=>{if(activeStatus !== false) setActiveStatus(false)}}>Deactivated Adverts</button>
       </div>
-      {adData && <AdvertList adverts={adData} setAdvertModal={setAdvertModal} setExistingAdId={setExistingAdId} activeStatus={activeStatus} setUpdateData={setUpdateData}/>}
+      {adData && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/>}
       {activeStatus === true && <div className='add-advert'>
         <button onClick={() => {setAdvertModal(true)}}>
           +

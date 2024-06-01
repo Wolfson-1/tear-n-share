@@ -133,9 +133,6 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
                 </label>
                 <input onClick={handleSubmit} type='submit'></input>
             </form>
-            {advertId && <button onClick={()=>{
-                                                setUpdateData({active:false});
-                                              }}>Discard Advert</button>}
             {formError && <p>{formError}</p>}
         </div>
     </div>

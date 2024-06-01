@@ -9,10 +9,15 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
   const [dataExport, setData] = useState([]);
 
   useEffect(() => {
+
   const getData = async () => {
+    //clear previous data
+    setData([]);
+    
+    console.log('running');
     try {
       // fetch data using get docs
-      const q = query(collection(database, ...path), where(filter, '==', filterParam));
+      let q = query(collection(database, ...path), where(filter, '==', filterParam));
       const data = onSnapshot(q, (collection) => {
         const filteredData = collection.docs.map((doc) => ({
           ...doc.data(),
@@ -24,11 +29,15 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-    console.log(dataExport);
   }
 
     // run get data function
     getData();
+
+    // cleanup
+    return () => {
+      setData([]);
+    }
   },[filterParam]);
 
   // return data only when it's available
