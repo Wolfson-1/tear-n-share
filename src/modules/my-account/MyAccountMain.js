@@ -2,10 +2,9 @@ import React, {useContext, useEffect, useState} from 'react'
 import {ContextUser} from '../../context/ContextUser';
 import { db } from '../../firebase/config';
 import useFetchDoc from '../../hooks/useFetchDoc';
-import useUpdateDoc from '../../hooks/useUpdateDoc';
 import userSignOut from '../../utils/userSignOut';
 
-export default function MyAccountMain({setMyAccount}) {
+export default function MyAccountMain({setMyAccount, setUpdateData,userData}) {
   //access user status from context
   const user = useContext(ContextUser);
 
@@ -16,23 +15,12 @@ export default function MyAccountMain({setMyAccount}) {
   const [distance,setDistance] = useState(0);
   const [show,setShow] = useState(true);
 
-  //state for updating user data on change or interation
-  const [updateFig,setUpdateFig] = useState(null);
-
-  /*hooks
-  -------------------------*/
-  //fetch userData
-  const userData = useFetchDoc(db,['userData',user.userUid]);
-
-  //hook to update user data on change
-  const updateDistance = useUpdateDoc(updateFig,db,['userData',user.userUid]);
-
   /*useEffects
   -------------------------*/
   // set initial user values once userData has loaded if needed
   useEffect(() => {
     //if there is no value for show set show to true 
-    if(userData && userData.show === undefined) setUpdateFig({show: true});
+    if(userData && userData.show === undefined) setUpdateData({show: true});
 
     //if user data exists set distance values for DOM loading or set to 0
     if(userData) {
@@ -41,14 +29,10 @@ export default function MyAccountMain({setMyAccount}) {
     };
   }, [userData])
 
-  //check for when updateDistance is complete to clear out state for updateFig
-  useEffect(() => {
-    if(updateDistance.isComplete === true) setUpdateFig(null);
-  },[updateDistance.isComplete])
-
   return (
-    <>
-    {userData && <div className='my-account-main'>
+    
+    <div className='my-account-main'>
+     {userData && <>
       <button onClick={() => {setMyAccount(false)}}>x</button>
       <div className='profile-details'>
         <p>{user.displayName}</p>
@@ -59,7 +43,7 @@ export default function MyAccountMain({setMyAccount}) {
       <label class="switch">
           Show?
           <input type="checkbox" checked={show && show} onChange={(e) => {
-                                                                  setUpdateFig({show: e.target.checked})
+                                                                  setUpdateData({show: e.target.checked})
                                                                   setShow(userData.show)
                                                                   }}/>
           <span class="slider round"></span>
@@ -69,7 +53,7 @@ export default function MyAccountMain({setMyAccount}) {
         <label>
         Distance
         <input type="range" step='1' min="0" max="50" value={distance && distance} id='dist' list='distVals' onChange={(e) => {
-                                                                                                    setUpdateFig({distance: +e.target.value})
+                                                                                                    setUpdateData({distance: +e.target.value})
                                                                                                     setDistance(userData.distance)
                                                                                                     }}/>
         <datalist id="distVals">
@@ -84,7 +68,7 @@ export default function MyAccountMain({setMyAccount}) {
     </label>
       </div>
       <button className='user-signout' onClick={userSignOut}>logout</button>
-    </div>}
-    </>
+      </>}
+    </div>
   )
 }
