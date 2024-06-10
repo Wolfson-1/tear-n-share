@@ -5,11 +5,11 @@
             position => {
               const location = {
                 lat:position.coords.latitude,
-                long:position.coords.longitude
+                lng:position.coords.longitude
               };
               resolve(location);
             },
             err => reject(err)
-          );
+            );
         }
       );

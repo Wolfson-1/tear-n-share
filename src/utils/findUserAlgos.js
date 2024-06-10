@@ -28,5 +28,5 @@ export function userDistanceFilter(lat, lng, distanceInKm, users) {
                 if (d < distanceInKm) returnUsers.push(user);        
     });
 
-    return returnUsers;  
+    return returnUsers;
 }
