@@ -26,7 +26,7 @@ export default function MainMap({setUpdateData,userData}) {
         //if location data doesnt exist update to current location
         if(!userData.location) setUpdateData({location:data})
         //if location data differs to user data update location
-        if(userData.location.lat !== location.lat || userData.location.long !== location.long) {
+        if(userData.location.lat !== data.lat || userData.location.long !== data.long) {
           setUpdateData({location:data});
         }
       }); 
