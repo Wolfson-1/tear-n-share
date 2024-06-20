@@ -23,39 +23,36 @@ export default function MainMap({setUpdateData,userData}) {
     const {width,height} = useWindowDimentions();
     //current location
     const [location,setLocation] = useState(userData && userData.location);
+    //user distance
+    const [distance,setDistance] = useState(userData && userData.distance);
     //user circle radius in M
     const [circleRadius,setCircleRadius] = useState(null); 
 
     /*useEffects
     -------------------- */
-    // set initial data needed for map & layer rendering on first initial render
+    // set initial data needed for map location on initial render
     useEffect(() => {
       //set location data on first render
       geoLocation().then(data => {
-        //if location data doesnt exist update to current location
-        if(!userData.location) setUpdateData({location:data})
-        //if location data differs to user data update location
-        if(userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
+        //if location data doesnt exist or differs to current userdata, update location
+        if(!userData.location || userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
         }
-      }); 
-
-      //convert & set radius for map circle layer based on user set distance prefference
-      const mInMile = 1609.344 // number of meters in a mile
-      const mDist = userData.distance * mInMile;
-      setCircleRadius(mDist);
+      });
     },[]);
 
-  // set initial user values once userData has loaded if needed
+  //update distance & location values for map when userData changes
   useEffect(() => {
-    //if there is no value for show for user data set as current location 
-    if(userData && userData.distance === undefined) setUpdateData({location: location});
+    if(userData.distance !== distance) setDistance(userData.distance);
+    if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
+  }, [userData]);
 
-    //if user data exists set distance values for DOM loading or set to 0
-    if(userData) {
-      setLocation(userData.location)
-    };
-  }, [userData])
+  //Convert & set radius for map circle layer based on user set distance prefference change
+  useEffect(() => {
+    const mInMile = 1609.344 // number of meters in a mile
+    const mDist = userData.distance * mInMile;
+    setCircleRadius(mDist);
+  },[distance]);
 
   /* -------------------- */
 

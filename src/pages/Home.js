@@ -32,7 +32,7 @@ export default function Home() {
     //hook to update user data in backend on change
     const updateUserInfo = useUpdateDoc(updateData,db,['userData',user.userUid]);
 
-    /* useEFfects
+    /* useEffects
     ---------------------- */
 
     //useEffect for isFirstLogin state changes 

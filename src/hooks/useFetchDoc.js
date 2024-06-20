@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { getDoc, doc,onSnapshot } from 'firebase/firestore';
+import { useEffect, useState } from 'react'
+import { doc,onSnapshot } from 'firebase/firestore';
 
 export default function useFetchDoc(database, path) {
   const [dataExport, setData] = useState(null);
@@ -12,11 +12,6 @@ export default function useFetchDoc(database, path) {
           const filteredData = {...doc.data(), id: doc.id};
           setData(filteredData);
       });
-        
-        // const docRef = doc(database, ...path);
-        // const data = await getDoc(docRef);
-        // const filteredData = { ...data.data(), id: data.id };
-        // setData(filteredData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
