@@ -52,6 +52,16 @@ export default function Home() {
         if(updateUserInfo.isComplete === true) setUpdateData(null);
       },[updateUserInfo.isComplete])
 
+      /*---------------*/
+
+      //selector function for toggling between account & buddy management draw
+      const drawToggle = (on,off) => {
+        //important: on & off must be useState set functions 
+        //set appropriate true & false so both draws arent open at same time
+        on(true)
+        off(false)
+      };
+
     return (
     <div>
       {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
@@ -60,9 +70,9 @@ export default function Home() {
         {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
         {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
         <div className='nav-button-container'> 
-          <button className='nav-my-account' onClick={() => {setMyAccount(true)}}>Account</button>
+          <button className='nav-my-account' onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
           <button className='nav-home'>-</button>
-          <button className='nav-my-buddies' onClick={() => {setMyBuddies(true)}}>Breat Buds</button>
+          <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Breat Buds</button>
         </div>
       </main>
     </div>
