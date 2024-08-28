@@ -5,7 +5,7 @@ import {MapContainer, TileLayer, ZoomControl,Circle,Marker} from 'react-leaflet'
 import {Icon} from 'leaflet';
 import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
-import useFetchDocs from '../hooks/useFetchDocs';
+import useUserDist from '../hooks/useUserDist';
 
 export default function MainMap({setUpdateData,userData,visibleUsers}) {
   //access user status from context
@@ -33,6 +33,11 @@ export default function MainMap({setUpdateData,userData,visibleUsers}) {
     const [distance,setDistance] = useState(userData && userData.distance);
     //user circle radius in M
     const [circleRadius,setCircleRadius] = useState(null); 
+
+    /* hooks 
+    -------------------- */
+    
+    const filteredUsers = useUserDist(userData.location,userData.distance,visibleUsers);
 
     /*useEffects
     -------------------- */
@@ -70,10 +75,10 @@ export default function MainMap({setUpdateData,userData,visibleUsers}) {
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
       <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>
       <Marker position={userData.location} icon={userIcon}/>
-      {visibleUsers.map((visUser)=>{
+      {filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}/>
       })}
   </MapContainer>
   </div>
   )
-}
+};
