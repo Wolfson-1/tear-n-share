@@ -18,7 +18,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers}) {
     });
 
   const visUserIcon = new Icon({
-    iconUrl:'https://cdn-icons-png.flaticon.com/512/3425/3425073.png',
+    iconUrl:'https://cdn-icons-png.flaticon.com/512/5193/5193184.png',
     iconSize:[38,38]
   })
 
