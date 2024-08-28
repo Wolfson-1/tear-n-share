@@ -2,7 +2,6 @@
     export const onChangeHandle = (e,object,setObject) => {
         if (e.target.type === 'checkbox') {
             setObject({...object,[e.target.id]: e.target.checked});
-            console.log(object);
             return;
         } else {
             setObject({...object,[e.target.id]: e.target.value});

@@ -5,16 +5,22 @@ import {MapContainer, TileLayer, ZoomControl,Circle,Marker} from 'react-leaflet'
 import {Icon} from 'leaflet';
 import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
+import useFetchDocs from '../hooks/useFetchDocs';
 
-export default function MainMap({setUpdateData,userData}) {
+export default function MainMap({setUpdateData,userData,visibleUsers}) {
   //access user status from context
   const user = useContext(ContextUser);  
   
   // custom map icon  
-  const mapIcon = new Icon({
+  const userIcon = new Icon({
     iconUrl:'https://cdn-icons-png.flaticon.com/512/3425/3425073.png',
     iconSize:[38,38]
     });
+
+  const visUserIcon = new Icon({
+    iconUrl:'https://cdn-icons-png.flaticon.com/512/3425/3425073.png',
+    iconSize:[38,38]
+  })
 
   /*State
     -------------------- */
@@ -63,7 +69,10 @@ export default function MainMap({setUpdateData,userData}) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
       <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>
-      <Marker position={userData.location} icon={mapIcon}/>
+      <Marker position={userData.location} icon={userIcon}/>
+      {visibleUsers.map((visUser)=>{
+       return <Marker position={visUser.location} icon={visUserIcon}/>
+      })}
   </MapContainer>
   </div>
   )

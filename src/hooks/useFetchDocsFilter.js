@@ -3,8 +3,7 @@ import { collection, onSnapshot, where, query } from 'firebase/firestore';
 
 export default function useFetchDocsFilter(database,path,filter,filterParam) {
   //NOTES FOR USE
-  // path & order need to be in their own arrays. 
-  // format for order arr: ['variable','desc']
+  // path needs to be in its own array. 
 
   const [dataExport, setData] = useState([]);
 
@@ -14,7 +13,6 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
     //clear previous data
     setData([]);
     
-    console.log('running');
     try {
       // fetch data using get docs
       let q = query(collection(database, ...path), where(filter, '==', filterParam));
@@ -24,6 +22,7 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
           id: doc.id,
         }));
         // set data to new filtered data
+        console.log(filteredData);
         setData(filteredData);
       });
     } catch (error) {

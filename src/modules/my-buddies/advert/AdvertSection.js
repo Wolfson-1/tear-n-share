@@ -41,7 +41,6 @@ export default function AdvertSection() {
    }
    
    if (updateExistingAd.isComplete === true) {
-    console.log('fucking fowerkqsfwe')
     setUpdateData(null);
     setExistingAdId(null);
    };

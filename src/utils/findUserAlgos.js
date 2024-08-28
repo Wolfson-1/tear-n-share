@@ -24,7 +24,8 @@ export function userDistanceFilter(lat, lng, distanceInKm, users) {
                 const a  = Math.pow(Math.sin(dlat/2),2) + Math.cos(latRad) * Math.cos(lat2Rad) * Math.pow(Math.sin(dlng/2),2);
                 const c  = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); // great circle distance in radians
                 const d = c * R; // Distance from user in km
-        
+
+                // logic to push user into returnUsers if withihn logged in users distance parameters.
                 if (d < distanceInKm) returnUsers.push(user);        
     });
 

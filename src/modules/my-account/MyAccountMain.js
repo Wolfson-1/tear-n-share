@@ -1,7 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {ContextUser} from '../../context/ContextUser';
-import { db } from '../../firebase/config';
-import useFetchDoc from '../../hooks/useFetchDoc';
 import userSignOut from '../../utils/userSignOut';
 
 export default function MyAccountMain({setMyAccount, setUpdateData,userData}) {

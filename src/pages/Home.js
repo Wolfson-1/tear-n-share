@@ -3,6 +3,7 @@ import {ContextUser} from '../context/ContextUser';
 import { db } from '../firebase/config';
 import useUpdateDoc from '../hooks/useUpdateDoc';
 import useFetchDoc from '../hooks/useFetchDoc';
+import useFetchDocsFilter from '../hooks/useFetchDocsFilter';
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
@@ -26,11 +27,14 @@ export default function Home() {
 
     /* Hooks
     -------------- */
-    //fetch userData
+    //fetch userData-
     const userData = useFetchDoc(db,['userData',user.userUid]);
 
     //hook to update user data in backend on change
     const updateUserInfo = useUpdateDoc(updateData,db,['userData',user.userUid]);
+
+    // user data for populating users in close proximity
+    const visibleUsers = useFetchDocsFilter(db,['userData'],'show',true);
 
     /* useEffects
     ---------------------- */
@@ -57,7 +61,7 @@ export default function Home() {
       //selector function for toggling between account & buddy management draw
       const drawToggle = (on,off) => {
         //important: on & off must be useState set functions 
-        //set appropriate true & false so both draws arent open at same time
+        //set appropriate true & false so both draws aren't open at same time
         on(true)
         off(false)
       };
@@ -66,7 +70,7 @@ export default function Home() {
     <div>
       {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
       <main>
-        {userData && <MainMap setUpdateData={setUpdateData} userData={userData}/>}
+        {userData && visibleUsers && <MainMap setUpdateData={setUpdateData} userData={userData} visibleUsers={visibleUsers}/>}
         {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
         {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
         <div className='nav-button-container'> 
