@@ -14,6 +14,9 @@ export default function useUserDist(location, distanceInKm, users) {
 
     useEffect(() => {
         let filteredArr = [];
+
+        //logic to return if nessicary data does not exist yet
+        if(location === undefined) return;
         
         //loop through users array for filtering based on distance paramaters
         users.forEach(user => {

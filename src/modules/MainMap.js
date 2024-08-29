@@ -7,7 +7,7 @@ import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
 import useUserDist from '../hooks/useUserDist';
 
-export default function MainMap({setUpdateData,userData,visibleUsers}) {
+export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers}) {
   //access user status from context
   const user = useContext(ContextUser);  
   
@@ -46,7 +46,9 @@ export default function MainMap({setUpdateData,userData,visibleUsers}) {
       //set location data on first render
       geoLocation().then(data => {
         //if location data doesnt exist or differs to current userdata, update location
-        if(!userData.location || userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
+        if(!userData.location) {
+          setNewUser([{dislayName:user.displayName, location:data}]);
+        } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
         }
       });
@@ -54,27 +56,32 @@ export default function MainMap({setUpdateData,userData,visibleUsers}) {
 
   //update distance & location values for map when userData changes
   useEffect(() => {
-    if(userData.distance !== distance) setDistance(userData.distance);
-    if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
+    if (userData.distance && userData.location) {
+      if(userData.distance !== distance) setDistance(userData.distance);
+      if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
+    } 
   }, [userData]);
 
   //Convert & set radius for map circle layer based on user set distance prefference change
   useEffect(() => {
     const mInMile = 1609.344 // number of meters in a mile
-    const mDist = userData.distance * mInMile;
-    setCircleRadius(mDist);
+    
+    if (userData.distance) {
+      const mDist = userData.distance * mInMile;
+      setCircleRadius(mDist);
+    }  
   },[distance]);
 
   /* -------------------- */
 
   return (
   <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
-    <MapContainer style={{width: '100%', height: '100%'}} center={[location.lat.toString(),location.lng.toString()]} zoom={13} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
+    <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} zoom={13} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
       <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
-      <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>
-      <Marker position={userData.location} icon={userIcon}/>
+      {userData.location && <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>}
+      {userData.location && <Marker position={userData.location} icon={userIcon}/>}
       {filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}/>
       })}

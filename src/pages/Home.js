@@ -8,6 +8,7 @@ import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
 import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
+import useAddDoc from '../hooks/useAddDoc';
 
 export default function Home() {
   //access user status from context
@@ -22,7 +23,8 @@ export default function Home() {
     // State for main pull out menues for account and buddies
     const [myAccount,setMyAccount] = useState(false);
     const [myBuddies,setMyBuddies] = useState(false);
-    //state for updating user data on change or interation
+    //state for creating new & updating user data on change or interation
+    const [newUser,setNewUser] = useState(null);
     const [updateData,setUpdateData] = useState(null);
 
     /* Hooks
@@ -30,8 +32,11 @@ export default function Home() {
     //fetch userData-
     const userData = useFetchDoc(db,['userData',user.userUid]);
 
-    //hook to update user data in backend on change
+    //update user data in backend on change
     const updateUserInfo = useUpdateDoc(updateData,db,['userData',user.userUid]);
+
+    //add new user doc to database if currently none existent
+    const newUserInfo = useAddDoc(newUser,db,['userData'],user.userUid)
 
     // user data for populating users in close proximity
     const visibleUsers = useFetchDocsFilter(db,['userData'],'show',true);
@@ -47,14 +52,16 @@ export default function Home() {
         //get firstlogin variable to reference for UserWelcome modal on mount & change in welcomeModal
         const items = localStorage.getItem('firstLogin');
         if (items) {
-        setFirstLoginCheck(items);
+          //set items exist set login check to it to load first login welcome modal
+          setFirstLoginCheck(items);
         }
     },[isFirstLogin]);
 
       //check for when updateDistance is complete to clear out state for updateFig
       useEffect(() => {
         if(updateUserInfo.isComplete === true) setUpdateData(null);
-      },[updateUserInfo.isComplete])
+        if(newUserInfo.isComplete === true) setNewUser(null);
+      },[updateUserInfo.isComplete,newUserInfo.isComplete])
 
       /*---------------*/
 
@@ -67,18 +74,20 @@ export default function Home() {
       };
 
     return (
-    <div>
-      {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
-      <main>
-        {userData && visibleUsers && <MainMap setUpdateData={setUpdateData} userData={userData} visibleUsers={visibleUsers}/>}
-        {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
-        {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
-        <div className='nav-button-container'> 
-          <button className='nav-my-account' onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
-          <button className='nav-home'>-</button>
-          <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Breat Buds</button>
-        </div>
-      </main>
-    </div>
+    <>
+      {userData && <div>
+        {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
+        <main>
+          {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers}/>}
+          {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
+          {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
+          <div className='nav-button-container'> 
+            <button className='nav-my-account' onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
+            <button className='nav-home'>-</button>
+            <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Breat Buds</button>
+          </div>
+        </main>
+    </div>}
+    </>
   )
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { serverTimestamp, addDoc, collection } from 'firebase/firestore';
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore';
 
-export default function useAddDoc(uploadObjs,database,path) {
+export default function useAddDoc(uploadObjs,database,path,id) {
     // NOTE FOR USE: upload object(s) must be an array.
 
     //  isComplete process complete check
@@ -18,7 +18,7 @@ export default function useAddDoc(uploadObjs,database,path) {
                 //loop through array of objects to upload
                 for (let i = 0; i < uploadObjs.length; i++) {
                     // add obj to collection
-                    const docRef = await addDoc(collection(database,...path), {
+                    const docRef = await setDoc(doc(database,...path, id ? id : null), {
                     ...uploadObjs[i],
                     createdAt: serverTimestamp()
                 });

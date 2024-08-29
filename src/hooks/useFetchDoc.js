@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { doc,onSnapshot } from 'firebase/firestore';
 
 export default function useFetchDoc(database, path) {
-  const [dataExport, setData] = useState(null);
+  const [dataExport, setData] = useState(undefined);
 
   useEffect(() => {
     //get data function to pull in doc from database based on path info
