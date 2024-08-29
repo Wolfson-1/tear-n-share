@@ -1,7 +1,7 @@
 import React, {useContext,useEffect,useState} from 'react'
 import {ContextUser} from '../context/ContextUser';
 import "leaflet/dist/leaflet.css";
-import {MapContainer, TileLayer, ZoomControl,Circle,Marker} from 'react-leaflet';
+import {MapContainer, TileLayer, ZoomControl,Circle,Marker, Popup} from 'react-leaflet';
 import {Icon} from 'leaflet';
 import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
@@ -83,7 +83,11 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers}
       {userData.location && <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>}
       {userData.location && <Marker position={userData.location} icon={userIcon}/>}
       {filteredUsers.map((visUser)=>{
-       return <Marker position={visUser.location} icon={visUserIcon}/>
+       return <Marker position={visUser.location} icon={visUserIcon}>
+                <Popup>
+                {visUser.displayName}  
+                </Popup>
+              </Marker>
       })}
   </MapContainer>
   </div>
