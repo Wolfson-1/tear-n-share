@@ -7,7 +7,7 @@ import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
 import useUserDist from '../hooks/useUserDist';
 
-export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers}) {
+export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,setUserModal}) {
   //access user status from context
   const user = useContext(ContextUser);  
   
@@ -47,7 +47,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers}
       geoLocation().then(data => {
         //if location data doesnt exist or differs to current userdata, update location
         if(!userData.location) {
-          setNewUser([{dislayName:user.displayName, location:data}]);
+          setNewUser([{dislayName:user.displayName, location:data, show:true}]);
         } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
         }
@@ -85,7 +85,10 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers}
       {filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>
-                {visUser.displayName}  
+                {visUser.displayName} <br/> 
+                Distance: {Math.round(visUser.distToUser * 100) / 100} <br/>
+                Adverts: <br/>
+                <button onClick={() => {setUserModal(visUser)}}>More info</button>
                 </Popup>
               </Marker>
       })}

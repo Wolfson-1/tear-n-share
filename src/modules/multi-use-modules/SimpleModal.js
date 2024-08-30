@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Modal({message}) {
+export default function SimpleModal({message}) {
   return (
     <div className='modal-background show'>
         <h1>
