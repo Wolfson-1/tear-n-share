@@ -47,7 +47,8 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
       geoLocation().then(data => {
         //if location data doesnt exist or differs to current userdata, update location
         if(!userData.location) {
-          setNewUser([{dislayName:user.displayName, location:data, show:true}]);
+          console.log(user.displayName)
+          setNewUser([{dislayName: user.displayName, location:data, show:true}]);
         } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
         }
@@ -82,7 +83,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
       {userData.location && <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>}
       {userData.location && <Marker position={userData.location} icon={userIcon}/>}
-      {filteredUsers.map((visUser)=>{
+      {filteredUsers && filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>
                 {visUser.displayName} <br/> 
