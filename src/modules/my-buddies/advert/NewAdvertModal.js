@@ -41,7 +41,8 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
     useEffect (() => {
         if(advertId) {
             setFormData(existingAdvertData);
-        } if (existingAdvertData === null) {
+        } if (!existingAdvertData) {
+            console.log('poop');
             setFormData({...formData,reduced:false,
                 breadSplit:50,
                 breadFrequency:1,

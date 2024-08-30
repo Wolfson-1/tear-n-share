@@ -48,7 +48,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
         //if location data doesnt exist or differs to current userdata, update location
         if(!userData.location) {
           console.log(user.displayName)
-          setNewUser([{dislayName: user.displayName, location:data, show:true}]);
+          setNewUser([{displayName: user.displayName, location:data, show:true}]);
         } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
         }
@@ -88,7 +88,6 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
                 <Popup>
                 {visUser.displayName} <br/> 
                 Distance: {Math.round(visUser.distToUser * 100) / 100} <br/>
-                Adverts: <br/>
                 <button onClick={() => {setUserModal(visUser)}}>More info</button>
                 </Popup>
               </Marker>
