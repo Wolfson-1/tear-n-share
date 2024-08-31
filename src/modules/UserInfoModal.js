@@ -1,12 +1,10 @@
-import React, { useContext,useEffect,useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import { db } from '../firebase/config';
-import {ContextUser} from '../context/ContextUser';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter'
 import useAddDoc from '../hooks/useAddDoc';
+import AdvertListItem from './multi-use-modules/AdvertListItem';
 
-export default function UserInfoModal({focusProfile,setFocusProfile}) {
-//access user status from context
-const user = useContext(ContextUser);  
+export default function UserInfoModal({focusProfile,setFocusProfile}) {  
 
 /* state
 ----------- */
@@ -30,12 +28,12 @@ useEffect(() => {
     if(adRequestDoc.isComplete === true) setUserRequest(null);
 },[adRequestDoc.isComplete])
 
-/* event handlers 
+ /* event handlers 
 ----------------------*/
 
 const submitAdvertRequest = (user,requestAdPath) => {
     setRequestAdPath(requestAdPath);
-    setUserRequest([{id:user.userUid,
+    setUserRequest([{requestUserId:user.userUid,
                     displayName:user.displayName,
                     distance:focusProfile.distance,
                     status:'pending'}]);
@@ -53,22 +51,7 @@ return (
                 <div className='advert-list-container'>
                     {adverts && <div className='advert-list'>
                         {adverts.map((advert)=> {
-                            return <div className='bread-advert'>
-                            <div className='key-ad-info'>
-                                <span>Bread Type: {advert.breadType}</span>
-                                <span>{advert.loafType}</span>
-                            </div>
-                            <div>
-                                <div className='info-carousel'>
-                                    <span>Max spend: {advert.breadSpend}</span>
-                                    <span>Split: {advert.breadSplit}</span>
-                                </div>
-                                {advert.reduced === true ? <span>Reduced</span> : null}
-                            </div>
-                            <button onClick={() => {
-                                submitAdvertRequest(user,[focusProfile.id,'adverts',advert.id,'requests']);    
-                            }}>Request</button>
-                    </div>
+                            return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest}/>
                         })}   
                     </div>}
                 </div>

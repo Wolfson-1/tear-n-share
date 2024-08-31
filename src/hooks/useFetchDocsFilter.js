@@ -22,7 +22,6 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
           id: doc.id,
         }));
         // set data to new filtered data
-        console.log(filteredData);
         setData(filteredData);
       });
     } catch (error) {
