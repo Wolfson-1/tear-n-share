@@ -6,6 +6,8 @@ import useFetchDoc from '../hooks/useFetchDoc';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter';
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
+import SimpleModal from '../modules/multi-use-modules/SimpleModal';
+import UserInfoModal from '../modules/UserInfoModal';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
 import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
 import useAddDoc from '../hooks/useAddDoc';
@@ -19,13 +21,15 @@ export default function Home() {
 
     // state for Welcome modal/first login in Local storage
     const [isFirstLogin, setIsFirstLogin] = useState(!localStorage.getItem("firstLogin") ? true : localStorage.getItem("firstLogin"));
-    const [firstLoginCheck, setFirstLoginCheck] = useState(null);
+    const [firstLoginCheck, setFirstLoginCheck] = useState(null); 
     // State for main pull out menues for account and buddies
     const [myAccount,setMyAccount] = useState(false);
     const [myBuddies,setMyBuddies] = useState(false);
     //state for creating new & updating user data on change or interation
     const [newUser,setNewUser] = useState(null);
     const [updateData,setUpdateData] = useState(null);
+    //state for user in focus for more info modal
+    const [userModal,setUserModal] = useState(null);
 
     /* Hooks
     -------------- */
@@ -76,9 +80,11 @@ export default function Home() {
     return (
     <>
       {userData && <div>
+        {!userData.show && <SimpleModal message={'Turn on visibility to view map'}/>}
+        {userModal && <UserInfoModal focusProfile={userModal} setFocusProfile={setUserModal}/>}
         {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
         <main>
-          {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers}/>}
+          {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}
           {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
           {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
           <div className='nav-button-container'> 

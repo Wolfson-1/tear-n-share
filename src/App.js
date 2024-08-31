@@ -19,11 +19,11 @@ function App() {
     return
   }
 
-  if(user.loggedIn === true) {
+  if(user.loggedIn === true && user.displayName) {
     return (
     <>
       <ContextUser.Provider value={user}>
-        <Home/>
+        {<Home/>}
       </ContextUser.Provider>
     </>      
     );

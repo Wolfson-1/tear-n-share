@@ -5,19 +5,20 @@ export default function useUserDist(location, distanceInKm, users) {
     // earths radius in miles
     const R = 3958.8;
 
-    // convert current logged in user lat/long to radions
-    const latRad = location.lat * Math.PI/180;
-    const lngRad = location.lng * Math.PI/180;
-
     //init array for filtered list of users by distance 
     const [returnUsers,setReturnUsers] = useState([]);
 
-    useEffect(() => {
+    //function to calculate distances between other users & logged in user.
+    const userDistances = () => {
         let filteredArr = [];
-
+        
         //logic to return if nessicary data does not exist yet
         if(location === undefined) return;
         
+        // convert current logged in user lat/long to radions
+        const latRad = location.lat * Math.PI/180;
+        const lngRad = location.lng * Math.PI/180;
+
         //loop through users array for filtering based on distance paramaters
         users.forEach(user => {
 
@@ -40,7 +41,11 @@ export default function useUserDist(location, distanceInKm, users) {
 
     console.log(filteredArr);
     setReturnUsers(filteredArr);
-    },[distanceInKm]);
+    };
+
+    useEffect(() => {
+        userDistances();
+    },[location,distanceInKm]);
     
     return returnUsers;
 }
