@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../../css/buddiestylesheet.css';
 import ActiveSection from './ActiveSection'
-import RequestsSection from './RequestsSection'
+import RequestsSection from './requests/RequestsSection'
 import AdvertSection from './advert/AdvertSection'
 import ChatsSection from './ChatsSection'
 

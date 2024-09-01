@@ -1,42 +1,57 @@
-import React, { useEffect,useState } from 'react'
+import React, { useContext, useEffect,useState } from 'react'
 import { db } from '../firebase/config';
+import {ContextUser} from '../context/ContextUser';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter'
 import useAddDoc from '../hooks/useAddDoc';
 import AdvertListItem from './multi-use-modules/AdvertListItem';
 
 export default function UserInfoModal({focusProfile,setFocusProfile}) {  
+//access user status from context
+const user = useContext(ContextUser);
 
 /* state
 ----------- */
 
-// state for variables to send adver requests
+// state for variables to send advert requests
 const [userRequest,setUserRequest] = useState(null);
 const [requestAdPath,setRequestAdPath] = useState([]);
+const [requestTracker,setRequestTracker] = useState(null);
 
 /* Hooks 
 ----------*/
 
 //hook to fetch active advert data
 const adverts = useFetchDocsFilter(db,['userData',focusProfile.id,'adverts'],'active',true);
-//hook to send request to user on click
+//hook to send request to receiving user advert
 const adRequestDoc  = useAddDoc(userRequest,db,['userData',...requestAdPath]);
+//hook to log request tracker for user when advert request made
+const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,'requests']);
 
 /* useEffects */
 
 //check for when updateDistance is complete to clear out state for updateFig
 useEffect(() => {
     if(adRequestDoc.isComplete === true) setUserRequest(null);
-},[adRequestDoc.isComplete])
+    if(userRequestTracker.isComplete === true) setRequestTracker(null);
+},[adRequestDoc.isComplete,userRequestTracker.isComplete])
 
  /* event handlers 
 ----------------------*/
 
-const submitAdvertRequest = (user,requestAdPath) => {
+//event handler passed down for advert list item to send requests to other users
+const submitAdvertRequest = (user,adUser,requestAdPath) => {
+    // Set request path & request obkect to send advert to user
     setRequestAdPath(requestAdPath);
     setUserRequest([{requestUserId:user.userUid,
                     displayName:user.displayName,
                     distance:focusProfile.distance,
                     status:'pending'}]);
+
+    //set request tracker object for logged in user
+    setRequestTracker([{adUserId:adUser.id,
+        displayName:adUser.displayName,
+        distance:adUser.distance,
+        status:'pending'}]);
 };
 
 return (

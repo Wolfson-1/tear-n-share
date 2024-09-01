@@ -25,7 +25,7 @@ const existingRequest = useFetchDocsFilter(db,['userData',focusProfile.id,'adver
     </div>
     {existingRequest ? <p>Requested</p> : 
     <button onClick={() => {
-        requestEventHandler(user,[focusProfile.id,'adverts',advert.id,'requests']);    
+        requestEventHandler(user,focusProfile,[focusProfile.id,'adverts',advert.id,'requests']);    
         }}>
         Request
     </button>}
