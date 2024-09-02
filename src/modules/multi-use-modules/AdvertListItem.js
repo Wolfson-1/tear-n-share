@@ -7,8 +7,8 @@ export default function AdvertListItem({advert,focusProfile,requestEventHandler}
  //access user status from context
 const user = useContext(ContextUser);
 
-// fetch existing request if one exists
-const existingRequest = useFetchDocsFilter(db,['userData',focusProfile.id,'adverts',advert.id,'requests'],'requestUserId',user.userUid);;
+// fetch existing request if request already sent
+const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);;
 
  return (
 <div className='bread-advert'>
@@ -25,7 +25,7 @@ const existingRequest = useFetchDocsFilter(db,['userData',focusProfile.id,'adver
     </div>
     {existingRequest ? <p>Requested</p> : 
     <button onClick={() => {
-        requestEventHandler(user,focusProfile,[focusProfile.id,'adverts',advert.id,'requests']);    
+        requestEventHandler(user,focusProfile,advert.id,[focusProfile.id,'receivedRequests']);    
         }}>
         Request
     </button>}

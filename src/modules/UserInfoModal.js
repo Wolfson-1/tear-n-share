@@ -25,7 +25,7 @@ const adverts = useFetchDocsFilter(db,['userData',focusProfile.id,'adverts'],'ac
 //hook to send request to receiving user advert
 const adRequestDoc  = useAddDoc(userRequest,db,['userData',...requestAdPath]);
 //hook to log request tracker for user when advert request made
-const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,'requests']);
+const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,'sentRequests']);
 
 /* useEffects */
 
@@ -39,16 +39,18 @@ useEffect(() => {
 ----------------------*/
 
 //event handler passed down for advert list item to send requests to other users
-const submitAdvertRequest = (user,adUser,requestAdPath) => {
+const submitAdvertRequest = (user,adUser,advertId,requestAdPath) => {
     // Set request path & request obkect to send advert to user
     setRequestAdPath(requestAdPath);
     setUserRequest([{requestUserId:user.userUid,
+                    adId:advertId,
                     displayName:user.displayName,
                     distance:focusProfile.distance,
                     status:'pending'}]);
 
     //set request tracker object for logged in user
     setRequestTracker([{adUserId:adUser.id,
+        adId: advertId,
         displayName:adUser.displayName,
         distance:adUser.distance,
         status:'pending'}]);
