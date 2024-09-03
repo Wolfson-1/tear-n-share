@@ -1,12 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
+import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
 
 export default function ReceivedRequests({user}) {
-  
-    // hook to fetch current user requests made
+
+      /* State
+    --------------- */
+
+    //request object & id state for updating status of advert requests user side
+    const [request,setRequest] = useState(null);
+    const [requestId,setRequestId] = useState(null);
+    //state for sender id & advert Id to update status of request sender side
+    const [senderId,setSenderId] = useState(null);
+    const [adId,setAdId] = useState(null)
+
+    /* hooks
+    --------------- */
+    // fetch current received requests
     const receivedRequests = useFetchDocs(db,['userData',user.userUid,'receivedRequests'],["createdAt"]);
+    //update requests (logged user & requester side) to accepted or declined
+    const updateReceived = useUpdateDoc(request,db,['userData',user.userUid,'receivedRequests',requestId]);
+    const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
+
+    /* useEffects */
+
+    //check for when update requests are complete to clear out state ready for next request
+    useEffect(() => {
+      if(updateReceived.isComplete === true && updateSent.isComplete === true) setRequest(null);
+    },[updateReceived.isComplete,updateSent.isComplete])
+
+
+    //event handler for request update
+    const acceptRequest = (accept,request)=> {
+      //set path variables to update correct doc
+      setRequestId(request.id);
+      setSenderId(request.requestUserId);
+      setAdId(request.adId);
+
+      //set update doc baed on accept value
+      if (accept === true) setRequest({status:'accepted'});
+      if (accept === false) setRequest({status:'rejected'});
+    };
   
     return (
     <div>
@@ -23,8 +59,8 @@ export default function ReceivedRequests({user}) {
                             {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
                         </div>
                         <div>
-                            <button>Accept</button>
-                            <button>Decline</button>
+                            <button onClick={()=>{acceptRequest(true,request)}}>Accept</button>
+                            <button onClick={()=>{acceptRequest(false,request)}}>Decline</button>
                         </div>
                    </div>
         })}

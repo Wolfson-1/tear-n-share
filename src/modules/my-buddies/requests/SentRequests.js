@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
 
 export default function SentRequests({user}) {
 
-    // hook to fetch current user requests made
+    /* hooks
+    --------------- */
+    // fetch current user requests made
     const sentRequests = useFetchDocs(db,['userData',user.userUid,'sentRequests'],["createdAt"]);
 
   return (

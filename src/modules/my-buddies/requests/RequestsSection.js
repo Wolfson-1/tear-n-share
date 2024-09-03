@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import {ContextUser} from '../../../context/ContextUser';
 import SentRequests from './SentRequests';
 import ReceivedRequests from './ReceivedRequests'
+import useUpdateDoc from '../../../hooks/useUpdateDoc';
 
 export default function RequestsSection() {
  //access user status from context
@@ -9,6 +10,7 @@ export default function RequestsSection() {
 
   /* state
   ------------- */
+  //state to manage toggle between sent & received sections
   const [sectionToggle,setSectionToggle] = useState('sent');
 
   return (
