@@ -22,7 +22,7 @@ export default function RequestsSection() {
   /* hooks
   ------------- */
   //delete hook for removing requests after accept/reject & after user removes
-  const deleteRequest = useDeleteDoc(requestDelete,db,deletePath);
+  useDeleteDoc(requestDelete,db,deletePath);
 
   return (
     <div className='buddies-container'>
