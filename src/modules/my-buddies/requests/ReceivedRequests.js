@@ -4,7 +4,7 @@ import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
 
-export default function ReceivedRequests({user}) {
+export default function ReceivedRequests({user,setRequestDelete,setDeletePath}) {
 
       /* State
     --------------- */
@@ -24,12 +24,30 @@ export default function ReceivedRequests({user}) {
     const updateReceived = useUpdateDoc(request,db,['userData',user.userUid,'receivedRequests',requestId]);
     const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
 
-    /* useEffects */
+    /* useEffects 
+    -----------------*/
 
     //check for when update requests are complete to clear out state ready for next request
     useEffect(() => {
-      if(updateReceived.isComplete === true && updateSent.isComplete === true) setRequest(null);
+      if(updateReceived.isComplete === true && updateSent.isComplete === true) {
+        setRequest(null);
+      } 
     },[updateReceived.isComplete,updateSent.isComplete])
+
+    useEffect(() => {
+      //if logic to run forEach only when receivedRequsts are pulled through
+      if(receivedRequests) {
+        const toDelete = receivedRequests.find((request)=> {
+          return request.status !== 'pending'
+        })
+
+        //if toDelete exists set path & object in order to delete
+        if(toDelete) {
+          setDeletePath(['userData',user.userUid,'receivedRequests'])
+          setRequestDelete([toDelete.id]);
+        }
+      }
+    },[receivedRequests])
 
 
     //event handler for request update
@@ -58,10 +76,11 @@ export default function ReceivedRequests({user}) {
                             {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
                             {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
                         </div>
-                        <div>
+                        {request.status === 'pending' && <div>
                             <button onClick={()=>{acceptRequest(true,request)}}>Accept</button>
                             <button onClick={()=>{acceptRequest(false,request)}}>Decline</button>
-                        </div>
+                        </div>}
+                        {request.status !== 'pending' && <p>{request.status}</p>}
                    </div>
         })}
     </div>
