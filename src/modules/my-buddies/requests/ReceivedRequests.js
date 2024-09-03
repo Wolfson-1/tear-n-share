@@ -17,7 +17,8 @@ export default function ReceivedRequests({user,setRequestDelete,setDeletePath}) 
     const [senderId,setSenderId] = useState(null);
     const [adId,setAdId] = useState(null)
     //state for adding user & ad data to active buddies
-    const [newBuddy,setNewBuddy] = useState(null);
+    const [newBuddyUser,setNewBuddyUser] = useState(null);
+    const [newBuddyRequester,setNewBuddyRequester] = useState(null);
     const [newBuddyId,setNewBuddyId] = useState(null);
 
     /* hooks
@@ -25,8 +26,8 @@ export default function ReceivedRequests({user,setRequestDelete,setDeletePath}) 
     // fetch current received requests
     const receivedRequests = useFetchDocs(db,['userData',user.userUid,'receivedRequests'],["createdAt"]);
     //addDoc to 'activeBuddies' including ad data from form
-    const addBuddyUser = useAddDoc(newBuddy,db,['userData',user.userUid,'activeBuddies']);
-    const addBuddyRequester = useAddDoc(newBuddy,db,['userData',newBuddyId,'activeBuddies']);
+    const addBuddyUser = useAddDoc(newBuddyUser,db,['userData',user.userUid,'activeBuddies']);
+    const addBuddyRequester = useAddDoc(newBuddyRequester,db,['userData',newBuddyId,'activeBuddies']);
     //update requests (logged user & requester side) to accepted or declined
     const updateReceived = useUpdateDoc(request,db,['userData',user.userUid,'receivedRequests',requestId]);
     const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
@@ -54,7 +55,20 @@ export default function ReceivedRequests({user,setRequestDelete,setDeletePath}) 
           //if status change to accepted, set new buddy object for logged in user & requesting user
           if(changeRequest.status === 'accepted') {
             setNewBuddyId(changeRequest.requestUserId)
-            setNewBuddy([changeRequest]);
+            setNewBuddyUser([{adId:changeRequest.adId,
+                              displayName: changeRequest.displayName,
+                              distance: changeRequest.distance,
+                              buddysSince: Date.now(),
+                              requestUserId: changeRequest.requestUserId,
+                              status:'active'
+                            }]);
+            setNewBuddyRequester([{adId:changeRequest.adId,
+              displayName: user.displayName,
+              distance: changeRequest.distance,
+              buddysSince: Date.now(),
+              requestUserId: user.userUid,
+              status:'active'
+            }]);
           }
           //delete request on status change after addition of new buddy if status was change to accepted
           setDeletePath(['userData',user.userUid,'receivedRequests'])
