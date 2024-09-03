@@ -1,0 +1,31 @@
+import { useEffect, useState } from 'react'
+import { serverTimestamp, addDoc, collection } from 'firebase/firestore';
+
+export default function useAddSubDoc(uploadObj,subObj,database,path,subCollection) {
+    //  isComplete process complete check
+    const [isComplete, setIsComplete] = useState(false);
+
+    useEffect(() => {
+            const uploadData = async () => {
+                //return if no objects are found
+                if (!uploadObj && !subObj) return;                 
+                    
+                docRef = await addDoc(collection(database,...path), {
+                    ...uploadObj,
+                    createdAt: serverTimestamp()
+                }).then(async ()=>{
+                    await addDoc(collection(database,...path,docRef.id,subCollection), {
+                    ...subObj,
+                    createdAt: serverTimestamp()
+                    })
+                });
+                
+            // Set is complete to true
+            setIsComplete(true);
+            }
+            // call upload data function
+            uploadData();
+        },[uploadObj]);
+
+        return {isComplete}
+    };
