@@ -15,7 +15,7 @@ import useAddDoc from '../hooks/useAddDoc';
 export default function Home() {
   //access user status from context
   const user = useContext(ContextUser);
-  
+
   /*state 
     --------------------*/
 
@@ -34,7 +34,7 @@ export default function Home() {
     /* Hooks
     -------------- */
     //fetch userData-
-    const userData = useFetchDoc(db,['userData',user.userUid]);
+    const userData = useFetchDoc(db,['userData'],user.userUid);
 
     //update user data in backend on change
     const updateUserInfo = useUpdateDoc(updateData,db,['userData',user.userUid]);

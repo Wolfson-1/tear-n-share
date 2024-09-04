@@ -20,7 +20,7 @@ export default function useAddDoc(uploadObjs,database,path,id) {
                 for (let i = 0; i < uploadObjs.length; i++) {
                     // add obj to collection
                     if(id) {
-                        docRef = await setDoc(doc(database,...path, id ? id : null), {
+                        docRef = await setDoc(doc(database,...path, id), {
                             ...uploadObjs[i],
                             createdAt: serverTimestamp()
                         });                        
