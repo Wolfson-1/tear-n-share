@@ -25,11 +25,11 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
     // context for user info 
     const user = useContext(ContextUser);
 
-    /* Custom firebase hooks 
+    /* hooks 
     ----------------------------------------*/
 
     // hook for pulling in existing advert data if advertId exists
-    const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts',advertId]);
+    const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts'],advertId);
 
     // hooks for addition of formData to userDatabse
     const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'adverts']);

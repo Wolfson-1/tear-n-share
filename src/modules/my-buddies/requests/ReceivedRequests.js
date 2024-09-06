@@ -3,91 +3,43 @@ import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
-import useAddSubDoc from '../../../hooks/useAddSubDoc';
-import useFetchDoc from '../../../hooks/useFetchDoc';
+import useSetNewMatch from '../../../hooks/useSetNewMatch';
 
-export default function ReceivedRequests({user,setRequestDelete,setDeletePath}) {
+export default function ReceivedRequests({user}) {
 
       /* State
     --------------- */
 
-    //request object & id state for updating status of advert requests user side
+    //request object & id state for updating status of advert requests for logged in user
     const [request,setRequest] = useState(null);
     const [requestId,setRequestId] = useState(null);
-    //state for sender id & advert Id to update status of request sender side
+    //state for sender id & advert Id to update status of requests sender side
     const [senderId,setSenderId] = useState(null);
     const [adId,setAdId] = useState(null)
     //state for adding user & ad data to active buddies
-    const [newBuddyUser,setNewBuddyUser] = useState(null);
-    const [newBuddyRequester,setNewBuddyRequester] = useState(null);
-    // state for userId in dynamic path to add data to requesting user when logged user accepts request 
-    const [newBuddyId,setNewBuddyId] = useState(null);
 
     /* hooks
     --------------- */
     // fetch current received requests
     const receivedRequests = useFetchDocs(db,['userData',user.userUid,'receivedRequests'],["createdAt"]);
-    //update requests (logged user & requester side) to accepted or declined. fetch advert ready to add to new buddy
+    //update request (logged user & requester side) to accepted or declined. fetch advert ready to add to new buddy
     const updateReceived = useUpdateDoc(request,db,['userData',user.userUid,'receivedRequests',requestId]);
     const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
-    const fetchAdvert = useFetchDoc(db,['userData',user.userUid,'adverts'],adId);
-    //addDoc to 'activeBuddies' including ad data from form
-    const addBuddyUser = useAddSubDoc(newBuddyUser,fetchAdvert,db,['userData',user.userUid,'activeBuddies'],'matchedAdverts');
-    const addBuddyRequester = useAddSubDoc(newBuddyRequester,fetchAdvert,db,['userData',newBuddyId,'activeBuddies'],'matchedAdverts');
+
+    //hook to update new buddy match if one doesnt exist, and create new advert match
+    const newUserMatch = useSetNewMatch(user,receivedRequests);
 
     /* useEffects 
     -----------------*/
 
-    //check for when update requests are complete to clear out state ready for next request
+    //check for when update request objects are complete to clear out state ready for next request if one is made
     useEffect(() => {
+      //clear state for request object itself
       if(updateReceived.isComplete === true && updateSent.isComplete === true) {
         setRequest(null);
-      } 
+      };
+    },[updateReceived.isComplete,updateSent.isComplete])
 
-      if(addBuddyUser.isComplete === true && addBuddyRequester.isComplete === true) {
-        setNewBuddyUser(null);
-        setNewBuddyRequester(null);
-
-        setAdId(null);
-        setSenderId(null);
-      }
-    },[updateReceived.isComplete,updateSent.isComplete,addBuddyUser.isComplete,addBuddyRequester.isComplete])
-
-    //runs check on change of requests status change. Executes code for buddy setup if accepted & request delete
-    useEffect(() => {
-      //if logic to run to locate the received request with changed status
-      if(receivedRequests) {
-        const changeRequest = receivedRequests.find((request)=> {
-          return request.status !== 'pending'
-        })
-
-        //if a changed request exists, execute code dependant on status then to delete the request for user
-        if(changeRequest) {
-          console.log('changed request exists');
-          //if status change to accepted, set new buddy object for logged in user & requesting user
-          if(changeRequest.status === 'accepted') {
-            setNewBuddyId(changeRequest.requestUserId)
-            setNewBuddyUser([{
-              displayName: changeRequest.displayName,
-              distance: changeRequest.distance,
-              buddysSince: Date.now(),
-              requestUserId: changeRequest.requestUserId,
-              status:'active'
-            }]);
-              setNewBuddyRequester([{adId:changeRequest.adId,
-              displayName: user.displayName,
-              distance: changeRequest.distance,
-              buddysSince: Date.now(),
-              requestUserId: user.userUid,
-              status:'active'
-            }]);
-          }
-          //delete request on status change after addition of new buddy if status was change to accepted
-          setDeletePath(['userData',user.userUid,'receivedRequests'])
-          setRequestDelete([changeRequest.id]);
-        }
-      }
-    },[receivedRequests])
 
     //event handler for request update
     const acceptRequest = (accept,request)=> {

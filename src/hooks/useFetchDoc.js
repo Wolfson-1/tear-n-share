@@ -8,10 +8,10 @@ export default function useFetchDoc(database, path, id) {
 
   useEffect(() => {
     //get data function to pull in doc from database based on path info
-    const getData = async () => {
+    const getData = () => {
 
       //conditional to return out of function if id does not exist
-      if(!id) return;
+      if(!id || id === null) return;
 
       try {
         const data = onSnapshot(doc(database, ...path, id), (doc) => {
