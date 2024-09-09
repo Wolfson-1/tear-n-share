@@ -8,10 +8,6 @@ export default function useDeleteDoc(documentIds,database,docPath) {
         //database = firebase/firestore database targeted
         //docPath = path is the pathway to document being deleted
         //document = the document id's to be deleted (needs to be in array for deletion even if only 1 doc for deletion)
-
-        console.log(documentIds);
-        console.log(docPath);
-
     useEffect(() => {
         const deleteDocument = async () => {
             //conditional to check if doc to delete exists.

@@ -16,8 +16,6 @@ export default function useAddDoc(uploadObjs,database,path,id) {
                 // Initialize doc ref & array for docIds
                 let docRef
                 let docIds = [];
-                console.log(uploadObjs);
-                console.log(path)
                 //loop through array of objects to upload
                 for (let i = 0; i < uploadObjs.length; i++) {
                     // add obj to collection

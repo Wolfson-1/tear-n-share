@@ -27,7 +27,7 @@ export default function ReceivedRequests({user}) {
     const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
 
     //hook to update new buddy match if one doesnt exist, and create new advert match
-    const newUserMatch = useSetNewMatch(user,receivedRequests);
+    useSetNewMatch(user,receivedRequests);
 
     /* useEffects 
     -----------------*/
