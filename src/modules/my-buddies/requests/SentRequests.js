@@ -1,36 +1,85 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
 
 export default function SentRequests({user}) {
 
+    /* useState 
+    --------------- */
+    const [active,setActive] = useState(null);
+    const [historical,setHistorical] = useState(null);
+
     /* hooks
     --------------- */
     // fetch current user requests made
     const sentRequests = useFetchDocs(db,['userData',user.userUid,'sentRequests'],["createdAt"]);
 
-  return (
-    <div>
-        <h2>sent requests</h2>
-        {sentRequests && sentRequests.map((request) => {
-            //time date calculation for how long past since request made
-            const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
+    /* useEffect 
+    ----------------*/
 
-            return <div>
-                        <div>
-                            <h3>User: {request.displayName}</h3>
-                            {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
-                            {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
-                            {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
+    //filter sentRequests into active and historical requests once retreived from backend
+    useEffect(()=>{
+        if(sentRequests) {
+            const active = sentRequests.filter((request)=>{
+                return request.status == 'pending'
+            })
+            
+            const historical = sentRequests.filter((request)=>{
+                return request.status !== 'pending'
+            })
+            
+            //set state for filtered historical &
+            setHistorical(historical)
+            setActive(active)
+        };
+    },[sentRequests])
+
+
+  return (
+    <div className='sent-requests'>
+        <div className='sent active'>
+            <h2>active requests</h2>
+            {active && active.map((request) => {
+                //time date calculation for how long past since request made
+                const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
+
+                return <div>
+                            <div>
+                                <h3>User: {request.displayName}</h3>
+                                {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
+                                {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
+                                {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
+                            </div>
+                            <div>
+                                <h3>{request.status}</h3>
+                                <button>Go to Ad</button>
+                                <button>Remove Request</button>
+                            </div>
+                    </div>
+            })}
+        </div>
+        <div className='sent historical'>
+            <h2>Historical Requests</h2>
+        {historical && historical.map((request) => {
+                //time date calculation for how long past since request made
+                const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
+                console.log(request)
+
+                return <div>
+                            <div>
+                                <h3>User: {request.displayName}</h3>
+                                <p>{request.loaf} | {request.loafType} | Max Spend: £{request.breadSpend} | Sliced:</p>
+                                {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
+                                {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
+                                {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
+                            </div>
+                            <div>
+                                <h3>{request.status}</h3>
+                            </div>
                         </div>
-                        <div>
-                            <h3>{request.status}</h3>
-                            <button>Go to Ad</button>
-                            <button>Remove Request</button>
-                        </div>
-                   </div>
-        })}
+            })}
+        </div>
     </div>
  
 )

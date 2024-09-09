@@ -77,3 +77,34 @@
 .modal-form {
     overflow: scroll;
 }
+
+/* request section styling 
+------------------------------*/
+
+/* sent requests */
+
+.sent-requests {
+    overflow: scroll;
+    height: 95%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sent-requests .sent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sent-requests .sent.active {
+    min-height: 50%;
+    margin-bottom: 20%;
+}
+
+.sent-requests .sent div {
+    margin: 0% 1% 0% 1%;
+    padding: 5%;
+}
+
+

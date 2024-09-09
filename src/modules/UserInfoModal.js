@@ -39,14 +39,15 @@ useEffect(() => {
 ----------------------*/
 
 //event handler passed down for advert list item to send requests to other users
-const submitAdvertRequest = (user,adUser,advertId,requestAdPath) => {
+const submitAdvertRequest = (user,adUser,advert,requestAdPath) => {
     //current epoch date & time
     const currTime = Date.now();
 
     // Set request path & request obkect to send advert to user
     setRequestAdPath(requestAdPath);
     setUserRequest([{requestUserId:user.userUid,
-                    adId:advertId,
+                    adId: advert.id,
+                    basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType}`,
                     displayName:user.displayName,
                     distance:focusProfile.distance,
                     status:'pending',
@@ -54,7 +55,8 @@ const submitAdvertRequest = (user,adUser,advertId,requestAdPath) => {
 
     //set request tracker object for logged in user
     setRequestTracker([{adUserId:adUser.id,
-        adId: advertId,
+        adId: advert.id,
+        basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType}`,
         displayName:adUser.displayName,
         distance:adUser.distance,
         status:'pending',
@@ -73,6 +75,7 @@ return (
                 <div className='advert-list-container'>
                     {adverts && <div className='advert-list'>
                         {adverts.map((advert)=> {
+                            console.log(advert);
                             return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest}/>
                         })}   
                     </div>}
