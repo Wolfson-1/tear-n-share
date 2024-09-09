@@ -47,6 +47,7 @@ export default function SentRequests({user}) {
                 return <div>
                             <div>
                                 <h3>User: {request.displayName}</h3>
+                                <p>{request.basicAdInfo}</p>
                                 {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
                                 {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
                                 {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}
@@ -64,12 +65,11 @@ export default function SentRequests({user}) {
         {historical && historical.map((request) => {
                 //time date calculation for how long past since request made
                 const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
-                console.log(request)
 
                 return <div>
                             <div>
                                 <h3>User: {request.displayName}</h3>
-                                <p>{request.loaf} | {request.loafType} | Max Spend: £{request.breadSpend} | Sliced:</p>
+                                <p>{request.basicAdInfo}</p>
                                 {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
                                 {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
                                 {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}

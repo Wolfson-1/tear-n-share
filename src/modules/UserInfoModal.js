@@ -47,7 +47,7 @@ const submitAdvertRequest = (user,adUser,advert,requestAdPath) => {
     setRequestAdPath(requestAdPath);
     setUserRequest([{requestUserId:user.userUid,
                     adId: advert.id,
-                    basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType}`,
+                    basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType} | Sliced: ${advert.sliced.map((item)=>item)} | Store: ${advert.stores.map((item)=>item)}`,
                     displayName:user.displayName,
                     distance:focusProfile.distance,
                     status:'pending',
@@ -56,7 +56,7 @@ const submitAdvertRequest = (user,adUser,advert,requestAdPath) => {
     //set request tracker object for logged in user
     setRequestTracker([{adUserId:adUser.id,
         adId: advert.id,
-        basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType}`,
+        basicAdInfo:`Bread: ${advert.breadType} | Type: ${advert.loafType} | Sliced: ${advert.sliced.map((item)=>item)} | Store: ${advert.stores.map((item)=>item)}`,
         displayName:adUser.displayName,
         distance:adUser.distance,
         status:'pending',

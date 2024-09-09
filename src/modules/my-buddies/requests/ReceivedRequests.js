@@ -63,6 +63,7 @@ export default function ReceivedRequests({user}) {
             return <div>
                         <div>
                             <h3>User: {request.displayName}</h3>
+                            <p>{request.basicAdInfo}</p>
                             {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
                             {timePassed.hoursTotal >= 1 && timePassed.hoursTotal < 24 && <p>{timePassed.hoursTotal.toString()} hours ago</p>} 
                             {timePassed.hoursTotal >= 24 && <p>{timePassed.days} days & {timePassed.hoursRemainder} hours ago</p>}

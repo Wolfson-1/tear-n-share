@@ -98,13 +98,13 @@
 }
 
 .sent-requests .sent.active {
-    min-height: 50%;
     margin-bottom: 20%;
 }
 
-.sent-requests .sent div {
+.sent-requests .sent > div {
     margin: 0% 1% 0% 1%;
     padding: 5%;
+    border: white dashed 0.5px;
 }
 
 
