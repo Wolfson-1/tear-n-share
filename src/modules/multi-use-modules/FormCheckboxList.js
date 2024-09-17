@@ -53,7 +53,7 @@ export default function FormCheckboxList({listArr, valueName, formData, setFormD
                   <input
                     type="checkbox"
                     className={`custom-checkbox-${index}`}
-                    id={valueName}
+                    id={'trip'}
                     name={item}
                     value={item}
                     checked={checkedState[index]}

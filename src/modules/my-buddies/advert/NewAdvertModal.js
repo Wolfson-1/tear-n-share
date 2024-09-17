@@ -42,7 +42,6 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
         if(advertId) {
             setFormData(existingAdvertData);
         } if (!existingAdvertData) {
-            console.log('poop');
             setFormData({...formData,reduced:false,
                 breadSplit:50,
                 breadFrequency:1,

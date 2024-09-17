@@ -88,37 +88,37 @@ export default function useSetNewMatch(user,receivedRequests) {
                             setExistingBuddyId(existingBuddy.id);
                         //if no existing buddy, set new buddy for user and requester
                         } else if (!existingBuddy) {
-                            setNewBuddyUser([{
+                            setNewBuddyUser({
                                 displayName: changeRequest.displayName,
                                 distance: changeRequest.distance,
                                 buddySince: Date.now(),
                                 matchedUserUid: changeRequest.requestUserId,
                                 status:'active'
-                            }]);
-                            setNewBuddyRequester([{adId:changeRequest.adId,
+                            });
+                            setNewBuddyRequester({adId:changeRequest.adId,
                                 displayName: user.displayName,
                                 distance: changeRequest.distance,
                                 buddySince: Date.now(),
                                 matchedUserUid: user.userUid,
                                 status:'active'
-                            }]);
+                            });
                         };
                     //if no existing buddys at all, create new & add advert to new
                     } else if (!currentBuddys) {
-                        setNewBuddyUser([{
+                        setNewBuddyUser({
                             displayName: changeRequest.displayName,
                             distance: changeRequest.distance,
                             buddySince: Date.now(),
                             matchedUserUid: changeRequest.requestUserId,
                             status:'active'
-                        }]);
-                        setNewBuddyRequester([{adId:changeRequest.adId,
+                        });
+                        setNewBuddyRequester({adId:changeRequest.adId,
                             displayName: user.displayName,
                             distance: changeRequest.distance,
                             buddySince: Date.now(),
                             matchedUserUid: user.userUid,
                             status:'active'
-                        }]);
+                        });
                     }
                 }
                 setDeletePath(['userData',user.userUid,'receivedRequests'])

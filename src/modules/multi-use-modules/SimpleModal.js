@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function SimpleModal({message}) {
+export default function SimpleModal({message,Prop}) {
   return (
     <div className='modal-background show'>
-        <h1>
+        {message && <h1>
         {message}    
-        </h1>
+        </h1>}
+        {Prop && <Prop/>}
     </div>
   )
 }

@@ -107,4 +107,32 @@
     border: white dashed 0.5px;
 }
 
+/* Active buddys section styling
+---------------------------------- */
 
+.active-buddy-list {
+    overflow: scroll;
+    height: 95%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.buddies-container > h1 {
+    align-self: flex-start;
+    margin-left: 5%;
+}
+
+.active-buddy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    border: white dashed 0.5px;
+}
+
+.active-buddy > div {
+    display: flex;
+    flex-direction: column;
+}
