@@ -66,12 +66,10 @@
     background-color: rgba(255, 255, 255, 0.096);
 }
 
-/* new advert modal styling */
+/* new advert form modal styling */
 
-.new-advert-modal-form-container {
-    height: 80%;
-    width: 30%;
-    background-color: aqua;
+.modal-form-container.new-advert-modal-form-container {
+    padding: 1%;
 }
 
 .modal-form {
@@ -135,4 +133,30 @@
 .active-buddy > div {
     display: flex;
     flex-direction: column;
+}
+
+/* styling specifc for active user modal  */
+
+.modal-form-container.buddy-container .user-info {
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    margin: 1% 0% 0% 2%;
+    position: absolute;
+}
+
+.modal-form-container.buddy-container .user-info h1 {
+    font-size: medium;
+}
+
+.modal-form-container.buddy-container .back-button {
+    margin-top: 1%;
+    background: none;
+    border: none;
+    color: antiquewhite;
+    align-self: flex-end;
+}
+
+.modal-form-container.buddy-container .back-button:hover {
+    text-decoration: underline;
 }

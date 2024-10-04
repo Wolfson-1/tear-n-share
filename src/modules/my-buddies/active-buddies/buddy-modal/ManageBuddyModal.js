@@ -20,8 +20,12 @@ export default function ManageBuddyModal({manageBuddy, setManageBuddy}) {
 
     return (
         <div className='modal-background'>
-        <div className='modal-form-container user-container'>
-            <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button>
+        <div className={manageAd ? 'modal-form-container buddy-container' : 'modal-form-container user-container'}>
+            <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button> 
+            <div className='user-info'>
+                <img alt='profile picture'></img>
+                <h1>{manageBuddy.displayName}</h1>
+            </div>
             {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} manageBuddy={manageBuddy} setManageAd={setManageAd}/>}
             {matchedAdverts && manageAd && <BuddyAdvertModal advert={manageAd} setManageAd={setManageAd}/>}
         </div>
