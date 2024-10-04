@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function BuddyAdListItem({advert}) {
+export default function BuddyAdListItem({advert,setManageAd}) {
 
     return (
     <div className='bread-advert'>
@@ -15,7 +15,7 @@ export default function BuddyAdListItem({advert}) {
             </div>
             {advert.reduced === true ? <span>Reduced</span> : null}
         </div> 
-        <button>Go to</button>
+        <button onClick={()=>{setManageAd(advert)}}>Go to</button>
     </div>
     )
     };

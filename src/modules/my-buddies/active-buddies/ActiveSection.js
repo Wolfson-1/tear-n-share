@@ -3,7 +3,7 @@ import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import ActiveBuddyList from './ActiveBuddyList';
-import ManageBuddyModal from './ManageBuddyModal';
+import ManageBuddyModal from './buddy-modal/ManageBuddyModal';
 
 export default function ActiveSection() {
   // context for user
