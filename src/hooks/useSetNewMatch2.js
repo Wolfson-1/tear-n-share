@@ -25,8 +25,6 @@ export default function useSetNewMatch(user,receivedRequests) {
     //state for adding user & ad data to active buddies
     const [newBuddyUser,setNewBuddyUser] = useState(null);
     const [newBuddyRequester,setNewBuddyRequester] = useState(null);
-    //state for creating new shared user object 
-    const [sharedUserObj,setSharedUserObj] = useState(null);
     //state for requests to delete on completion of addition or rejection
     const [requestDelete,setRequestDelete] = useState(null);
     const [deletePath,setDeletePath] = useState(null);
@@ -41,12 +39,9 @@ export default function useSetNewMatch(user,receivedRequests) {
     //addDoc hooks to create new matched user, if id doesnt already exist, in 'activeBuddies' including matched ad data
     const addBuddyUser = useAddSubDoc(newBuddyUser,fetchAdvert,db,['userData',user.userUid,'activeBuddies'],'matchedAdverts',custBuddyId,custAdId);
     const addBuddyRequester = useAddSubDoc(newBuddyRequester,fetchAdvert,db,['userData',requestUserId,'activeBuddies'],'matchedAdverts',custBuddyId,custAdId);
-    //addDocs to create new advert link for an existing match
+    //addDocs to create new advert link for an existing maatch
     const addAdvertUser = useAddDoc(adDataExisting,db,['userData',user.userUid,'activeBuddies',existingBuddyId,'matchedAdverts'],custAdId);
     const addAdvertRequester = useAddDoc(adDataExisting,db,['userData',requestUserId,'activeBuddies',existingBuddyId,'matchedAdverts'],custAdId);
-    const addAdvertSharedObj = useAddDoc(adDataExisting,db,['sharedUserData',existingBuddyId,'matchedAdverts'],custAdId);
-    //addDocs for shared data object between users for chat, purchase tracking etc. 
-    const addSharedUserData = useAddSubDoc(sharedUserObj,fetchAdvert,db,['sharedUserData'],'matchedAdverts',custBuddyId,custAdId);
     
     //delete hook for removing requests after accept/reject & after user removes
     useDeleteDoc(requestDelete,db,deletePath);
@@ -79,8 +74,8 @@ export default function useSetNewMatch(user,receivedRequests) {
                     if(currentBuddys) {
                         console.log('current buddy list')
                         console.log(currentBuddys)
-                        const existingBuddy = currentBuddys.find(item => {
-                            return item.matchedUserUid === changeRequest.requestUserId
+                        const existingBuddy = currentBuddys.find(async item => {
+                            return await item.matchedUserUid === changeRequest.requestUserId
                         })
                         
                         console.log('existing buddy' + existingBuddy)
@@ -91,60 +86,40 @@ export default function useSetNewMatch(user,receivedRequests) {
 
                             //set existing buddy id variable to complete path for adding ad data
                             setExistingBuddyId(existingBuddy.id);
-                        //if no existing buddy or buddys list at all, set new buddy for user and requester
+                        //if no existing buddy, set new buddy for user and requester
                         } else if (!existingBuddy) {
-                            console.log('no existing buddy')
-
-                            const buddySince = Date.now()
-                            
                             setNewBuddyUser({
                                 displayName: changeRequest.displayName,
                                 distance: changeRequest.distance,
-                                buddySince: buddySince,
+                                buddySince: Date.now(),
                                 matchedUserUid: changeRequest.requestUserId,
                                 status:'active'
                             });
                             setNewBuddyRequester({adId:changeRequest.adId,
                                 displayName: user.displayName,
                                 distance: changeRequest.distance,
-                                buddySince: buddySince,
+                                buddySince: Date.now(),
                                 matchedUserUid: user.userUid,
                                 status:'active'
                             });
-                            setSharedUserObj({
-                            matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
-                                          {userName:user.displayName,userId:user.userUid}],
-                            buddySince: buddySince,
-                            status:'active'
-                            });
-                        
-                        }
-                    } //if no existing buddys at all, create new & add advert to new
-                    else if (!currentBuddys) {
-                        console.log('no existing buddy list!')
-                        const buddySince = Date.now()
-                        
+                        };
+                    //if no existing buddys at all, create new & add advert to new
+                    } else if (!currentBuddys) {
                         setNewBuddyUser({
                             displayName: changeRequest.displayName,
                             distance: changeRequest.distance,
-                            buddySince: buddySince,
+                            buddySince: Date.now(),
                             matchedUserUid: changeRequest.requestUserId,
                             status:'active'
                         });
                         setNewBuddyRequester({adId:changeRequest.adId,
                             displayName: user.displayName,
                             distance: changeRequest.distance,
-                            buddySince: buddySince,
+                            buddySince: Date.now(),
                             matchedUserUid: user.userUid,
                             status:'active'
                         });
-                        setSharedUserObj({
-                        matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
-                                      {userName:user.displayName,userId:user.userUid}],
-                        buddySince: buddySince,
-                        status:'active'
-                        });
-                    };
+                    }
                 }
                 setDeletePath(['userData',user.userUid,'receivedRequests'])
                 setRequestDelete([changeRequest.id]);
@@ -172,12 +147,8 @@ export default function useSetNewMatch(user,receivedRequests) {
           setExistingBuddyId(null);
         }
 
-        if(addAdvertUser.isComplete === true && addAdvertRequester.isComplete === true && addAdvertSharedObj.isComplete === true) {
+        if(addAdvertUser.isComplete === true && addAdvertRequester.isComplete === true) {
             setExistingBuddyId(null);
         }
-
-        if(addSharedUserData.isComplete === true) {
-            sharedUserObj(null);
-        }
-      },[addBuddyUser.isComplete,addBuddyRequester.isComplete,addAdvertUser.isComplete,addAdvertRequester.isComplete,addAdvertSharedObj.isComplete,addSharedUserData.isComplete])
+      },[addBuddyUser.isComplete,addBuddyRequester.isComplete,addAdvertUser.isComplete,addAdvertRequester.isComplete])
 };

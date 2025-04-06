@@ -84,10 +84,13 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
 
         console.log(fieldsCheckArr);
         console.log(e.target.form);
+        console.log(formData);
 
         // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
-            if(formData[item.name] === undefined){
+
+            //if logic to check for any missing field data or if checkbox arrs are empty 
+            if(formData[item.name] === undefined || formData[item.name].length == 0){
                 error = true
                 setFormError('Please fill all fields to create a new advert');
                return;
