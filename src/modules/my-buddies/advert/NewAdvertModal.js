@@ -78,16 +78,19 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
                 return item.name === e.target.form[i].id;
             });
             
-            // if logic to ensure no duplicates are added (where multiple options expist for checkboxes)
+            // if logic to ensure no duplicates are added (where multiple options exist for checkboxes)
             if(inArr === undefined) fieldsCheckArr.push({name: e.target.form[i].id, type: e.target.form[i].type});
         };
-        
+
+        console.log(fieldsCheckArr);
+        console.log(e.target.form);
+
         // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
             if(formData[item.name] === undefined){
                 error = true
                 setFormError('Please fill all fields to create a new advert');
-                return;
+               return;
             };
         });
     
