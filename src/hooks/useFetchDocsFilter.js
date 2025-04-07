@@ -4,6 +4,7 @@ import { collection, onSnapshot, where, query } from 'firebase/firestore';
 export default function useFetchDocsFilter(database,path,filter,filterParam) {
   //NOTES FOR USE
   // path needs to be in its own array. 
+  // docs are fetched on load or on change of filterParamaters
 
   const [dataExport, setData] = useState([]);
 

@@ -9,7 +9,10 @@ export default function ActiveBuddyList({buddys,setManageBuddy}) {
                     <div>
                         <h2>{buddy.displayName}</h2>
                         <h3>Distance:{buddy.distance}</h3>
-                        <button onClick={()=>setManageBuddy(buddy)}>Manage</button>
+                        <div>
+                          <button onClick={()=>setManageBuddy(buddy)}>Manage</button>
+                          <button>Chat</button>
+                        </div>
                     </div>
                     <img alt={buddy.displayName}></img>
                </div>

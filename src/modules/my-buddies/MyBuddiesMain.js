@@ -3,7 +3,7 @@ import '../../css/buddiestylesheet.css';
 import ActiveSection from './active-buddies/ActiveSection'
 import RequestsSection from './requests/RequestsSection'
 import AdvertSection from './advert/AdvertSection'
-import ChatsSection from './ChatsSection'
+import ChatsSection from './chat/ChatsSection'
 
 export default function MyBuddiesMain({setMyBuddies}) {
 
