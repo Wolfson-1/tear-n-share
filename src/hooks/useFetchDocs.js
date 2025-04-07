@@ -24,7 +24,6 @@ export default function useFetchDocs(database,path,order) {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-    console.log(dataExport);
   }
 
     // run get data function

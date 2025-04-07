@@ -19,12 +19,12 @@ export default function ChatsSection() {
   const [addChatModal,setAddChatModal] = useState(false);
   //state for opening a chat
   const [currentChat,setCurrentChat] = useState(null);
-
+  
   /* hooks
   --------------- */
   //active buddies data
   const activeBuddys = useFetchDocs(db,['userData',user.userUid,'activeBuddies'],["createdAt"]);
-  const chatData = useFetchDocsFilterIds(db,['sharedUserData'],buddyIds);
+  const sharedUserData = useFetchDocsFilterIds(db,['sharedUserData'],buddyIds);
 
   /* useEffects
   --------------- */
@@ -36,7 +36,7 @@ export default function ChatsSection() {
     })
     // set ids data
     setBuddyIds(filteredIds);
-  };
+  }
   },[activeBuddys]);
 
   return (
@@ -47,9 +47,9 @@ export default function ChatsSection() {
           <Chat currentChat={currentChat} setCurrentChat={setCurrentChat}/> : 
         <> 
           <h2>Chats</h2>
-          {chatData ? <ExistingChatList/> : <p>No chats yet!</p>}
+          {sharedUserData && <ExistingChatList sharedUserData={sharedUserData} user={user} setCurrentChat={setCurrentChat}/>}
           <button onClick={()=>{setAddChatModal(true)}}>+</button>
-          {addChatModal === true && <NewChatModal activeBuddies={activeBuddys} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal}/>}
+          {addChatModal === true && sharedUserData && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
         </>}
       </>}
     </div>
