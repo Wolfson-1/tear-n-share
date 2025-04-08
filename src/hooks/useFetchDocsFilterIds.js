@@ -20,13 +20,13 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
         if (!docSnap.exists()) return;
 
         const docData = { ...docSnap.data(), id: docSnap.id };
-        tempData[index] = docData; // store in original order
-        receivedCount++;
+        tempData[index] = docData;
 
-        //of logic to check if
-        if (isMounted && receivedCount === filterIds.length) {
-          // All docs have been received at least once
-          setDataExport(tempData.filter(Boolean)); // filter in case of missing docs
+        if (isMounted) {
+          setDataExport(prev => {
+            const updated = [...tempData];
+            return updated.filter(Boolean); // keep only non-null
+          });
         }
       });
 
