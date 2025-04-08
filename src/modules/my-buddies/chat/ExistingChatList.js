@@ -2,31 +2,35 @@ import React,{useState,useEffect} from 'react'
 
 export default function ExistingChatList({sharedUserData,user,setCurrentChat}) {
 
+  console.log(sharedUserData);
+
     /*useState
   --------------------- */
-  const [withoutChat,setWithoutChat] = useState([]);
+  const [existingChat,setExistingChat] = useState([]);
 
   /*useEffects
   --------------------- */
 
   //useEffect to filter out any users that already have a chat
   useEffect(()=>{
-    const usersWithoutChat = sharedUserData.filter((item)=>{
+    const usersExistingChat = sharedUserData.filter((item)=>{
         return item.latestMessageDateTime
     })
-    setWithoutChat(usersWithoutChat);
+
+    setExistingChat(usersExistingChat);
   },[]);
 
   return (
     <>
-    {withoutChat.length > 0 ? <div className='existing-chats'>  
-      {withoutChat.map((data)=>{
+    {existingChat && existingChat.length > 0 ? <div className='existing-chats'>  
+      {existingChat.map((data)=>{
         //pull user & id from chatPreview for display in DOM
         const chatUser = data.matchedUsers.filter((match)=>{
           return match.userId !== user.userUid
         })
 
         //covert date for display in DOM
+        console.log(existingChat);
         const dateTime = new Date(data.latestMessageDateTime);
         const date = dateTime.toDateString();
 

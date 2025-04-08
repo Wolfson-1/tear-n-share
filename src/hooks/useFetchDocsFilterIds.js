@@ -7,20 +7,29 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
   useEffect(() => {
     if (!filterIds || filterIds.length === 0) return;
 
-    let isMounted = true;
     const unsubscribes = [];
-    const dataMap = {};
+    const tempData = [];
+    let receivedCount = 0;
+    let isMounted = true;
 
-    filterIds.forEach(id => {
+    // Clear old data
+    setDataExport([]);
+
+    filterIds.forEach((id, index) => {
       const unsub = onSnapshot(doc(database, ...path, id), (docSnap) => {
         if (!docSnap.exists()) return;
 
-        dataMap[docSnap.id] = { ...docSnap.data(), id: docSnap.id };
-        if (isMounted) {
-          console.log(dataMap);
-          setDataExport(Object.values(dataMap))
-        };
+        const docData = { ...docSnap.data(), id: docSnap.id };
+        tempData[index] = docData; // store in original order
+        receivedCount++;
+
+        //of logic to check if
+        if (isMounted && receivedCount === filterIds.length) {
+          // All docs have been received at least once
+          setDataExport(tempData.filter(Boolean)); // filter in case of missing docs
+        }
       });
+
       unsubscribes.push(unsub);
     });
 
@@ -32,4 +41,4 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
   }, [filterIds]);
 
   return dataExport.length > 0 ? dataExport : null;
-}
+};
