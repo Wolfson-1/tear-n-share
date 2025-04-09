@@ -5,7 +5,7 @@ import useFetchDocs from '../../../../hooks/useFetchDocs';
 import BuddyModal from './BuddyModal';
 import BuddyAdvertModal from './BuddyAdvertModal';
 
-export default function ManageBuddyModal({manageBuddy, setManageBuddy}) {
+export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSelector}) {
     // context for user
     const user = useContext(ContextUser);
 
@@ -25,6 +25,7 @@ export default function ManageBuddyModal({manageBuddy, setManageBuddy}) {
             <div className='user-info'>
                 <img alt='profile picture'></img>
                 <h1>{manageBuddy.displayName}</h1>
+                <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
             {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} manageBuddy={manageBuddy} setManageAd={setManageAd}/>}
             {matchedAdverts && manageAd && <BuddyAdvertModal advert={manageAd} setManageAd={setManageAd}/>}

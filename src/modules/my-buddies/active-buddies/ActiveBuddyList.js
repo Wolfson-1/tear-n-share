@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ActiveBuddyList({buddys,setManageBuddy}) {
+export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector}) {
   
     return (
     <div className='active-buddy-list'>
@@ -11,7 +11,7 @@ export default function ActiveBuddyList({buddys,setManageBuddy}) {
                         <h3>Distance:{buddy.distance}</h3>
                         <div>
                           <button onClick={()=>setManageBuddy(buddy)}>Manage</button>
-                          <button>Chat</button>
+                          <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
                         </div>
                     </div>
                     <img alt={buddy.displayName}></img>

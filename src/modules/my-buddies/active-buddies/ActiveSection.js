@@ -5,7 +5,7 @@ import useFetchDocs from '../../../hooks/useFetchDocs';
 import ActiveBuddyList from './ActiveBuddyList';
 import ManageBuddyModal from './buddy-modal/ManageBuddyModal';
 
-export default function ActiveSection() {
+export default function ActiveSection({setMainSelector}) {
   // context for user
   const user = useContext(ContextUser);
 
@@ -21,8 +21,8 @@ export default function ActiveSection() {
   return (
     <div className='buddies-container'>
       <h1>Active Buddys</h1>
-      {activeBuddys ? <ActiveBuddyList buddys={activeBuddys} setManageBuddy={setManageBuddy}/> : <h3>Currently no active buddys!</h3>}
-      {manageBuddy && <ManageBuddyModal manageBuddy={manageBuddy} setManageBuddy={setManageBuddy}/>}
+      {activeBuddys ? <ActiveBuddyList buddys={activeBuddys} setManageBuddy={setManageBuddy} setMainSelector={setMainSelector}/> : <h3>Currently no active buddys!</h3>}
+      {manageBuddy && <ManageBuddyModal manageBuddy={manageBuddy} setManageBuddy={setManageBuddy} setMainSelector={setMainSelector}/>}
     </div>
   )
 }

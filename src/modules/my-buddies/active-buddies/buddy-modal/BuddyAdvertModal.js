@@ -1,4 +1,5 @@
 import React from 'react'
+import Calendar from './Calendar'
 
 export default function BuddyAdvertModal({advert,setManageAd}) {
   return (
@@ -10,6 +11,35 @@ export default function BuddyAdvertModal({advert,setManageAd}) {
         <p>Split: <span>{advert.breadSplit}%</span></p>
         <p>Spend: <span>£{advert.breadSpend}</span></p>
         <p>Reduced: <span>{advert.reduced ? 'Yes': 'No'}</span></p>
+    </div>
+    <div className='advert-info-ammend'>
+          <button>Request Change</button>
+          <button>End agreement</button>
+     </div>
+    <div className='paid-and-purchase-status'>
+      <div className='purchase-status'>
+        <p>Who bought last: <span></span></p>
+        <p>Cost: <span></span></p>
+        <p>Paid & delivered:<span></span></p>
+      </div>
+      <div className='balance-status'>
+        <h3>Balance</h3>
+        <div>
+          <div>
+            <p>User</p>
+            <p>£</p>
+          </div>
+          <div>
+            <p>User</p>
+            <p>£</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <Calendar/>
+    <div className='log-activity'>
+      <button>Log Purchase</button>
+      <button>Log Payment</button>
     </div>
     </>
   )

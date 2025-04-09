@@ -135,10 +135,13 @@
     flex-direction: column;
 }
 
-/* styling specifc for active user modal  */
+/* Styling specifc for active user modal  */
+
+.modal-form-container.buddy-container >* {
+    display:flex;
+}
 
 .modal-form-container.buddy-container .user-info {
-    display: flex;
     align-items: center;
     gap: 2%;
     margin: 1% 0% 0% 2%;
@@ -159,4 +162,64 @@
 
 .modal-form-container.buddy-container .back-button:hover {
     text-decoration: underline;
+}
+
+.modal-form-container.buddy-container .advert-info {
+    display: flex;
+    flex-direction: column;
+    columns: 2;
+    width: 90%;
+    height: 20%;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.modal-form-container.buddy-container .advert-info-ammend {
+    justify-content: center;
+    gap:10px;
+}
+
+.modal-form-container.buddy-container .advert-info-ammend > button {
+    width:30%;
+}
+
+.modal-form-container.buddy-container .paid-and-purchase-status {
+    width:90%;
+    justify-content: center;
+}
+
+.modal-form-container.buddy-container .paid-and-purchase-status .purchase-status {
+    width: 60%;
+}
+
+.modal-form-container.buddy-container .paid-and-purchase-status .paid-status {
+    width: 40%;
+    align-items: center;
+}
+
+.modal-form-container.buddy-container .paid-and-purchase-status .balance-status > div  {
+    display: flex;
+    gap:5px;
+}
+
+.modal-form-container.buddy-container .log-activity  {
+    width: 90%;
+    justify-content: center;
+    display: flex;
+    gap:5px;
+    margin: 3%;
+}
+
+.modal-form-container.buddy-container .log-activity > button  {
+    width: 45%;
+}
+
+/* calendar CSS */
+.calendar {
+    display: flex;
+    width:90%;
+    height:30%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(127, 255, 212, 0.534);
 }

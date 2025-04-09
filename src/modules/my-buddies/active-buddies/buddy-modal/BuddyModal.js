@@ -1,7 +1,7 @@
 import React from 'react'
 import BuddyAdListItem from './BuddyAdListItem';
 
-export default function BuddyModal({matchedAdverts,manageBuddy,setManageAd}) {
+export default function BuddyModal({matchedAdverts,setManageAd}) {
   return (
     <>    
         <div className='advert-section'>
