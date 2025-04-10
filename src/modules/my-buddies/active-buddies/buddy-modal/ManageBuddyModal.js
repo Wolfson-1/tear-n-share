@@ -15,8 +15,8 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
 
     /* hooks
     ------------ */
-    //hook for matched adverts
-    const matchedAdverts = useFetchDocs(db,['userData',user.userUid,'activeBuddies',manageBuddy.id,'matchedAdverts'],["createdAt"]);
+    //hook to retreive matched adverts with buddy
+    const matchedAdverts = useFetchDocs(db,['sharedUserData',manageBuddy.id,'matchedAdverts'],["createdAt"]);
 
     return (
         <div className='modal-background'>
@@ -28,7 +28,7 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                 <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
             {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} manageBuddy={manageBuddy} setManageAd={setManageAd}/>}
-            {matchedAdverts && manageAd && <BuddyAdvertModal advert={manageAd} setManageAd={setManageAd}/>}
+            {matchedAdverts && manageAd && <BuddyAdvertModal advert={manageAd} setManageAd={setManageAd} sharedDataId={manageBuddy.id}/>}
         </div>
       </div>
   )

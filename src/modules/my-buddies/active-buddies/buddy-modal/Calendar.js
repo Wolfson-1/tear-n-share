@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
+import DayInformation from './DayInformation'
 
-export default function Calendar() {
+export default function Calendar({loggedData}) {
 
   /* State
   ------------------------ */
@@ -23,11 +24,12 @@ export default function Calendar() {
     //get current month, date, and day of the week
     //factor in offset days if user is looking back through weeks
     const epoch = offSetDate > 0 ? Date.now() - (offSetDate*dayMilli) : Date.now();
-    //create new date based off offset & following variables for month date day etc.
+    //create new date based off offset & following variables for month date day & year.
     const d = new Date(epoch);
     const month = months[d.getMonth()];
     const date = d.getDate();
     const day = daysOfWeek[d.getDay()];
+    const year = d.getFullYear();
 
 
     //use current day to find index of the current dates day in a full week
@@ -44,12 +46,21 @@ export default function Calendar() {
       date:date,
       day: day,
       month:month,
+      year:year,
+      currWeek:currWeekDates
+    })
+    console.log({
+      date:date,
+      day: day,
+      month:month,
+      year:year,
       currWeek:currWeekDates
     })
   },[offSetDate]);
 
   /*Event handlers 
   ---------------------*/
+  //function for onClick of offset buttons in calander to change offset value & display historical weeks rather than just current week.
   const offsetWeek = (plusOrMinus) => {
     if(plusOrMinus === '-') {
       setOffSetDate(offSetDate + 7);
@@ -68,12 +79,25 @@ export default function Calendar() {
         <button onClick={()=>{offsetWeek('-')}}>{'<'}</button>
           <button onClick={()=>{offsetWeek('+')}}>{'>'}</button>
         </div>
-        <h3>Month:{currCalendar.month}</h3>
+        <h3 className='calendar-month'>{currCalendar.month},{currCalendar.year.toString()}</h3>
         <div className='calendar-elements'>
         {daysOfWeek.map((day,index)=>{
-          return <div style={{gridColumn:`${index+1}/${index+2}`}}>
-            {day}
-            {currCalendar.currWeek[index]}
+          // logic to search for maching logged data to mark respective section in calander
+          let logged
+          if(loggedData) {
+            logged = loggedData.find((data)=>{
+              return data.date === `${currCalendar.currWeek[index]}/${currCalendar.month}/${currCalendar.year}`
+            });
+          } else {
+            logged = null;
+          }
+
+          return <div className='calendar-day' style={{gridColumn:`${index+1}/${index+2}`}}>
+            <div className='day-date'>
+              <p>{day}</p>
+              <p>{currCalendar.currWeek[index]}</p>
+            </div>
+            {logged && <DayInformation logged={logged}/>}
           </div>
         })}
         </div>
