@@ -217,9 +217,16 @@
 /* calendar CSS */
 .calendar {
     display: flex;
+    flex-direction: column;
     width:90%;
     height:30%;
     justify-content: center;
     align-items: center;
     background-color: rgba(127, 255, 212, 0.534);
+}
+
+.calendar .calendar-elements {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+
 }
