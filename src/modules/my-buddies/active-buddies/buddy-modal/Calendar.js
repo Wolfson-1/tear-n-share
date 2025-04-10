@@ -39,7 +39,9 @@ export default function Calendar({loggedData}) {
     let currWeekDates = [];
     //for loop to add current dates for full week
     for (let i = 0; i < 7; i++) {
-      currWeekDates.push(new Date(epoch - (dayMilli*(dayIndex-i))).getDate())
+      currWeekDates.push({day: new Date(epoch - (dayMilli*(dayIndex-i))).getDate(),
+                          month: months[new Date(epoch - (dayMilli*(dayIndex-i))).getMonth()],
+                        year:new Date(epoch - (dayMilli*(dayIndex-i))).getFullYear()});
     };
 
     setCurrCalendar({
@@ -86,7 +88,7 @@ export default function Calendar({loggedData}) {
           let logged
           if(loggedData) {
             logged = loggedData.find((data)=>{
-              return data.date === `${currCalendar.currWeek[index]}/${currCalendar.month}/${currCalendar.year}`
+              return data.date === `${currCalendar.currWeek[index].day}/${currCalendar.currWeek[index].month}/${currCalendar.currWeek[index].year}`
             });
           } else {
             logged = null;
@@ -95,7 +97,7 @@ export default function Calendar({loggedData}) {
           return <div className='calendar-day' style={{gridColumn:`${index+1}/${index+2}`}}>
             <div className='day-date'>
               <p>{day}</p>
-              <p>{currCalendar.currWeek[index]}</p>
+              <p>{currCalendar.currWeek[index].day}</p>
             </div>
             {logged && <DayInformation logged={logged}/>}
           </div>
