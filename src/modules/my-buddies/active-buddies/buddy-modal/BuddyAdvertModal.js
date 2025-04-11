@@ -54,7 +54,7 @@ export default function BuddyAdvertModal({advert,setManageAd,sharedDataId}) {
       <div className='log-activity'>
         <button onClick={()=>{setLogEvent('purchase')}}>Log Purchase</button>
         <button onClick={()=>{setLogEvent('payment')}}>Log Payment</button>
-      {logEvent && <LogEventModal eventType={logEvent} setLogEvent={setLogEvent}/>}
+      {logEvent && <LogEventModal eventType={logEvent} setLogEvent={setLogEvent} uploadPath={{sharedData:sharedDataId,advert:advert.id}}/>}
       </div>
     </div>
   )

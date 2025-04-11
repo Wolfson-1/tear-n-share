@@ -7,7 +7,7 @@ export default function useAddDoc(uploadObjs,database,path,id) {
     //  isComplete process complete check
     const [isComplete, setIsComplete] = useState(false);
     const [docIdArr,setDocIdArr] = useState([]);
-
+    
     useEffect(() => {
             const uploadData = async () => {
                 //return if no objects are found

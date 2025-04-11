@@ -82,10 +82,6 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
             if(inArr === undefined) fieldsCheckArr.push({name: e.target.form[i].id, type: e.target.form[i].type});
         };
 
-        console.log(fieldsCheckArr);
-        console.log(e.target.form);
-        console.log(formData);
-
         // check each arr item against form data state to ensure all fields have values
         fieldsCheckArr.forEach((item)=> {
 
