@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import {db} from '../../../../firebase/config';
 import Calendar from './Calendar';
 import useFetchDocs from '../../../../hooks/useFetchDocs';
+import LogEventModal from './LogEventModal';
 
 export default function BuddyAdvertModal({advert,setManageAd,sharedDataId}) {
 
+  /* State
+  ----------------*/
+  const [logEvent,setLogEvent] = useState(null);
+
   /* Hooks
   ----------------*/
-  //retrieve management data for specific ad
+  //retrieve logged/management data for specific ad if any exists
   const loggedData = useFetchDocs(db,['sharedUserData',sharedDataId,'matchedAdverts',advert.id,'advertLogs'],["createdAt"]);
 
 
@@ -47,8 +52,9 @@ export default function BuddyAdvertModal({advert,setManageAd,sharedDataId}) {
       </div>
       <Calendar loggedData={loggedData}/>
       <div className='log-activity'>
-        <button>Log Purchase</button>
-        <button>Log Payment</button>
+        <button onClick={()=>{setLogEvent('purchase')}}>Log Purchase</button>
+        <button onClick={()=>{setLogEvent('payment')}}>Log Payment</button>
+      {logEvent && <LogEventModal eventType={logEvent} setLogEvent={setLogEvent}/>}
       </div>
     </div>
   )

@@ -150,7 +150,7 @@
     align-items: center;
     position: absolute;
     height: 5%;
-    width: 90%;
+    width: 25%;
     gap: 2%;
     margin: 1% 0% 0% 1%;
 }
@@ -233,7 +233,8 @@
     width: 45%;
 }
 
-/* calendar CSS */
+/* calendar CSS 
+-------------------------*/
 .calendar {
     display: flex;
     flex-direction: column;
@@ -276,3 +277,44 @@
     margin: 0;
 }
 
+.calendar .calendar-elements .calendar-day .logged-event {
+    font-size:small;
+    padding: 0;
+    margin: 5%;
+}
+
+.calendar .calendar-elements .calendar-day .logged-event:hover {
+    background-color: rgba(255, 255, 255, 0.129);
+    border-radius: 5%;
+}
+
+.calendar .calendar-elements .calendar-day .logged-event > p {
+    font-size:small;
+    padding: 0;
+    margin: 5%;
+}
+
+/* Modal to log purchase & payment events
+--------------------------------------------------------*/
+
+.modal-form-container.log-event-modal {
+    height: 50%;
+    border: solid white 3px;
+}
+
+.modal-form-container.log-event-modal .modal-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.modal-form-container.log-event-modal .log-event-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-form-container.log-event-modal .log-event-form > label {
+    width: 50%;
+    margin-bottom: 3%;
+}
