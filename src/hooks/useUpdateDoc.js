@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, query, updateDoc, update, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 export default function useUpdateDoc(updateObj,database,path,filter) {
     //instructions on use
