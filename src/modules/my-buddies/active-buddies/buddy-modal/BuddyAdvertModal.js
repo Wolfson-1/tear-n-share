@@ -16,7 +16,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   const [sortedUsers,setSortedUsers] = useState(null);
   //state for module to add an aditional event (purchase or payment)
   const [logEvent,setLogEvent] = useState(null);
-  //state for filtered logged data to unpaid purchase logs only
+  //state for filtered data outlining unpaid purchase logs only & their total value
   const [unpaid,setUnpaid] = useState(null);
 
   /* Hooks
@@ -24,26 +24,65 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   //retrieve logged/management data for specific ad if any exists
   const loggedData = useFetchDocs(db,['sharedUserData',matchUserInfo.id,'matchedAdverts',advert.id,'advertLogs'],["createdAt"]);
 
-  useEffect(()=>{
-    //init filtered data variable & owed cost
-    let filteredData
-    //logic to filter loggedData if exists for purchase events that have not been paid
-    if(loggedData && sortedUsers) {
-      filteredData = loggedData.filter((data)=>{
-        return data.eventType === 'purchase' && data.paid === false 
-      })
-    };
-    
-    setUnpaid(filteredData);
-  },[loggedData,sortedUsers]);
 
+  /* useEffects
+  ----------------*/
   useEffect(()=>{
+    // logic to seperate user specific data for loading to dom (for logged in user & secondary user)
     if(matchUserInfo){
      setSortedUsers({loggedIn:matchUserInfo.matchedUsers[0].userName === user.displayName ? matchUserInfo.matchedUsers[0].userName : matchUserInfo.matchedUsers[1].userName,
               paired:matchUserInfo.matchedUsers[0].userName === user.displayName ? matchUserInfo.matchedUsers[1].userName : matchUserInfo.matchedUsers[0].userName
               })
     }
   },[matchUserInfo]);
+
+  //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user
+  useEffect(()=>{
+    //init filtered data variable & owed cost
+    let loggedInArr = [];
+    let pairedArr = []; 
+
+    //logic to filter loggedData if exists for purchase events that have not been paid
+    if(loggedData && sortedUsers) {
+      loggedData.forEach((data)=>{
+        switch(data.eventUser) {
+          case sortedUsers.loggedIn:
+            pairedArr.push(data)
+          break;
+          case sortedUsers.paired:
+            loggedInArr.push(data)
+          break;
+        }
+      })
+      
+      //Reduce on outstanding payments for logged in and paired user
+      const loggedTotUnpaid = loggedInArr.reduce((acc,curr,index)=>{
+        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
+        acc.unpaidIndex = index;
+        return acc
+      },{ unpaidVal: 0, unpaidIndex: null });
+
+      const pairedTotUnpaid = pairedArr.reduce((acc,curr,index)=>{
+        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
+        acc.unpaidIndex = index;
+        return acc
+      },{ unpaidVal: 0, unpaidIndex: null });
+
+      setUnpaid({unpaidLoggedLogs: loggedInArr, 
+                unpaidPairedLogs: pairedArr,
+                unpaidLoggedTot: loggedTotUnpaid,
+                unpaidPairedTot: pairedTotUnpaid
+              })
+
+      console.log({unpaidLoggedLogs: loggedInArr, 
+        unpaidPairedLogs: pairedArr,
+        unpaidLoggedTot: loggedTotUnpaid,
+        unpaidPairedTot: pairedTotUnpaid
+      });
+    };
+  },[loggedData,sortedUsers]);
+
+ 
 
   return (
     <div className='buddy-modal-manageAd'>
@@ -67,16 +106,16 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
         </div>
         <div className='balance-status'>
           <h3>Balance</h3>
-          <div>
+          {unpaid && <div>
             <div>
-              <p>{sortedUsers && sortedUsers.loggedIn}</p>
-              <p>£</p>
+              <p>{sortedUsers.loggedIn}</p>
+              <p>£{unpaid.unpaidLoggedTot.unpaidVal}</p>
             </div>
             <div>
-              <p>{sortedUsers && sortedUsers.paired}</p>
-              <p>£</p>
+              <p>{sortedUsers.paired}</p>
+              <p>£{unpaid.unpaidPairedTot.unpaidVal}</p>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
       <Calendar loggedData={loggedData}/>
