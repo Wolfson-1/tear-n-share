@@ -1,40 +1,52 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {db} from '../../../../../firebase/config';
-import {ContextUser} from '../../../../../context/ContextUser';
 import useAddDoc from '../../../../../hooks/useAddDoc';
 import PurchaseForm from './PurchaseForm';
 import PaymentForm from './PaymentForm';
-import useUpdateDoc from '../../../../../hooks/useUpdateDoc';
-import { updateProfile } from 'firebase/auth';
+import useUpdateDocs from '../../../../../hooks/useUpdateDocs';
 
-export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath}) {
+export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath,user}) {
     //uplaodPathIds need to be set in following format for use in uplaodEvent hook: {sharedData:'',advert:''}
-
-    // context for user
-    const user = useContext(ContextUser);
-
 
     // State for use in firebase hooks to upload new data based on form
     const [uploadObj,setUploadObj] = useState(null);
-    const [updateCost,setUpdateCost] = useState(null);
+    //state for object of events to update paid status
+    const [updateObj,setUpdateObj] = useState({})
     //formError state
     const [formError,setFormError] = useState(false);
  
     /* Hooks
     ----------------------*/
     const uploadEvent = useAddDoc(uploadObj,db,['sharedUserData',uploadPath.sharedData,'matchedAdverts',uploadPath.advert,'advertLogs']);
-    const updateCosts = useUpdateDoc(updateCost,db,['sharedUserData',uploadPath.sharedData,'matchedAdverts',uploadPath.advert]);
+    const updatePaid = useUpdateDocs(updateObj.updateData,db,['sharedUserData',uploadPath.sharedData,'matchedAdverts',uploadPath.advert,'advertLogs'],updateObj.ids);
 
-    //listen to if uplaodEvent is compleated. if uplaod has completed following submit. Close modal.
+    //listen to if hook isCompleted status for further actions following completion. 
     useEffect(()=>{
+        //if upload object has completed following submit. Close modal.
         if(uploadEvent.isComplete === true) {
             setLogEvent(null);
         }
-        if(updateCost === true) {
-            setUpdateCost(null);
+    },[uploadEvent.isComplete]);
+
+    //listen to when updaitPaid hooks is completed. then set object to upload payment event to events.
+    useEffect(()=>{
+        //if action to update paid status is complete. set a paid event object to upload
+        if(updatePaid.isComplete === true) {
+            //date & set format for use in calander
+            const date = new Date();
+            const day = date.getDate() > 10 ? date.getDate() : `0${date.getDate()}`
+            const month = date.getMonth() > 10 ? date.getMonth()+1 : `0${date.getMonth()+1}`
+
+            setUploadObj([{
+                eventType:eventType,
+                eventUser: user.displayName,
+                eventUserId:user.userUid,
+                eventDate:`${date.getFullYear()}-${month}-${day}`,
+                purchasesPaid:updateObj.ids
+            }]);
         }
-    },[uploadEvent.isComplete,updateCost]);
-  
+    },[updatePaid.isComplete])
+
     return (
     <div className='modal-background'>
         <div className='modal-form-container log-event-modal'>
@@ -43,7 +55,7 @@ export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath})
                     <button className='close-modal' onClick={()=>{setLogEvent(null)}}>x</button>
             </div>
         {eventType === 'purchase' && <PurchaseForm user={user} setUploadObj={setUploadObj} setFormError={setFormError}/>}
-        {eventType === 'payment' && <PaymentForm unpaid={unpaid} setUploadObj={setUploadObj} setFormError={setFormError} />}
+        {eventType === 'payment' && <PaymentForm unpaid={unpaid} setUpdateObj={setUpdateObj}/>}
         {formError && <p>Please fill in all inputs</p>}
         </div>
     </div>

@@ -6,7 +6,7 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
     /* State
     ----------------------*/
     // State for form inputs & form error handling
-    const [formData,setFormData] = useState({purchaseDate:'',purchaseDiff:false, purchasePrice:''});
+    const [formData,setFormData] = useState({eventDate:'',purchaseDiff:false, purchasePrice:''});
 
 
     /*useEffect
@@ -76,7 +76,7 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
         </label>
         <label>
             Date Purchased
-            <input id='purchaseDate' type='date' value={formData.purchaseDate} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
+            <input id='eventDate' type='date' value={formData.eventDate} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>
         <input onClick={handleSubmit} type='submit'></input>
     </form>

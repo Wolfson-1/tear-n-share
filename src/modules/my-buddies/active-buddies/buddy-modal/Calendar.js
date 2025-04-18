@@ -87,7 +87,7 @@ export default function Calendar({loggedData}) {
           let logged
           if(loggedData) {
             logged = loggedData.find((data)=>{
-              return data.purchaseDate === `${currCalendar.currWeek[index].year}-${currCalendar.currWeek[index].month}-${currCalendar.currWeek[index].day}`
+              return data.eventDate === `${currCalendar.currWeek[index].year}-${currCalendar.currWeek[index].month}-${currCalendar.currWeek[index].day}`
             });
           } else {
             logged = null;

@@ -45,13 +45,14 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
     //logic to filter loggedData if exists for purchase events that have not been paid
     if(loggedData && sortedUsers) {
       loggedData.forEach((data)=>{
-        switch(data.eventUser) {
-          case sortedUsers.loggedIn:
+        //logic to continue only if paid status is false (currently unpaid)
+        if(data.paid === false) {
+          //logic to push unpaid event to correct array for either upaind by logged user or unpaid by paired user
+          if(data.eventUser === sortedUsers.loggedIn) {
             pairedArr.push(data)
-          break;
-          case sortedUsers.paired:
+          }  else if(data.eventUser === sortedUsers.paired) {
             loggedInArr.push(data)
-          break;
+          }
         }
       })
       
@@ -81,8 +82,6 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       });
     };
   },[loggedData,sortedUsers]);
-
- 
 
   return (
     <div className='buddy-modal-manageAd'>
