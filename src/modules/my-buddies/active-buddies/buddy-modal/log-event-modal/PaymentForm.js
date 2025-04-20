@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function PaymentForm({unpaid,setUpdateObj}) {
 
@@ -7,16 +7,23 @@ export default function PaymentForm({unpaid,setUpdateObj}) {
     /* useState 
     --------------------- */
     //create a new arr with a false boolen value & evenr id for us in form data & tracking of which ones user want to mark as paid
-    const [formData,setFormData] = useState(unpaid.unpaidLoggedLogs.map((item)=>{return false}));
+    const [formData,setFormData] = useState(unpaid.unpaidLoggedLogs.map(()=>{return false}));
+    //state for total value of those checked as paid
+    const [checkedTotal,setCheckedTotal] = useState(0);
 
     /* onChange for checked
     ----------------------- */ 
     const checked = (index) => {
         //make copy of fomrData to alter
         const newArr = [...formData]
-        //logic change 
-        if(newArr[index] === true) newArr[index] = false
-        if (newArr[index] === false) newArr[index] = true
+        //logic change
+        if(newArr[index] === true) {
+            newArr[index] = false
+            setCheckedTotal(checkedTotal - Number(unpaid.unpaidLoggedLogs[index].purchasePrice))
+        } else if (newArr[index] === false) {
+            newArr[index] = true
+            setCheckedTotal(checkedTotal + Number(unpaid.unpaidLoggedLogs[index].purchasePrice))
+        }
 
         setFormData(newArr);
     };
@@ -43,18 +50,20 @@ export default function PaymentForm({unpaid,setUpdateObj}) {
             })
         };
 
-        setUpdateObj({ids:checkedIdsArr,updateData:{paid:true,MarkedPaidTime:Date.now()}});
+        setUpdateObj({ids:checkedIdsArr,updateData:{paid:true,MarkedPaidTime:Date.now()},totalPaid:checkedTotal});
     };
 
     return (
     <form className='log-event-form payment'> 
-        {unpaid.unpaidLoggedLogs.map((data,index)=>{
+        <p>Total Marked As Paid:£{checkedTotal}</p>
+        {unpaid.unpaidLoggedLogs.length > 0 ? unpaid.unpaidLoggedLogs.map((data,index)=>{
             return <label>
             <p>Date: {data.purchaseDate}</p>    
             <p>Price: £{data.purchasePrice}</p>
             <input type='checkbox' checked={formData[index].checked} onChange={()=>{checked(index)}}></input>
             </label>
-        })}
+        }) : 
+        <p>you are all paid up!</p>}
         <input type='submit' value='Mark as paid' onClick={markAsPaid}></input>
     </form>
   )

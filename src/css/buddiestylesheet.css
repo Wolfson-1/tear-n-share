@@ -281,10 +281,11 @@
     font-size:small;
     padding: 0;
     margin: 5%;
+    border-radius: 5%;
 }
 
 .calendar .calendar-elements .calendar-day .logged-event:hover {
-    background-color: rgba(255, 255, 255, 0.129);
+    border: solid 0.1px rgba(255, 255, 255, 0.234);
     border-radius: 5%;
 }
 

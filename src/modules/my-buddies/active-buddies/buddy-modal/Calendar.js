@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import DayInformation from './DayInformation'
 
-export default function Calendar({loggedData}) {
+export default function Calendar({loggedData,setCalEvent}) {
 
   /* State
   ------------------------ */
@@ -98,7 +98,7 @@ export default function Calendar({loggedData}) {
               <p>{day}</p>
               <p>{currCalendar.currWeek[index].day}</p>
             </div>
-            {logged && <DayInformation logged={logged}/>}
+            {logged && <DayInformation logged={logged} setCalEvent={setCalEvent}/>}
           </div>
         })}
         </div>

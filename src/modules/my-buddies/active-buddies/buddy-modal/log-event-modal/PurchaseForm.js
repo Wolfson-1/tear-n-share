@@ -8,7 +8,6 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({eventDate:'',purchaseDiff:false, purchasePrice:''});
 
-
     /*useEffect
     ---------------------*/
     //to clear out diffReasoning value if user unchecks the purchase difference checkbox after previously checking it & inputing values for diffReasoning

@@ -4,6 +4,7 @@ import {ContextUser} from '../../../../context/ContextUser';
 import Calendar from './Calendar';
 import useFetchDocs from '../../../../hooks/useFetchDocs';
 import LogEventModal from './log-event-modal/LogEventModal';
+import EventModal from './EventModal';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
@@ -15,7 +16,8 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   //state for matched users (who is signed in and who is paired)
   const [sortedUsers,setSortedUsers] = useState(null);
   //state for module to add an aditional event (purchase or payment)
-  const [logEvent,setLogEvent] = useState(null);
+  const [eventModal,setEventModal] = useState(null);
+  const [calEvent,setCalEvent] = useState(null);
   //state for filtered data outlining unpaid purchase logs only & their total value
   const [unpaid,setUnpaid] = useState(null);
 
@@ -74,12 +76,6 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
                 unpaidLoggedTot: loggedTotUnpaid,
                 unpaidPairedTot: pairedTotUnpaid
               })
-
-      console.log({unpaidLoggedLogs: loggedInArr, 
-        unpaidPairedLogs: pairedArr,
-        unpaidLoggedTot: loggedTotUnpaid,
-        unpaidPairedTot: pairedTotUnpaid
-      });
     };
   },[loggedData,sortedUsers]);
 
@@ -93,9 +89,9 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
           <p>Spend: <span>£{advert.breadSpend}</span></p>
           <p>Reduced: <span>{advert.reduced ? 'Yes': 'No'}</span></p>
       </div>
-      <div className='advert-info-ammend'>
-            <button>Request Change</button>
-            <button>End agreement</button>
+      <div className='log-activity'>
+        <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
+        <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
       </div>
       <div className='paid-and-purchase-status'>
         <div className='purchase-status'>
@@ -117,12 +113,12 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
           </div>}
         </div>
       </div>
-      <Calendar loggedData={loggedData}/>
-      <div className='log-activity'>
-        <button onClick={()=>{setLogEvent('purchase')}}>Log Purchase</button>
-        <button onClick={()=>{setLogEvent('payment')}}>Log Payment</button>
-      {logEvent && <LogEventModal user={user} unpaid={unpaid} eventType={logEvent} setLogEvent={setLogEvent} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
+      <Calendar loggedData={loggedData} setCalEvent={setCalEvent}/>
+      <div className='advert-info-ammend'>
+        <button>End agreement</button>
       </div>
+      {eventModal && <LogEventModal user={user} unpaid={unpaid} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
+      {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent}/>}
     </div>
   )
 };

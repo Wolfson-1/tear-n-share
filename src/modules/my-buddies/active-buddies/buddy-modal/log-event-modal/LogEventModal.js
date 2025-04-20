@@ -5,7 +5,7 @@ import PurchaseForm from './PurchaseForm';
 import PaymentForm from './PaymentForm';
 import useUpdateDocs from '../../../../../hooks/useUpdateDocs';
 
-export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath,user}) {
+export default function LogEventModal({unpaid,eventType,setEventModal,uploadPath,user}) {
     //uplaodPathIds need to be set in following format for use in uplaodEvent hook: {sharedData:'',advert:''}
 
     // State for use in firebase hooks to upload new data based on form
@@ -24,7 +24,7 @@ export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath,u
     useEffect(()=>{
         //if upload object has completed following submit. Close modal.
         if(uploadEvent.isComplete === true) {
-            setLogEvent(null);
+            setEventModal(null);
         }
     },[uploadEvent.isComplete]);
 
@@ -42,7 +42,8 @@ export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath,u
                 eventUser: user.displayName,
                 eventUserId:user.userUid,
                 eventDate:`${date.getFullYear()}-${month}-${day}`,
-                purchasesPaid:updateObj.ids
+                purchasesPaid:updateObj.ids,
+                totalPaid:updateObj.totalPaid
             }]);
         }
     },[updatePaid.isComplete])
@@ -52,7 +53,7 @@ export default function LogEventModal({unpaid,eventType,setLogEvent,uploadPath,u
         <div className='modal-form-container log-event-modal'>
             <div className='modal-header'>
                     <h2>Log {eventType}</h2>
-                    <button className='close-modal' onClick={()=>{setLogEvent(null)}}>x</button>
+                    <button className='close-modal' onClick={()=>{setEventModal(null)}}>x</button>
             </div>
         {eventType === 'purchase' && <PurchaseForm user={user} setUploadObj={setUploadObj} setFormError={setFormError}/>}
         {eventType === 'payment' && <PaymentForm unpaid={unpaid} setUpdateObj={setUpdateObj}/>}
