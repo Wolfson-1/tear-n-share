@@ -86,7 +86,7 @@ export default function Calendar({loggedData,setCalEvent}) {
           // logic to search for maching logged data to mark respective section in calander
           let logged
           if(loggedData) {
-            logged = loggedData.find((data)=>{
+            logged = loggedData.filter((data)=>{
               return data.eventDate === `${currCalendar.currWeek[index].year}-${currCalendar.currWeek[index].month}-${currCalendar.currWeek[index].day}`
             });
           } else {
@@ -98,7 +98,7 @@ export default function Calendar({loggedData,setCalEvent}) {
               <p>{day}</p>
               <p>{currCalendar.currWeek[index].day}</p>
             </div>
-            {logged && <DayInformation logged={logged} setCalEvent={setCalEvent}/>}
+            {logged && logged.length > 0 && <DayInformation logged={logged} setCalEvent={setCalEvent}/>}
           </div>
         })}
         </div>

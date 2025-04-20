@@ -19,12 +19,12 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   const [eventModal,setEventModal] = useState(null);
   const [calEvent,setCalEvent] = useState(null);
   //state for filtered data outlining unpaid purchase logs only & their total value
-  const [unpaid,setUnpaid] = useState(null);
+  const [sortedEvents,setSortedEvents] = useState(null);
 
   /* Hooks
   ----------------*/
   //retrieve logged/management data for specific ad if any exists
-  const loggedData = useFetchDocs(db,['sharedUserData',matchUserInfo.id,'matchedAdverts',advert.id,'advertLogs'],["createdAt"]);
+  const loggedData = useFetchDocs(db,['sharedUserData',matchUserInfo.id,'matchedAdverts',advert.id,'advertLogs'],["eventDate",'desc']);
 
 
   /* useEffects
@@ -38,11 +38,15 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
     }
   },[matchUserInfo]);
 
-  //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user
+  //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user for props & display in dom
   useEffect(()=>{
+    console.log(loggedData);
+
     //init filtered data variable & owed cost
-    let loggedInArr = [];
-    let pairedArr = []; 
+    let loggedInUnpaidArr = [];
+    let loggedInPaidArr = [];
+    let pairedUnpaidArr = [];
+    let pairedPaidArr = []; 
 
     //logic to filter loggedData if exists for purchase events that have not been paid
     if(loggedData && sortedUsers) {
@@ -51,30 +55,45 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
         if(data.paid === false) {
           //logic to push unpaid event to correct array for either upaind by logged user or unpaid by paired user
           if(data.eventUser === sortedUsers.loggedIn) {
-            pairedArr.push(data)
+            pairedUnpaidArr.push(data)
           }  else if(data.eventUser === sortedUsers.paired) {
-            loggedInArr.push(data)
+            loggedInUnpaidArr.push(data)
+          }
+        } else if (data.paid === true) {
+          //logic to push unpaid event to correct array for either upaind by logged user or unpaid by paired user
+          if(data.eventUser === sortedUsers.loggedIn) {
+            pairedPaidArr.push(data)
+          }  else if(data.eventUser === sortedUsers.paired) {
+            loggedInPaidArr.push(data)
           }
         }
       })
       
       //Reduce on outstanding payments for logged in and paired user
-      const loggedTotUnpaid = loggedInArr.reduce((acc,curr,index)=>{
+      const loggedTotUnpaid = loggedInUnpaidArr.reduce((acc,curr,index)=>{
         if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
         acc.unpaidIndex = index;
         return acc
       },{ unpaidVal: 0, unpaidIndex: null });
 
-      const pairedTotUnpaid = pairedArr.reduce((acc,curr,index)=>{
+      const pairedTotUnpaid = pairedUnpaidArr.reduce((acc,curr,index)=>{
         if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
         acc.unpaidIndex = index;
         return acc
       },{ unpaidVal: 0, unpaidIndex: null });
 
-      setUnpaid({unpaidLoggedLogs: loggedInArr, 
-                unpaidPairedLogs: pairedArr,
+      //most recent payment for loading to dom
+      const mostRecentPurch = loggedData.find((item)=>{
+        return item.eventType === 'purchase'
+      });
+
+      setSortedEvents({unpaidLoggedLogs: loggedInUnpaidArr,
+                paidLoggedLogs: loggedInPaidArr,
+                unpaidPairedLogs: pairedUnpaidArr,
+                paidPairedLogs: pairedPaidArr,
                 unpaidLoggedTot: loggedTotUnpaid,
-                unpaidPairedTot: pairedTotUnpaid
+                unpaidPairedTot: pairedTotUnpaid,
+                mostRecentPurch: mostRecentPurch
               })
     };
   },[loggedData,sortedUsers]);
@@ -93,32 +112,32 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
         <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
         <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
       </div>
-      <div className='paid-and-purchase-status'>
+      {sortedEvents && <div className='paid-and-purchase-status'>
         <div className='purchase-status'>
-          <p>Who bought last: <span></span></p>
-          <p>Cost: <span></span></p>
-          <p>Paid & delivered:<span></span></p>
+          <p>Who bought last: {sortedEvents.mostRecentPurch.eventUser}</p>
+          <p>Cost: {sortedEvents.mostRecentPurch.purchasePrice}</p>
+          <p>Paid: {sortedEvents.mostRecentPurch.paid === true ? 'Yes' : 'No'}<span></span></p>
         </div>
         <div className='balance-status'>
           <h3>Balance</h3>
-          {unpaid && <div>
+          <div>
             <div>
               <p>{sortedUsers.loggedIn}</p>
-              <p>£{unpaid.unpaidLoggedTot.unpaidVal}</p>
+              <p>£{sortedEvents.unpaidLoggedTot.unpaidVal}</p>
             </div>
             <div>
               <p>{sortedUsers.paired}</p>
-              <p>£{unpaid.unpaidPairedTot.unpaidVal}</p>
+              <p>£{sortedEvents.unpaidPairedTot.unpaidVal}</p>
             </div>
-          </div>}
+          </div>
         </div>
-      </div>
+      </div>}
       <Calendar loggedData={loggedData} setCalEvent={setCalEvent}/>
       <div className='advert-info-ammend'>
         <button>End agreement</button>
       </div>
-      {eventModal && <LogEventModal user={user} unpaid={unpaid} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
-      {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent}/>}
+      {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
+      {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
     </div>
   )
 };

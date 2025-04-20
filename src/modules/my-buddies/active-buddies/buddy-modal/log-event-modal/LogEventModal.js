@@ -1,12 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState,useContext} from 'react'
 import {db} from '../../../../../firebase/config';
+import {ContextUser} from '../../../../../context/ContextUser';
 import useAddDoc from '../../../../../hooks/useAddDoc';
 import PurchaseForm from './PurchaseForm';
 import PaymentForm from './PaymentForm';
 import useUpdateDocs from '../../../../../hooks/useUpdateDocs';
 
-export default function LogEventModal({unpaid,eventType,setEventModal,uploadPath,user}) {
+export default function LogEventModal({advert,sortedEvents,eventType,setEventModal,uploadPath}) {
     //uplaodPathIds need to be set in following format for use in uplaodEvent hook: {sharedData:'',advert:''}
+
+    // context for user
+    const user = useContext(ContextUser);
 
     // State for use in firebase hooks to upload new data based on form
     const [uploadObj,setUploadObj] = useState(null);
@@ -55,8 +59,8 @@ export default function LogEventModal({unpaid,eventType,setEventModal,uploadPath
                     <h2>Log {eventType}</h2>
                     <button className='close-modal' onClick={()=>{setEventModal(null)}}>x</button>
             </div>
-        {eventType === 'purchase' && <PurchaseForm user={user} setUploadObj={setUploadObj} setFormError={setFormError}/>}
-        {eventType === 'payment' && <PaymentForm unpaid={unpaid} setUpdateObj={setUpdateObj}/>}
+        {eventType === 'purchase' && <PurchaseForm advert={advert} setUploadObj={setUploadObj} setFormError={setFormError}/>}
+        {eventType === 'payment' && <PaymentForm sortedEvents={sortedEvents} setUpdateObj={setUpdateObj}/>}
         {formError && <p>Please fill in all inputs</p>}
         </div>
     </div>

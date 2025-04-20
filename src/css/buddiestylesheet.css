@@ -253,6 +253,7 @@
     display: grid;
     grid-template-columns: repeat(7,1fr);
     width:100%;
+    min-height: 60%;
     height: 60%;
 }
 
@@ -261,6 +262,8 @@
     flex-direction: column;
     justify-content: flex-start;
     border: solid 0.2px;
+    height: 90%;
+    overflow: hidden;
 }
 
 .calendar .calendar-elements .calendar-day .day-date {
@@ -280,12 +283,15 @@
 .calendar .calendar-elements .calendar-day .logged-event {
     font-size:small;
     padding: 0;
-    margin: 5%;
+    margin: 5% 2% 0% 2%;
     border-radius: 5%;
+    text-overflow: ellipsis;
+    white-space: wrap;
+    overflow: hidden;
 }
 
 .calendar .calendar-elements .calendar-day .logged-event:hover {
-    border: solid 0.1px rgba(255, 255, 255, 0.234);
+    border: solid 0.1px rgba(255, 255, 255, 0);
     border-radius: 5%;
 }
 

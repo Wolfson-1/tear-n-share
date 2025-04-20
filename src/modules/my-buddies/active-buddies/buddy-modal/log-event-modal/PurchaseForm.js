@@ -1,7 +1,11 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useContext} from 'react'
+import {ContextUser} from '../../../../../context/ContextUser';
 import * as formHandlingUtils from '../../../../../utils/formHandlingUtils';
 
-export default function PurchaseForm({ user,setUploadObj,setFormError}) {
+export default function PurchaseForm({advert,setUploadObj,setFormError}) {
+
+    // context for user
+    const user = useContext(ContextUser);
 
     /* State
     ----------------------*/
@@ -20,6 +24,15 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
                 const {diffReasoning, ...rest} = current;
                 return rest;
             });
+        }
+
+        if(formData.store !== 'other' && formData.storeReasoning){
+            //desructure current object in setFormData to remove diffReasoning key
+            setFormData(current => {
+                // remove cost key from object
+                const {storeReasoning, ...rest} = current;
+                return rest;
+            })
         }
     },[formData]);
 
@@ -58,6 +71,10 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
   return (
     <form className='log-event-form purchase'>
         <label>
+            Brief Purchase Description
+            <input id='purchaseDesc' type='text' checked={formData.purchaseDesc} onChange={(e) => {formHandlingUtils.onChangeHandle(e,formData,setFormData)}}></input>
+        </label>
+        <label>
             Purchase different from advert specifications?
             <input id='purchaseDiff' type='checkbox' checked={formData.purchaseDiff} onChange={(e) => {
                                                                                                         formHandlingUtils.onChangeHandle(e,formData,setFormData)
@@ -69,6 +86,27 @@ export default function PurchaseForm({ user,setUploadObj,setFormError}) {
             <input id='diffReasoning' type='text' value={formData.diffReasoning} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>
         }
+        <label>
+        Store
+        <select
+            id="store"
+            selected='null'
+            value={formData.store}
+            onChange={(e) => {
+               formHandlingUtils.onChangeHandle(e,formData,setFormData);
+            }}>
+            <option value="" selected disabled hidden>Choose store</option>
+            {advert.stores.map((store)=>{
+                return <option value={store}>{store}</option>
+            })}
+            <option value="other">Other</option>
+        </select>
+        </label>
+        {formData.store === 'other' && 
+        <label>
+        Reasoning For Different Store
+        <input id='storeReasoning' type='text' value={formData.storeReasoning} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
+        </label>}
         <label>
             {`Price (£)`}
             <input id='purchasePrice' type='number' min="0.01" step="0.01" value={formData.purchasePrice} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>

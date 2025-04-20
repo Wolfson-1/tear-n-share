@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-export default function PaymentForm({unpaid,setUpdateObj}) {
-
-    console.log(unpaid);
+export default function PaymentForm({sortedEvents,setUpdateObj}) {
 
     /* useState 
     --------------------- */
     //create a new arr with a false boolen value & evenr id for us in form data & tracking of which ones user want to mark as paid
-    const [formData,setFormData] = useState(unpaid.unpaidLoggedLogs.map(()=>{return false}));
+    const [formData,setFormData] = useState(sortedEvents.unpaidLoggedLogs.map(()=>{return false}));
     //state for total value of those checked as paid
     const [checkedTotal,setCheckedTotal] = useState(0);
 
@@ -19,10 +17,10 @@ export default function PaymentForm({unpaid,setUpdateObj}) {
         //logic change
         if(newArr[index] === true) {
             newArr[index] = false
-            setCheckedTotal(checkedTotal - Number(unpaid.unpaidLoggedLogs[index].purchasePrice))
+            setCheckedTotal(checkedTotal - Number(sortedEvents.unpaidLoggedLogs[index].purchasePrice))
         } else if (newArr[index] === false) {
             newArr[index] = true
-            setCheckedTotal(checkedTotal + Number(unpaid.unpaidLoggedLogs[index].purchasePrice))
+            setCheckedTotal(checkedTotal + Number(sortedEvents.unpaidLoggedLogs[index].purchasePrice))
         }
 
         setFormData(newArr);
@@ -45,7 +43,7 @@ export default function PaymentForm({unpaid,setUpdateObj}) {
 
         //if checked exists execute upload of ids to have status changed & what is to be changed 
         if(checkedExists) {
-            unpaid.unpaidLoggedLogs.forEach((item,index) =>{
+            sortedEvents.unpaidLoggedLogs.forEach((item,index) =>{
                 if(formData[index] === true) checkedIdsArr.push(item.id);
             })
         };
@@ -55,8 +53,8 @@ export default function PaymentForm({unpaid,setUpdateObj}) {
 
     return (
     <form className='log-event-form payment'> 
-        <p>Total Marked As Paid:£{checkedTotal}</p>
-        {unpaid.unpaidLoggedLogs.length > 0 ? unpaid.unpaidLoggedLogs.map((data,index)=>{
+        {sortedEvents.unpaidLoggedLogs.length > 0 && <p>Total Marked As Paid:£{checkedTotal}</p>}
+        {sortedEvents.unpaidLoggedLogs.length > 0 ? sortedEvents.unpaidLoggedLogs.map((data,index)=>{
             return <label>
             <p>Date: {data.purchaseDate}</p>    
             <p>Price: £{data.purchasePrice}</p>
