@@ -28,28 +28,30 @@ export default function useSetNewMatch(user,receivedRequests) {
     //state for creating new shared user object 
     const [sharedUserObj,setSharedUserObj] = useState(null);
     //state for requests to delete on completion of addition or rejection
-    const [requestDelete,setRequestDelete] = useState(null);
-    const [deletePath,setDeletePath] = useState(null);
+    const [deleteObj,setDeleteObj] = useState({request:[],advert:[]});
 
     /* hooks 
     --------------- */
 
-    //fetch existing advert linked to filtered request when adId state is set 
+    //hooks for existing advert linked to request to fetch data when adId state is set. 
     const fetchAdvert = useFetchDoc(db,['userData',user.userUid,'adverts'],changedRequest.adId);
     //fetch existing buddy pairing between logged user and requester if exists
     const currentBuddys = useFetchDocs(db,['userData',user.userUid,'activeBuddies'],["createdAt"]);
-    //addDoc hooks to create new matched user, if id doesnt already exist, in 'activeBuddies' including matched ad data
+    
+    //addDoc hooks to create new matched user, if one doesnt already exist, in 'activeBuddies' including matched ad data
     const addBuddyUser = useAddSubDoc(newBuddyUser,fetchAdvert,db,['userData',user.userUid,'activeBuddies'],'matchedAdverts',custBuddyId,custAdId);
     const addBuddyRequester = useAddSubDoc(newBuddyRequester,fetchAdvert,db,['userData',requestUserId,'activeBuddies'],'matchedAdverts',custBuddyId,custAdId);
+    //Shared data object between users for chat, purchase tracking etc when no existing match currently existing. 
+    const addSharedUserData = useAddSubDoc(sharedUserObj,fetchAdvert,db,['sharedUserData'],'matchedAdverts',custBuddyId,custAdId);
+    
     //addDocs to create new advert link for an existing match
     const addAdvertUser = useAddDoc(adDataExisting,db,['userData',user.userUid,'activeBuddies',existingBuddyId,'matchedAdverts'],custAdId);
     const addAdvertRequester = useAddDoc(adDataExisting,db,['userData',requestUserId,'activeBuddies',existingBuddyId,'matchedAdverts'],custAdId);
     const addAdvertSharedObj = useAddDoc(adDataExisting,db,['sharedUserData',existingBuddyId,'matchedAdverts'],custAdId);
-    //addDocs for shared data object between users for chat, purchase tracking etc. 
-    const addSharedUserData = useAddSubDoc(sharedUserObj,fetchAdvert,db,['sharedUserData'],'matchedAdverts',custBuddyId,custAdId);
-    
+
     //delete hook for removing requests after accept/reject & after user removes
-    useDeleteDoc(requestDelete,db,deletePath);
+    const deleteRequest = useDeleteDoc(deleteObj.request,db,['userData',user.userUid,'receivedRequests']);
+    const deleteAdvert = useDeleteDoc(deleteObj.advert,db,['userData',user.userUid,'adverts']);
 
     /* useEffects 
     -----------------*/
@@ -104,7 +106,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                                 matchedUserUid: changeRequest.requestUserId,
                                 status:'active'
                             });
-                            setNewBuddyRequester({adId:changeRequest.adId,
+                            setNewBuddyRequester({
                                 displayName: user.displayName,
                                 distance: changeRequest.distance,
                                 buddySince: buddySince,
@@ -131,7 +133,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                             matchedUserUid: changeRequest.requestUserId,
                             status:'active'
                         });
-                        setNewBuddyRequester({adId:changeRequest.adId,
+                        setNewBuddyRequester({
                             displayName: user.displayName,
                             distance: changeRequest.distance,
                             buddySince: buddySince,
@@ -146,8 +148,6 @@ export default function useSetNewMatch(user,receivedRequests) {
                         });
                     };
                 }
-                setDeletePath(['userData',user.userUid,'receivedRequests'])
-                setRequestDelete([changeRequest.id]);
             };
         }
     },[receivedRequests]);
@@ -159,25 +159,32 @@ export default function useSetNewMatch(user,receivedRequests) {
         
         // sets data for addition to existing match pairing (know if existing buddy id is set)
         if(fetchAdvert && existingBuddyId) {
-            setAdDataExisting([fetchAdvert])
+            setAdDataExisting([fetchAdvert]);
         };
     },[fetchAdvert])
 
     //check for when update request objects are complete to clear out state ready for next request
     useEffect(() => {  
-        // clear state for creating new matched user
-        if(addBuddyUser.isComplete === true && addBuddyRequester.isComplete === true) {
+        // clear state for creating new matched user once completed
+        if(addBuddyUser.isComplete === true && addBuddyRequester.isComplete === true && addSharedUserData.isComplete === true) {
+          //set delete for advert and request on completion 
+          setDeleteObj({advert:[changedRequest.adId],request:[changedRequest.id]});
+
+          //clear state
           setNewBuddyUser(null);
           setNewBuddyRequester(null);
           setExistingBuddyId(null);
+          setSharedUserObj(null);
         }
 
+        // clear state for creating new match for an existing user once completed
         if(addAdvertUser.isComplete === true && addAdvertRequester.isComplete === true && addAdvertSharedObj.isComplete === true) {
-            setExistingBuddyId(null);
-        }
+            //set delete for advert and request on completion 
+            setDeleteObj({advert:[changedRequest.adId],request:[changedRequest.id]});
 
-        if(addSharedUserData.isComplete === true) {
-            sharedUserObj(null);
-        }
+            //clear state
+            setExistingBuddyId(null);
+            setAdDataExisting(null);
+        };
       },[addBuddyUser.isComplete,addBuddyRequester.isComplete,addAdvertUser.isComplete,addAdvertRequester.isComplete,addAdvertSharedObj.isComplete,addSharedUserData.isComplete])
 };

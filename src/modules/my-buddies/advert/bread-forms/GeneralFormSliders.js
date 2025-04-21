@@ -6,7 +6,7 @@ export default function GeneralFormSliders({formData,setFormData}) {
   return (
     <>
     <label>
-        Bread Split %
+        {`Bread % & Cost Split (you want):`}
         <input type="range" step='25' min="25" max="75" value={formData.breadSplit} list='splitValues' id='breadSplit' onChange={(e) => {
                                                                                                       formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>
@@ -18,7 +18,7 @@ export default function GeneralFormSliders({formData,setFormData}) {
         </label>
 
         <label>
-        How Often Needed per week
+        How Often Needed per week:
         <input type="range" min="1" max="4" value={formData.breadFrequency} list='freqValues' id='breadFrequency' onChange={(e) => {
                                                                                                     formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>
@@ -31,7 +31,7 @@ export default function GeneralFormSliders({formData,setFormData}) {
         </label>
 
         <label>
-        Max Price £
+        {`Max Total Price (£)`}
         <input type="range" step='0.05' min="0.00" max="5.00" value={formData.breadSpend} id='breadSpend' list='spendValues' onChange={(e) => {
                                                                                                     formHandlingUtils.onChangeHandle(e,formData,setFormData);
                                                                                                     }}/>

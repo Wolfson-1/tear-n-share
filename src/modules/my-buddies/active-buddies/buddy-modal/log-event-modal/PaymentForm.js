@@ -5,7 +5,7 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
     /* useState 
     --------------------- */
     //create a new arr with a false boolen value & evenr id for us in form data & tracking of which ones user want to mark as paid
-    const [formData,setFormData] = useState(sortedEvents.unpaidLoggedLogs.map(()=>{return false}));
+    const [formData,setFormData] = useState(sortedEvents ? sortedEvents.unpaidLoggedLogs.map(()=>{return false}): null);
     //state for total value of those checked as paid
     const [checkedTotal,setCheckedTotal] = useState(0);
 
@@ -52,7 +52,8 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
     };
 
     return (
-    <form className='log-event-form payment'> 
+    <>
+    {sortedEvents ? <form className='log-event-form payment'> 
         {sortedEvents.unpaidLoggedLogs.length > 0 && <p>Total Marked As Paid:£{checkedTotal}</p>}
         {sortedEvents.unpaidLoggedLogs.length > 0 ? sortedEvents.unpaidLoggedLogs.map((data,index)=>{
             return <label>
@@ -63,6 +64,8 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
         }) : 
         <p>you are all paid up!</p>}
         <input type='submit' value='Mark as paid' onClick={markAsPaid}></input>
-    </form>
+    </form> : 
+    <div>No purchases or payments logged, yet..</div>}
+    </>
   )
 }

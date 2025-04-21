@@ -54,9 +54,11 @@ export default function EventModal({event,setCalEvent,sortedEvents}) {
             <p>Event Logged by: {event.eventUser}</p>
         </div>
         {event.eventType === 'purchase' && <div className='event-specific'>
-            <p>Price Purchase: £{event.purchasePrice}</p>
-            <p>Does Price Exceed Agreed Purchase Limit?: {event.purchaseDiff ? 'Yes' : 'No'}</p>
-            {event.purchaseDiff &&<p>Price Difference Reasoning: {event.diffReasoning}</p>}
+            <p>Purchase Price: £{event.purchasePrice}</p>
+            <p>Purchase Store: {event.store}</p>
+            {event.store === 'other' && <p>Different Store Reasoning:{event.storeReasoning}</p>}
+            <p>Does Purchase Differ from Purchase Advert specification?: {event.purchaseDiff ? 'Yes' : 'No'}</p>
+            {event.purchaseDiff &&<p>Difference & Reasoning: {event.diffReasoning}</p>}
             <p> Event Status: {event.paid ? 'Paid' : 'Unpaid'}</p>
         </div>}
         {event.eventType === 'payment' && <div>

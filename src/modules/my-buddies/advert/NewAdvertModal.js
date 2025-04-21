@@ -97,7 +97,7 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
         if(error === true) return;
 
         // if formError is false after checks, set state of new Advert to be added to database
-        advertId ? setUpdateData(formData) : setUploadData([formData]);
+        advertId ? setUpdateData(formData) : setUploadData([{...formData,adOwner:user.userUid}]);
     };
 
   return (

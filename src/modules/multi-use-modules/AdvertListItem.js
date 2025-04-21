@@ -8,7 +8,7 @@ export default function AdvertListItem({advert,focusProfile,requestEventHandler}
 const user = useContext(ContextUser);
 
 // fetch existing request if request already sent
-const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);;
+const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);
 
  return (
 <div className='bread-advert'>
@@ -23,12 +23,17 @@ const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequ
         </div>
         {advert.reduced === true ? <span>Reduced</span> : null}
     </div>
-    {existingRequest ? <p>Requested</p> : 
-    <button onClick={() => {
+    {existingRequest ?
+        <>
+            {existingRequest[0].status === 'pending' && <p>Requested</p>}
+            {existingRequest[0].status === 'rejected' && <p>Rejected</p>}
+        </> 
+        : <button onClick={() => {
         requestEventHandler(user,focusProfile,advert,[focusProfile.id,'receivedRequests']);    
         }}>
-        Request
-    </button>}
+            Request
+        </button>
+    }
 </div>
   )
 };

@@ -112,7 +112,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
         <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
         <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
       </div>
-      {sortedEvents && <div className='paid-and-purchase-status'>
+      {sortedEvents ? <div className='paid-and-purchase-status'>
         <div className='purchase-status'>
           <p>Who bought last: {sortedEvents.mostRecentPurch.eventUser}</p>
           <p>Cost: {sortedEvents.mostRecentPurch.purchasePrice}</p>
@@ -131,6 +131,10 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
             </div>
           </div>
         </div>
+      </div>
+      :
+      <div>
+        Log events to see tracking stats.
       </div>}
       <Calendar loggedData={loggedData} setCalEvent={setCalEvent}/>
       <div className='advert-info-ammend'>

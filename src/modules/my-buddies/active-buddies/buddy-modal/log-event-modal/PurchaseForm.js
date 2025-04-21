@@ -82,8 +82,9 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
         </label>
         {formData.purchaseDiff === true && 
         <label>
-            Why?
-            <input id='diffReasoning' type='text' value={formData.diffReasoning} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
+            Explain Difference & Reasoning
+            <input id='diffReasoning' type='text' value={formData.diffReasoning} onChange={(e) => 
+                                                                            formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>
         }
         <label>
