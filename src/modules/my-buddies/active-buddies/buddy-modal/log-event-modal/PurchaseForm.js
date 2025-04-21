@@ -11,6 +11,7 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
     ----------------------*/
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({eventDate:'',purchaseDiff:false, purchasePrice:''});
+    const [costRatio,setCostRatio] = useState(null);
 
     /*useEffect
     ---------------------*/
@@ -24,7 +25,7 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
                 const {diffReasoning, ...rest} = current;
                 return rest;
             });
-        }
+        };
 
         if(formData.store !== 'other' && formData.storeReasoning){
             //desructure current object in setFormData to remove diffReasoning key
@@ -33,8 +34,30 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
                 const {storeReasoning, ...rest} = current;
                 return rest;
             })
-        }
+        };
     },[formData]);
+
+    useEffect(()=>{ 
+        if(formData.purchasePrice) {
+            let eventOwnerCost;
+            let pairedUserCost;
+             //cost split ratio from advert info
+            const adOwnerCostSplit = advert.breadSplit * 0.01
+            const pairedUserCostSplit = (100 - advert.breadSplit) * 0.01
+            
+            //if logic for matching correct cost allocation to each user (check if adOwner Id matches event Owner id)
+            if(user.userUid === advert.adOwnerId) {
+                eventOwnerCost = formData.purchasePrice * adOwnerCostSplit;
+                pairedUserCost = formData.purchasePrice * pairedUserCostSplit;
+            } else if (user.userUid !== advert.adOwnerId) {
+                eventOwnerCost = formData.purchasePrice * pairedUserCostSplit;
+                pairedUserCost = formData.purchasePrice * adOwnerCostSplit;
+            };
+
+            //set cost ratio state
+            setCostRatio({eventOwner:eventOwnerCost.toFixed(2),pairedUser:pairedUserCost.toFixed(2)});
+        }
+    },[formData.purchasePrice])
 
       /* Form handling
     -----------------------*/
@@ -64,6 +87,7 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
                     eventUser:user.displayName, 
                     eventUserId:user.userUid,
                     paid:false,
+                    costRatio:costRatio,
                      ...formData}]);
     };
 
@@ -112,6 +136,11 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
             {`Price (£)`}
             <input id='purchasePrice' type='number' min="0.01" step="0.01" value={formData.purchasePrice} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>
+        {costRatio && <div>
+            <p>Paid by you: £{user.userUid === advert.adOwner ? costRatio.pairedUser : costRatio.eventOwner}</p>
+            <p>You Will Be Owed: £{user.userUid === advert.adOwner ? costRatio.eventOwner : advert.pairedUser}</p>
+            <p>Based on the agreed sharing split at {advert.breadSplit}%</p>
+        </div>}
         <label>
             Date Purchased
             <input id='eventDate' type='date' value={formData.eventDate} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>

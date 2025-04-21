@@ -17,10 +17,10 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
         //logic change
         if(newArr[index] === true) {
             newArr[index] = false
-            setCheckedTotal(checkedTotal - Number(sortedEvents.unpaidLoggedLogs[index].purchasePrice))
+            setCheckedTotal(checkedTotal - Number(sortedEvents.unpaidLoggedLogs[index].costRatio.pairedUser))
         } else if (newArr[index] === false) {
             newArr[index] = true
-            setCheckedTotal(checkedTotal + Number(sortedEvents.unpaidLoggedLogs[index].purchasePrice))
+            setCheckedTotal(checkedTotal + Number(sortedEvents.unpaidLoggedLogs[index].costRatio.pairedUser))
         }
 
         setFormData(newArr);
@@ -59,6 +59,7 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
             return <label>
             <p>Date: {data.purchaseDate}</p>    
             <p>Price: £{data.purchasePrice}</p>
+            <p>You Owe: £{data.costRatio.pairedUser}</p>
             <input type='checkbox' checked={formData[index].checked} onChange={()=>{checked(index)}}></input>
             </label>
         }) : 

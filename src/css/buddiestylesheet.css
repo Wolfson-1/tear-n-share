@@ -305,7 +305,7 @@
 --------------------------------------------------------*/
 
 .modal-form-container.log-event-modal {
-    height: 50%;
+    height: auto;
     border: solid white 3px;
 }
 

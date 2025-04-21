@@ -71,13 +71,13 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       
       //Reduce on outstanding payments for logged in and paired user
       const loggedTotUnpaid = loggedInUnpaidArr.reduce((acc,curr,index)=>{
-        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
+        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.costRatio.pairedUser);
         acc.unpaidIndex = index;
         return acc
       },{ unpaidVal: 0, unpaidIndex: null });
 
       const pairedTotUnpaid = pairedUnpaidArr.reduce((acc,curr,index)=>{
-        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.purchasePrice);
+        if(curr.paid === false) acc.unpaidVal+=parseFloat(curr.costRatio.pairedUser);
         acc.unpaidIndex = index;
         return acc
       },{ unpaidVal: 0, unpaidIndex: null });
