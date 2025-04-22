@@ -5,6 +5,7 @@ import Calendar from './Calendar';
 import useFetchDocs from '../../../../hooks/useFetchDocs';
 import LogEventModal from './log-event-modal/LogEventModal';
 import EventModal from './EventModal';
+import DeleteModal from './DeleteModal';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
@@ -20,6 +21,9 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   const [calEvent,setCalEvent] = useState(null);
   //state for filtered data outlining unpaid purchase logs only & their total value
   const [sortedEvents,setSortedEvents] = useState(null);
+  //state for activating delete ad modal
+  const [deleteModal,setDeleteModal] = useState(null);
+  const [deleteAd,setDeleteAd] = useState(null);
 
   /* Hooks
   ----------------*/
@@ -138,10 +142,11 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       </div>}
       <Calendar loggedData={loggedData} setCalEvent={setCalEvent}/>
       <div className='advert-info-ammend'>
-        <button>End agreement</button>
+        <button onClick={()=>setDeleteModal(true)}>End agreement</button>
       </div>
       {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
+      {deleteModal && <DeleteModal setDelete={setDeleteAd} setDeleteModal={setDeleteModal} adId={advert.id}/>}
     </div>
   )
 };
