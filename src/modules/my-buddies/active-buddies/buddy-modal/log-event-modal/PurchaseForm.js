@@ -15,7 +15,7 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
 
     /*useEffect
     ---------------------*/
-    //to clear out diffReasoning value if user unchecks the purchase difference checkbox after previously checking it & inputing values for diffReasoning
+    //to clear out conditional values if user changes inputs that conditional field values are dependant on.
     useEffect(()=>{
         //if logic to clear reasoning field if purchase diff was ticked as true then user changes this to false.
         if(formData.purchaseDiff === false && formData.diffReasoning) {
@@ -35,6 +35,15 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
                 return rest;
             })
         };
+
+        if(formData.purchasePrice <= advert.breadSpend && formData.overPriceReasoning) {
+            //desructure current object in setFormData to remove diffReasoning key
+            setFormData(current => {
+                // remove cost key from object
+                const {overPriceReasoning, ...rest} = current;
+                return rest;
+            })
+        }
     },[formData]);
 
     useEffect(()=>{ 
@@ -75,11 +84,17 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
             }
         };
 
-        //If error is true, set formError for display in dom and return.
+        //check date for if in the future compared to current date
+        const checkDate = formHandlingUtils.confDateNotFuture(formData.eventDate);
+
+        //If error is true for either submit or check date, set formError for display in dom and return.
         if(submitError === true) {
-            setFormError(true);
+            setFormError('Please fill in all inputs');
             return;
-        }
+        }if(checkDate === true) {
+            setFormError('Date of event cant be in future');
+            return;
+        };
 
         //set formData for upload including user data for who logged event
         setUploadObj([{
@@ -129,23 +144,27 @@ export default function PurchaseForm({advert,setUploadObj,setFormError}) {
         </label>
         {formData.store === 'other' && 
         <label>
-        Reasoning For Different Store
+        Provid Explination For Use Of Different Store:
         <input id='storeReasoning' type='text' value={formData.storeReasoning} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>}
         <label>
             {`Price (£)`}
             <input id='purchasePrice' type='number' min="0.01" step="0.01" value={formData.purchasePrice} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
         </label>
+        {formData.purchasePrice > Number(advert.breadSpend) && <label>
+            Price Exceeds Max Agreed Price. Provide Explination:
+            <input id='overPriceReason' type='text' value={formData.overPriceReason} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
+        </label>}
         {costRatio && <div>
             <p>Paid by you: £{user.userUid === advert.adOwner ? costRatio.pairedUser : costRatio.eventOwner}</p>
-            <p>You Will Be Owed: £{user.userUid === advert.adOwner ? costRatio.eventOwner : advert.pairedUser}</p>
+            <p>You Will Be Owed: £{user.userUid === advert.adOwner ? costRatio.eventOwner : costRatio.pairedUser}</p>
             <p>Based on the agreed sharing split at {advert.breadSplit}%</p>
         </div>}
         <label>
             Date Purchased
-            <input id='eventDate' type='date' value={formData.eventDate} onChange={(e) => formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
+            <input id='eventDate' type='date' value={formData.eventDate} onChange={(e) => {formHandlingUtils.onChangeHandle(e,formData,setFormData)}}></input>
         </label>
         <input onClick={handleSubmit} type='submit'></input>
     </form>
   )
-}
+};

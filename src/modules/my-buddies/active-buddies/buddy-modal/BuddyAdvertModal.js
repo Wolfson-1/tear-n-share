@@ -105,7 +105,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
           <p>Bread Type: <span>{advert.breadType}</span></p>
           <p>loaf Type: <span>{advert.loafType}</span></p>
           <p>Split: <span>{advert.breadSplit}%</span></p>
-          <p>Spend: <span>£{advert.breadSpend}</span></p>
+          <p>Max Spend: <span>£{advert.breadSpend}</span></p>
           <p>Reduced: <span>{advert.reduced ? 'Yes': 'No'}</span></p>
       </div>
       <div className='log-activity'>

@@ -61,7 +61,7 @@ export default function LogEventModal({advert,sortedEvents,eventType,setEventMod
             </div>
         {eventType === 'purchase' && <PurchaseForm advert={advert} setUploadObj={setUploadObj} setFormError={setFormError}/>}
         {eventType === 'payment' && <PaymentForm sortedEvents={sortedEvents} setUpdateObj={setUpdateObj}/>}
-        {formError && <p>Please fill in all inputs</p>}
+        {formError && <p>{formError}</p>}
         </div>
     </div>
   )
