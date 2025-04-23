@@ -45,7 +45,7 @@ export default function useUpdateDoc(updateObj,database,path,filter) {
             //if filter doesnt exist fetch doc to be updated using document path only
             } else if(!filter) {
                 const docRef = doc(database,...path);
-
+                console.log(docRef);
                 await updateDoc(docRef, {
                     ...updateObj
                 });

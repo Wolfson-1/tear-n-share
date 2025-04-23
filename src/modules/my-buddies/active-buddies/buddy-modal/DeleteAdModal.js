@@ -12,16 +12,18 @@ import React, { useState, useEffect } from 'react'
     //if deleteCheck is still false, return/dont execute code 
     if(deleteCheck === false) return;
 
-    //if logic to verify if loggedUser or paird user have unpaid events left. set state to show this in dom and return out of function;
-    if(sortedEvents.unpaidLoggedLogs.length > 0) {
-      setDeleteError('loggedPayments');
-      setDeleteCheck(false);
-      return;
-    } else if(sortedEvents.unpaidPairedLogs.length > 0) { //if logged user is owed money prompt to make sure they are aware before proceeding
-      setDeleteError(`pairedPayments`);
-      setDeleteCheck(false);
-      return;
-    } 
+    //if logic to verify if loggedUser or paird user have unpaid events left if events have been logged. set state to show this in dom and return out of function;
+    if(sortedEvents) {
+      if(sortedEvents.unpaidLoggedLogs.length > 0) {
+        setDeleteError('loggedPayments');
+        setDeleteCheck(false);
+        return;
+      } else if(sortedEvents.unpaidPairedLogs.length > 0) { //if logged user is owed money prompt to make sure they are aware before proceeding
+        setDeleteError(`pairedPayments`);
+        setDeleteCheck(false);
+        return;
+      }
+    };
 
     //if checks are complete and not triggered. set adId for deletion. 
     setDelete([adId]);

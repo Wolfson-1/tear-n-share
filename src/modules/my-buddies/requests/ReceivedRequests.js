@@ -3,7 +3,7 @@ import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
-import useSetNewMatch2 from '../../../hooks/useSetNewMatch2';
+import useSetNewMatch from '../../../hooks/useSetNewMatch';
 
 export default function ReceivedRequests({user}) {
 
@@ -27,7 +27,7 @@ export default function ReceivedRequests({user}) {
     const updateSent = useUpdateDoc(request,db,['userData',senderId,'sentRequests'],['adId','==',adId]);
 
     //hook to update new buddy match if one doesnt exist, and create new advert match
-    useSetNewMatch2(user,receivedRequests);
+    useSetNewMatch(user,receivedRequests);
 
     /* useEffects 
     -----------------*/

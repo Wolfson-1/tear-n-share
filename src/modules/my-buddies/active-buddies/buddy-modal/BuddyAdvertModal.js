@@ -7,6 +7,8 @@ import LogEventModal from './log-event-modal/LogEventModal';
 import EventModal from './EventModal';
 import DeleteAdModal from './DeleteAdModal';
 import useDeleteDoc from '../../../../hooks/useDeleteDoc';
+import useUpdateDoc from '../../../../hooks/useUpdateDoc';
+import { isCompositeComponent } from 'react-dom/test-utils';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
@@ -31,7 +33,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   //retrieve logged/management data for specific ad if any exists
   const loggedData = useFetchDocs(db,['sharedUserData',matchUserInfo.id,'matchedAdverts',advert.id,'advertLogs'],["eventDate",'desc']);
   //delete hook to remove ad if user choses to end agreement
-  const deleteAd = useDeleteDoc(deleteAdId,db,['sharedUser',matchUserInfo.id,'matchedAdverts']);
+  const deleteAd = useDeleteDoc(deleteAdId,db,['sharedUserData',matchUserInfo.id,'matchedAdverts']);
 
   /* useEffects
   ----------------*/
@@ -46,7 +48,6 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
   //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user for props & display in dom
   useEffect(()=>{
-    console.log(loggedData);
 
     //init filtered data variable & owed cost
     let loggedInUnpaidArr = [];
@@ -56,6 +57,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
     //logic to filter loggedData if exists for purchase events that have not been paid
     if(loggedData && sortedUsers) {
+      console.log(sortedUsers);
       loggedData.forEach((data)=>{
         //logic to continue only if paid status is false (currently unpaid)
         if(data.paid === false) {
@@ -103,6 +105,14 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
               })
     };
   },[loggedData,sortedUsers]);
+
+  //isComplete cleanup useEffect after hooks finish
+  useEffect(()=>{
+    if(deleteAd.isComplete === true) {
+      setDeleteAdId(null);
+      setManageAd(null);
+    }
+  },[deleteAd]);
 
   return (
     <div className='buddy-modal-manageAd'>
