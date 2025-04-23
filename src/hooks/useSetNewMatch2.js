@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {db} from '../firebase/config';
 import useAddSubDoc from './useAddSubDoc';
 import useFetchDoc from './useFetchDoc';
@@ -11,8 +11,8 @@ import useUpdateDoc from './useUpdateDoc';
 export default function useSetNewMatch2(user,receivedRequests) {
 
     //customID for buddy & advert objects so these are the same for logged in and requesting user when created 
-    const custBuddyId = uuidv4();
-    const custAdId = uuidv4();
+    const buddyIdRef = useRef(uuidv4());
+    const adIdRef = useRef(uuidv4());
 
     /* State
     --------------- */
@@ -41,16 +41,16 @@ export default function useSetNewMatch2(user,receivedRequests) {
     const currentBuddys = useFetchDocs(db,['userData',user.userUid,'activeBuddies'],["createdAt"]);
     
     //addDoc hooks to create new matched user, if one doesnt already exist, in 'activeBuddies'. 
-    const addBuddyUser = useAddDoc(newBuddyUser,db,['userData',user.userUid,'activeBuddies'],custBuddyId);
-    const addBuddyRequester = useAddDoc(newBuddyRequester,db,['userData',requestUserId,'activeBuddies'],custBuddyId);
+    const addBuddyUser = useAddDoc(newBuddyUser,db,['userData',user.userUid,'activeBuddies'],buddyIdRef.current);
+    const addBuddyRequester = useAddDoc(newBuddyRequester,db,['userData',requestUserId,'activeBuddies'],buddyIdRef.current);
 
     //Shared data object between users for chat, purchase tracking etc when no existing match currently existing. 
-    const addSharedUserData = useAddSubDoc(sharedUserObj,fetchAdvert,db,['sharedUserData'],'matchedAdverts',custBuddyId,custAdId);
+    const addSharedUserData = useAddSubDoc(sharedUserObj,fetchAdvert,db,['sharedUserData'],'matchedAdverts',buddyIdRef.current,adIdRef.current);
 
     //addDocs to create new advert link for an existing match & add the adID to current matched user's advert arr in user docs
-    const updateAdvertUser = useUpdateDoc(updateObj,['userData',user.userUid,'activeBuddies',existingBuddyId]);
-    const updateAdvertRequester = useUpdateDoc(updateObj,['userData',requestUserId,'activeBuddies',existingBuddyId]);
-    const addAdvertSharedObj = useAddDoc(adDataExisting,db,['sharedUserData',existingBuddyId,'matchedAdverts'],custAdId);
+    const updateAdvertUser = useUpdateDoc(updateObj,db,['userData',user.userUid,'activeBuddies',existingBuddyId]);
+    const updateAdvertRequester = useUpdateDoc(updateObj,db,['userData',requestUserId,'activeBuddies',existingBuddyId]);
+    const addAdvertSharedObj = useAddDoc(adDataExisting,db,['sharedUserData',existingBuddyId,'matchedAdverts'],adIdRef.current);
 
     //delete hook for removing requests after accept/reject & after user removes
     const deleteRequest = useDeleteDoc(deleteObj.request,db,['userData',user.userUid,'receivedRequests']);
@@ -97,7 +97,8 @@ export default function useSetNewMatch2(user,receivedRequests) {
                             //set existing buddy id variable to complete path for adding ad data to shared user data doc
                             setExistingBuddyId(existingBuddy.id);
                             //set update obj for adding new advert ID for refference for requester & accepter
-                            setUpdateObj(existingBuddy.matchedAdverts ? [{matchedAdverts:[...existingBuddy.matchedAdverts,custAdId]}] : [{matchedAdverts:[custAdId]}] );
+                            console.log()
+                            setUpdateObj(existingBuddy.matchedAdverts ? {matchedAdverts:[...existingBuddy.matchedAdverts,adIdRef.current]} : {matchedAdverts:[adIdRef.current]});
                         //if no existing buddy or buddys list at all, set new buddy for user and requester
                         } else if (!existingBuddy) {
                             console.log('no existing buddy')
@@ -110,7 +111,7 @@ export default function useSetNewMatch2(user,receivedRequests) {
                                 buddySince: buddySince,
                                 matchedUserUid: changeRequest.requestUserId,
                                 status:'active',
-                                matchedAdverts:[custAdId]
+                                matchedAdverts:[adIdRef.current]
                             }]);
                             setNewBuddyRequester([{
                                 displayName: user.displayName,
@@ -118,7 +119,7 @@ export default function useSetNewMatch2(user,receivedRequests) {
                                 buddySince: buddySince,
                                 matchedUserUid: user.userUid,
                                 status:'active',
-                                matchedAdverts:[custAdId]
+                                matchedAdverts:[adIdRef.current]
                             }]);
                             setSharedUserObj({
                             matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
@@ -139,7 +140,7 @@ export default function useSetNewMatch2(user,receivedRequests) {
                             buddySince: buddySince,
                             matchedUserUid: changeRequest.requestUserId,
                             status:'active',
-                            matchedAdverts:[custAdId]
+                            matchedAdverts:[adIdRef.current]
                         }]);
                         setNewBuddyRequester([{
                             displayName: user.displayName,
@@ -147,7 +148,7 @@ export default function useSetNewMatch2(user,receivedRequests) {
                             buddySince: buddySince,
                             matchedUserUid: user.userUid,
                             status:'active',
-                            matchedAdverts:[custAdId]
+                            matchedAdverts:[adIdRef.current]
                         }]);
                         setSharedUserObj({
                         matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
@@ -165,7 +166,6 @@ export default function useSetNewMatch2(user,receivedRequests) {
         useEffect(() => { 
         //remove id property from advert as not needed in copy of data in matched pairings
         if(fetchAdvert) delete fetchAdvert['id']
-        
         // sets data for addition to existing match pairing (know if existing buddy id is set)
         if(fetchAdvert && existingBuddyId) {
             setAdDataExisting([fetchAdvert]);
@@ -179,6 +179,10 @@ export default function useSetNewMatch2(user,receivedRequests) {
           //set delete for advert and request on completion 
           setDeleteObj({advert:[changedRequest.adId],request:[changedRequest.id]});
 
+        // Reset UUIDs for next match cycle
+        buddyIdRef.current = uuidv4();
+        adIdRef.current = uuidv4();
+
           //clear state
           setNewBuddyUser(null);
           setNewBuddyRequester(null);
@@ -190,6 +194,11 @@ export default function useSetNewMatch2(user,receivedRequests) {
         if(updateAdvertUser.isComplete === true && updateAdvertRequester.isComplete === true && addAdvertSharedObj.isComplete === true) {
             //set delete for advert and request on completion 
             setDeleteObj({advert:[changedRequest.adId],request:[changedRequest.id]});
+
+
+            // Reset UUIDs for next match cycle
+            buddyIdRef.current = uuidv4();
+            adIdRef.current = uuidv4();
 
             //clear state
             setUpdateObj(null);
