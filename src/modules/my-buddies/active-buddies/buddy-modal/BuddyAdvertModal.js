@@ -5,13 +5,14 @@ import Calendar from './Calendar';
 import useFetchDocs from '../../../../hooks/useFetchDocs';
 import LogEventModal from './log-event-modal/LogEventModal';
 import EventModal from './EventModal';
-import DeleteModal from './DeleteModal';
+import DeleteAdModal from './DeleteAdModal';
+import useDeleteDoc from '../../../../hooks/useDeleteDoc';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
   // context for user
   const user = useContext(ContextUser);
-  
+
   /* State
   ----------------*/
   //state for matched users (who is signed in and who is paired)
@@ -21,15 +22,16 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   const [calEvent,setCalEvent] = useState(null);
   //state for filtered data outlining unpaid purchase logs only & their total value
   const [sortedEvents,setSortedEvents] = useState(null);
-  //state for activating delete ad modal
+  //state for activating delete ad modal & for ids to add to delete hook afer checks.
   const [deleteModal,setDeleteModal] = useState(null);
-  const [deleteAd,setDeleteAd] = useState(null);
+  const [deleteAdId,setDeleteAdId] = useState(null);
 
   /* Hooks
   ----------------*/
   //retrieve logged/management data for specific ad if any exists
   const loggedData = useFetchDocs(db,['sharedUserData',matchUserInfo.id,'matchedAdverts',advert.id,'advertLogs'],["eventDate",'desc']);
-
+  //delete hook to remove ad if user choses to end agreement
+  const deleteAd = useDeleteDoc(deleteAdId,db,['sharedUser',matchUserInfo.id,'matchedAdverts']);
 
   /* useEffects
   ----------------*/
@@ -146,7 +148,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       </div>
       {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
-      {deleteModal && <DeleteModal setDelete={setDeleteAd} setDeleteModal={setDeleteModal} adId={advert.id}/>}
+      {deleteModal && <DeleteAdModal setDelete={setDeleteAdId} setDeleteModal={setDeleteModal} sortedEvents={sortedEvents} adId={advert.id}/>}
     </div>
   )
 };

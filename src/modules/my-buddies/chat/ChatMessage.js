@@ -2,11 +2,11 @@ import React from 'react'
 
 export default function ChatMessage({message}) {
   
-  //variable for 
+  //variable for dateTime 
   const dateTime = new Date(message.dateTimeSent);
   const time = dateTime.toTimeString();
   const date = dateTime.toDateString();
-  
+
   return (
     <div>
       <p>{message.text}</p>

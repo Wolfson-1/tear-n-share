@@ -25,7 +25,7 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                 <h1>{manageBuddy.displayName}</h1>
                 <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
-            {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} manageBuddy={manageBuddy} setManageAd={setManageAd}/>}
+            {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>}
             {matchUserInfo && manageAd && <BuddyAdvertModal matchUserInfo={matchUserInfo} advert={manageAd} setManageAd={setManageAd}/>}
         </div>
       </div>

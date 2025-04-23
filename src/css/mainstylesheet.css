@@ -91,6 +91,7 @@ main {
 .modal-form-container {
     display: flex;
     flex-direction: column;
+    position: absolute;
     height: 80%;
     width: 30%;
     background:rgba(5, 23, 35, 0.825);

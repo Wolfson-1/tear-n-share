@@ -21,7 +21,7 @@ export default function NewChatModal({sharedUserData,setCurrentChat,setAddChatMo
         return !user.latestMessageDateTime
     })
     setWithoutChat(usersWithoutChat);
-  },[])
+  },[]);
 
   return (
     <div className='modal-background'>
