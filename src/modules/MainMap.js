@@ -33,6 +33,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     const [distance,setDistance] = useState(userData && userData.distance);
     //user circle radius in M
     const [circleRadius,setCircleRadius] = useState(null); 
+    const [mapBounds,setMapBounds] = useState(null);
 
     /* hooks 
     -------------------- */
@@ -47,7 +48,6 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
       geoLocation().then(data => {
         //if location data doesnt exist or differs to current userdata, update location
         if(!userData.location) {
-          console.log(user.displayName)
           setNewUser([{displayName: user.displayName, location:data, show:true}]);
         } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
           setUpdateData({location:data});
@@ -75,11 +75,22 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     }  
   },[distance]);
 
+  //useEffect to run on set of location to create map bounds so user cant scroll across whole planet.
+  useEffect(()=>{
+    if(location) {
+      const swLatLong = [(location.lat-0.5),(location.lng-0.5)];
+      const neLatLong = [(location.lat+0.5),(location.lng+0.5)];
+
+      console.log({swLatLong:swLatLong,neLatLong:neLatLong});
+      setMapBounds({swLatLong:swLatLong,neLatLong:neLatLong});
+    }
+  },[location],)
+
   /* -------------------- */
 
   return (
-  <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
-    <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} zoom={13} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
+    <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
+    {mapBounds && <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
       <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
@@ -94,7 +105,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
                 </Popup>
               </Marker>
       })}
-  </MapContainer>
+  </MapContainer>}
   </div>
   )
 };

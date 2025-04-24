@@ -16,8 +16,8 @@ export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
                         {advert.reduced === true ? <span>Reduced</span> : null}
                     </div>
                     {activeStatus === true && <button onClick={()=>{editAd(advert.id)}}>{`Info & Edit`}</button>}
-                    {activeStatus === true && <button onClick={()=>{toggleAd(advert.id,false)}}>Discard</button>}
-                    {activeStatus === false && <button onClick={()=>{toggleAd(advert.id,true)}}>Re-Activate</button>}
+                    {activeStatus === true && <button onClick={()=>{toggleAd(advert.id,false)}}>Deactivate</button>}
+                    {activeStatus === false && <button onClick={()=>{toggleAd(advert.id,true)}}>ReActivate</button>}
                </div>
     }))
 };
