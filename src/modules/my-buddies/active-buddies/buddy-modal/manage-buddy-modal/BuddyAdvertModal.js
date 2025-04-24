@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {db} from '../../../../firebase/config';
-import {ContextUser} from '../../../../context/ContextUser';
-import Calendar from './Calendar';
-import useFetchDocs from '../../../../hooks/useFetchDocs';
-import LogEventModal from './log-event-modal/LogEventModal';
+import {db} from '../../../../../firebase/config';
+import {ContextUser} from '../../../../../context/ContextUser';
+import Calendar from '../calander/Calendar';
+import useFetchDocs from '../../../../../hooks/useFetchDocs';
+import LogEventModal from '../log-event-modal/LogEventModal';
 import EventModal from './EventModal';
-import DeleteAdModal from './DeleteAdModal';
-import useDeleteDoc from '../../../../hooks/useDeleteDoc';
+import DeleteAdModal from '../delete-modules/DeleteAdModal';
+import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 

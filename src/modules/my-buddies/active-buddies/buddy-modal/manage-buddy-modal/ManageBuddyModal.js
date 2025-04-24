@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {db} from '../../../../firebase/config';
-import useFetchDocs from '../../../../hooks/useFetchDocs';
-import useFetchDoc from '../../../../hooks/useFetchDoc';
-import BuddyModal from './BuddyModal';
+import {db} from '../../../../../firebase/config';
+import useFetchDocs from '../../../../../hooks/useFetchDocs';
+import useFetchDoc from '../../../../../hooks/useFetchDoc';
+import BuddyModal from '../BuddyModal';
 import BuddyAdvertModal from './BuddyAdvertModal';
-import useDeleteDoc from '../../../../hooks/useDeleteDoc';
-import DeleteUserModal from './DeleteUserModal';
-import useUpdateDoc from '../../../../hooks/useUpdateDoc';
+import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
+import DeleteUserModal from '../delete-modules/DeleteUserModal';
+import useUpdateDoc from '../../../../../hooks/useUpdateDoc';
 
 export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSelector}) {
     /* State

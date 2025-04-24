@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import ActiveBuddyList from './ActiveBuddyList';
-import ManageBuddyModal from './buddy-modal/ManageBuddyModal';
+import ManageBuddyModal from './buddy-modal/manage-buddy-modal/ManageBuddyModal';
 import useFetchDocsFilter from '../../../hooks/useFetchDocsFilter';
 
 export default function ActiveSection({setMainSelector}) {
