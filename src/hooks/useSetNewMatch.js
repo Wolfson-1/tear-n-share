@@ -119,7 +119,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                                 distance: changeRequest.distance,
                                 buddySince: buddySince,
                                 matchedUserUid: changeRequest.requestUserId,
-                                status:'active',
+                                active:true,
                                //FORUSERADREFS: matchedAdverts:[adIdRef.current]
                             }]);
                             setNewBuddyRequester([{
@@ -127,14 +127,14 @@ export default function useSetNewMatch(user,receivedRequests) {
                                 distance: changeRequest.distance,
                                 buddySince: buddySince,
                                 matchedUserUid: user.userUid,
-                                status:'active',
+                                active:true,
                               //FORUSERADREFS  matchedAdverts:[adIdRef.current]
                             }]);
                             setSharedUserObj({
                             matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
                                           {userName:user.displayName,userId:user.userUid}],
                             buddySince: buddySince,
-                            status:'active'
+                            active:true
                             });
                         
                         }
@@ -148,7 +148,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                             distance: changeRequest.distance,
                             buddySince: buddySince,
                             matchedUserUid: changeRequest.requestUserId,
-                            status:'active',
+                            active:true,
                         //FORUSERADREFS    matchedAdverts:[adIdRef.current]
                         }]);
                         setNewBuddyRequester([{
@@ -156,14 +156,14 @@ export default function useSetNewMatch(user,receivedRequests) {
                             distance: changeRequest.distance,
                             buddySince: buddySince,
                             matchedUserUid: user.userUid,
-                            status:'active',
+                            active:true,
                         //FORUSERADREFS    matchedAdverts:[adIdRef.current]
                         }]);
                         setSharedUserObj({
                         matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
                                       {userName:user.displayName,userId:user.userUid}],
                         buddySince: buddySince,
-                        status:'active'
+                        active:true
                         });
                     };
                 }

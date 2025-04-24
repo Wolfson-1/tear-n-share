@@ -7,8 +7,6 @@ import LogEventModal from './log-event-modal/LogEventModal';
 import EventModal from './EventModal';
 import DeleteAdModal from './DeleteAdModal';
 import useDeleteDoc from '../../../../hooks/useDeleteDoc';
-import useUpdateDoc from '../../../../hooks/useUpdateDoc';
-import { isCompositeComponent } from 'react-dom/test-utils';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 

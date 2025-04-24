@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
-import useFetchDocs from '../../../hooks/useFetchDocs';
 import ActiveBuddyList from './ActiveBuddyList';
 import ManageBuddyModal from './buddy-modal/ManageBuddyModal';
+import useFetchDocsFilter from '../../../hooks/useFetchDocsFilter';
 
 export default function ActiveSection({setMainSelector}) {
   // context for user
@@ -15,8 +15,8 @@ export default function ActiveSection({setMainSelector}) {
 
   /* hooks
   --------------- */
-  //active buddies data
-  const activeBuddys = useFetchDocs(db,['userData',user.userUid,'activeBuddies'],["createdAt"]);
+  //active buddies data filtered by active users
+  const activeBuddys = useFetchDocsFilter(db,['userData',user.userUid,'activeBuddies'],'active',true);
 
   return (
     <div className='buddies-container'>

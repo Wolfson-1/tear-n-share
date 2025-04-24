@@ -10,9 +10,9 @@ export default function useUpdateDoc(updateObj,database,path,filter) {
     //  isComplete process complete check
     const [isComplete, setIsComplete] = useState(false);
 
+
     //useEffect to run update whenever updateObj changes
     useEffect(() => {
-
         //set isComplete back to to false if true from a previous run
         if(isComplete === true) setIsComplete(false);
         //if updateObj is blank
