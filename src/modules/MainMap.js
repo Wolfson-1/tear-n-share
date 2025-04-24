@@ -69,8 +69,6 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     if (userData.distance) {
       console.log(userData.distance)
       const mDist = userData.distance * mInMile;
-      console.log(userData.distance);
-      console.log(mDist);
       setCircleRadius(mDist); 
     }  
   },[distance]);
@@ -78,10 +76,11 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
   //useEffect to run on set of location to create map bounds so user cant scroll across whole planet.
   useEffect(()=>{
     if(location) {
-      const swLatLong = [(location.lat-0.5),(location.lng-0.5)];
-      const neLatLong = [(location.lat+0.5),(location.lng+0.5)];
+      //init vaeriable for DD sw & ne lat long co-ordinates for setting broad mapBoundaries
+      const swLatLong = [(location.lat-0.5),(location.lng-1)];
+      const neLatLong = [(location.lat+0.5),(location.lng+1)];
 
-      console.log({swLatLong:swLatLong,neLatLong:neLatLong});
+      //set state for MapBounds
       setMapBounds({swLatLong:swLatLong,neLatLong:neLatLong});
     }
   },[location],)
@@ -90,12 +89,12 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
 
   return (
     <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
-    {mapBounds && <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
+    {mapBounds && userData && <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
       <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
-      {userData.location && <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>}
-      {userData.location && <Marker position={userData.location} icon={userIcon}/>}
+      <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>
+      <Marker position={userData.location} icon={userIcon}/>
       {filteredUsers && filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>

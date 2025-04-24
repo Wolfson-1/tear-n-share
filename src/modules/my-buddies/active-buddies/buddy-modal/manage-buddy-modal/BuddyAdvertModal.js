@@ -7,6 +7,7 @@ import LogEventModal from '../log-event-modal/LogEventModal';
 import EventModal from './EventModal';
 import DeleteAdModal from '../delete-modules/DeleteAdModal';
 import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
+import CalendarMonth from '../calander/CalendarMonth';
 
 export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
 
@@ -19,7 +20,9 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   const [sortedUsers,setSortedUsers] = useState(null);
   //state for module to add an aditional event (purchase or payment)
   const [eventModal,setEventModal] = useState(null);
+  //state for calendar related events (calEvent=state to open modal with a specific calander event info, monmthCalander = state to open month wide calendar.)
   const [calEvent,setCalEvent] = useState(null);
+  const [calendarMonth,setCalendarMonth] = useState(false);
   //state for filtered data outlining unpaid purchase logs only & their total value
   const [sortedEvents,setSortedEvents] = useState(null);
   //state for activating delete ad modal & for ids to add to delete hook afer checks.
@@ -150,13 +153,14 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       <div>
         Log events to see tracking stats.
       </div>}
-      <Calendar loggedData={loggedData} setCalEvent={setCalEvent}/>
+      <Calendar loggedData={loggedData} setCalEvent={setCalEvent} setCalendarMonth={setCalendarMonth}/>
       <div className='advert-info-ammend'>
         <button onClick={()=>setDeleteModal(true)}>End agreement</button>
       </div>
       {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
       {deleteModal && <DeleteAdModal setDelete={setDeleteAdId} setDeleteModal={setDeleteModal} sortedEvents={sortedEvents} adId={advert.id}/>}
+      {calendarMonth && <CalendarMonth setCalendarMonth={setCalendarMonth}/>}
     </div>
   )
 };

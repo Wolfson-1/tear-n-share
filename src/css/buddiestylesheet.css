@@ -245,6 +245,12 @@
     padding: 1%;
 }
 
+.calendar .calendar-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .calendar .calendar-month {
     width: 100%;
 }
