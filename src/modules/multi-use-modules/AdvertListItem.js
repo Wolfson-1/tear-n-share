@@ -7,6 +7,7 @@ export default function AdvertListItem({advert,focusProfile,requestEventHandler}
  //access user status from context
 const user = useContext(ContextUser);
 
+console.log(focusProfile);
 // fetch existing request if request already sent
 const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);
 
@@ -20,6 +21,7 @@ const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequ
         <div className='info-carousel'>
             <span>Max spend: {advert.breadSpend}</span>
             <span>Split: {advert.breadSplit}</span>
+            <span>Max User Distance: {advert.maxDistance}</span>
         </div>
         {advert.reduced === true ? <span>Reduced</span> : null}
     </div>
@@ -28,11 +30,16 @@ const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequ
             {existingRequest[0].status === 'pending' && <p>Requested</p>}
             {existingRequest[0].status === 'rejected' && <p>Rejected</p>}
         </> 
-        : <button onClick={() => {
-        requestEventHandler(user,focusProfile,advert,[focusProfile.id,'receivedRequests']);    
-        }}>
+        : 
+        <>
+        {focusProfile.distToUser < advert.maxDistance ? 
+        <button onClick={() => {
+            requestEventHandler(user,focusProfile,advert,[focusProfile.id,'receivedRequests']);    
+            }}>
             Request
         </button>
+        : <p>Max distance to user exceeded for this advert.</p>}
+        </>
     }
 </div>
   )

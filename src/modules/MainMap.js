@@ -66,10 +66,12 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
   //Convert & set radius for map circle layer based on user set distance prefference change
   useEffect(() => {
     const mInMile = 1609.344 // number of meters in a mile
-    
     if (userData.distance) {
+      console.log(userData.distance)
       const mDist = userData.distance * mInMile;
-      setCircleRadius(mDist);
+      console.log(userData.distance);
+      console.log(mDist);
+      setCircleRadius(mDist); 
     }  
   },[distance]);
 

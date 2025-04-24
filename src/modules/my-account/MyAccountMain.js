@@ -50,7 +50,7 @@ export default function MyAccountMain({setMyAccount, setUpdateData,userData}) {
       <div className='range-slider'>
         <label>
         Distance
-        <input type="range" step='1' min="0" max="50" value={distance && distance} id='dist' list='distVals' onChange={(e) => {
+        <input type="range" step='0.1' min="0.1" max="50" value={distance && distance} id='dist' list='distVals' onChange={(e) => {
                                                                                                     setUpdateData({distance: +e.target.value})
                                                                                                     setDistance(userData.distance)
                                                                                                     }}/>

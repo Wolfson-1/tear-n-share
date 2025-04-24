@@ -22,7 +22,7 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
             newArr[index] = true
             setCheckedTotal(checkedTotal + Number(sortedEvents.unpaidLoggedLogs[index].costRatio.pairedUser))
         }
-
+        
         setFormData(newArr);
     };
 
