@@ -9,7 +9,7 @@
 
 .buddies-close {
     align-self: flex-start;
-    margin: 5px;
+    margin: 15px 0px 0px 15px;
     border-radius: 5px;
     border: none;
     background-color: rgba(0, 0, 0, 0);
@@ -53,7 +53,7 @@
     width: 90%;
     height: 85%;
     border: rgba(24, 20, 4, 0.449) solid 0px 0px 5px 5px ;
-    border-radius: 0px 0px 10px 10px;
+    border-radius: 0px 0px 0px 30px;
     background-color: rgb(205, 157, 2)
 }
 
@@ -65,24 +65,27 @@
  width: 100%;
 }
 
-/* advert section styling 
------------------------------------------- */
-.buddies-container.advert .active-inactive-toggle {
+/* for toggle selectors */
+
+.active-inactive-toggle {
     display: flex;
     width: 100%;
     justify-content: center;
 }
 
-.buddies-container.advert .active-inactive-toggle button {
+.active-inactive-toggle button {
     background-color: rgba(92, 92, 92, 0);
     border:none;
     font-size: large;
     font-weight: bold;
 }
 
-.buddies-container.advert .active-inactive-toggle button.active {
+.active-inactive-toggle button.active {
     color: rgb(84, 67, 12);
 }
+
+/* advert section styling 
+------------------------------------------ */
 
 .buddies-container.advert .listed-adverts-container {
     display: flex;

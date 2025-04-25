@@ -14,9 +14,10 @@ export default function RequestsSection() {
 
   return (
     <div className='buddies-container'>
-      <div>
-        <button onClick={()=>{if(sectionToggle !== 'sent') setSectionToggle('sent')}}>Sent</button>
-        <button onClick={()=>{if(sectionToggle !== 'received') setSectionToggle('received')}}>Received</button>
+      <div className='active-inactive-toggle'>
+        <button className={sectionToggle === 'sent' ? 'active' : 'inactive'} onClick={()=>{if(sectionToggle !== 'sent') setSectionToggle('sent')}}>Sent</button>
+        <p>|</p>
+        <button className={sectionToggle === 'received' ? 'active' : 'inactive'} onClick={()=>{if(sectionToggle !== 'received') setSectionToggle('received')}}>Received</button>
       </div>
       {sectionToggle === 'sent' && <SentRequests user={user}/>}
       {sectionToggle === 'received' && <ReceivedRequest user={user}/>}
