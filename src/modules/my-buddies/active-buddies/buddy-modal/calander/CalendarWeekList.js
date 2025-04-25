@@ -1,13 +1,19 @@
 import React from 'react'
 import DayInformation from './DayInformation';
 
-export default function CalendarWeekList({currCalendar,setCalEvent,loggedData}) {
-
-  console.log(currCalendar);
-  console.log(loggedData);
+export default function CalendarWeekList({currCalendar,setCalEvent,loggedData,condMonth}) { 
+  //NOTES: 
+    //condMonth = current month for conditional formatting of days in week that dont fall within current month (to blank them out, different background etc)
+    //currCalendar = arr of current days in week to populate grid
+    //setCalEvent = setter for setting modal event for popout in wider modal outside calendar
+    // loggedData = array of all events to be populated on calendar days where event exists
 
   //days of year & months for populating calendar in DOM
   const daysOfWeek = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
+
+  //CSS styling for tiles
+  const currMonthStyle = {backgroundColor:'blue'}
+  const diffMonthStyle = {backgroundColor:`red`}
 
   return (
     <div className='calendar-elements'>
@@ -22,7 +28,7 @@ export default function CalendarWeekList({currCalendar,setCalEvent,loggedData}) 
           logged = null;
         }
 
-        return <div className='calendar-day' style={{gridColumn:`${index+1}/${index+2}`}}>
+        return <div className='calendar-day' style={condMonth ? condMonth === currCalendar[index].month ? {gridColumn:`${index+1}/${index+2}`,...currMonthStyle} : {gridColumn:`${index+1}/${index+2}`,diffMonthStyle} : {gridColumn:`${index+1}/${index+2}`,...currMonthStyle}}>
           <div className='day-date'>
             <p>{day}</p>
             <p>{currCalendar[index].day}</p>

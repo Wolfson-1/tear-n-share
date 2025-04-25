@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import DayInformation from './DayInformation';
 import * as calendarUtils from './calendarUtils';
 import CalendarWeekList from './CalendarWeekList';
 
@@ -17,7 +16,7 @@ export default function Calendar({loggedData,setCalEvent,setCalendarMonth}) {
   //Use current date to set data needed to populate calander 
   useEffect(()=>{
     //get current week based on todays date using getCurrentWeek util function
-    const currWeek = calendarUtils.getCurrentWeek(offSetDate);
+    const currWeek = calendarUtils.getCurrentWeek(null,offSetDate);
     console.log(currWeek);
     //set currentWeeks data
     setCurrCalendar(currWeek);

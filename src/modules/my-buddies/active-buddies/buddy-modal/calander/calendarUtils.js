@@ -1,20 +1,33 @@
-export const getCurrentWeek = (dateOffset) =>{
-      
+export const getCurrentWeek = (epochVal,dateOffset) =>{
+        //epochVal = pre set epochVal. if passed dateOffset not needed as date & week data will all be based off preset epochVal
+        //dateOffSet = Numberical value in No. of days that user wants to offset the getCurrentWeek funciton by. eg: dateOffset = 7 equates to one week previous -7 equates to one week in future.    
+
+
           //days of year & months for populating calendar in DOM
           const daysOfWeek = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
           const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         //1 full day in milliseconds for offset
        const dayMilli = 86400000;
+       const dateOffsetCheck = dateOffset ? dateOffset : 0
 
        //get current month, date, and day of the week
        //factor in offset days if user is looking back through weeks
        // init epoch value to be assigned conditionally
-       const epoch = dateOffset !== 0 ? Date.now() - (dateOffset*dayMilli) : Date.now();
+       let epoch ='';
+
+       //logic to determine if set epochVal is used or auto generated.
+       if(epochVal) {
+        epoch = dateOffsetCheck !== 0 ? epochVal - (dateOffsetCheck*dayMilli) : epochVal
+       } else if (!epoch) {
+        //set epoch factoring in dateOffset No if existing.
+        epoch = dateOffsetCheck !== 0 ? Date.now() - (dateOffsetCheck*dayMilli) : Date.now();
+      };
+  
        //create new date based off offset & following variables for month date day & year.
        const d = new Date(epoch);
        const month = months[d.getMonth()];
-       const monthIndex = d.getMonth() < 10 ? `0${d.getMonth() + 1}`  : (d.getMonth()+ 1).toString();
+       const monthIndex = d.getMonth()+1 < 10 ? `0${d.getMonth() + 1}`  : (d.getMonth()+ 1).toString();
        const date = d.getDate();
        const day = daysOfWeek[d.getDay()];
        const year = d.getFullYear();
