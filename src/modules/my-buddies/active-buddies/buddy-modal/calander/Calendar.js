@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import * as calendarUtils from './calendarUtils';
+import * as calendarUtils from '../../../../../utils/calendarUtils';
 import CalendarWeekList from './CalendarWeekList';
 
 export default function Calendar({loggedData,setCalEvent,setCalendarMonth}) {

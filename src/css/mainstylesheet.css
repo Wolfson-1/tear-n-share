@@ -55,7 +55,7 @@ main {
     left: 0;
     top:0;
     z-index: 3;
-    background-color: #051723d2;
+    background-color: rgba(220, 169, 2, 0.825);
 }
 
 .my-buddies-main {
@@ -65,7 +65,7 @@ main {
     right: 0;
     top:0;
     z-index: 3;
-    background-color: rgba(5, 23, 35, 0.825);
+    background-color: rgba(220, 169, 2, 0.825);
 }
 
 /* standard modal styling */

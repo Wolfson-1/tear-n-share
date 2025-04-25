@@ -59,3 +59,49 @@ export const getCurrentWeek = (epochVal,dateOffset) =>{
          currWeek:currWeekDates
        }
 };
+
+export const getCalendarMonth = (historical) =>{
+  //init arr for containing months data
+  const currMonth = [];
+  const currWeek = getCurrentWeek(historical,null);
+
+  //condition flag for if we have changed months
+  let changedMonths = {historical:false,future:false};
+
+  //push current week into currMonth array
+  currMonth.push(currWeek.currWeek);
+
+  //FOR LOOP TO FILL IN HISTORICAL WEEKS OF MONTH
+  for (let i = 7; changedMonths.historical === false; i += 7) {
+    //generate week data using initial offset value by 1 week (7 days) 
+    const generatedWeek = getCurrentWeek(historical,i);
+
+    //loop through current week in generatedWeek to check if month has changed from current month. if so set changedmonths flag to true 
+    generatedWeek.currWeek.forEach(day => {
+      //if logic flags month change as true if month is different to monthIndex in current week data.
+      if(day.month !== currWeek.monthIndex) {
+        changedMonths.historical = true;
+        return;
+      }
+    });
+    //unshift current generated week to full month array (so it is placed in front of current week obj)
+    currMonth.unshift(generatedWeek.currWeek);
+  };
+
+  //FOR LOOP TO FILL IN FUTURE WEEKS OF MONTH
+  for (let i = -7; changedMonths.future === false; i -= 7) {
+    //generate week data using offset value 
+    const generatedWeek = getCurrentWeek(historical,i);
+    //loop through current week in generateWeek to check if month has changed. if so set changed months to true 
+    generatedWeek.currWeek.forEach(day => {
+      //if logic to flag month change as true if any of the days month is different to monthIndex in current week data. this will stop for loop
+      if(day.month !== currWeek.monthIndex) {
+        changedMonths.future = true;
+        return;
+      }
+    });
+    //push current generated week to full month array (so it falls behind current week obj)
+    currMonth.push(generatedWeek.currWeek);
+  };
+  return {currMonth:currMonth,currDay:{day:currWeek.day,month:currWeek.month,year:currWeek.year,monthIndex:currWeek.monthIndex,date:currWeek.date}}
+};

@@ -63,11 +63,14 @@ export default function AdvertSection() {
   
   return (
     <div className='buddies-container advert'>
-      <div>
-        <button onClick={()=>{if(activeStatus !== true) setActiveStatus(true)}}>Active adverts</button>
-        <button onClick={()=>{if(activeStatus !== false) setActiveStatus(false)}}>Deactivated Adverts</button>
+      <div className='active-inactive-toggle'>
+        <button className={activeStatus === true ? 'active' : 'inactive'} onClick={()=>{if(activeStatus !== true) setActiveStatus(true)}}>Active adverts</button>
+        <p>|</p>
+        <button className={activeStatus === false ? 'active' : 'inactive'} onClick={()=>{if(activeStatus !== false) setActiveStatus(false)}}>Deactivated Adverts</button>
       </div>
-      {adData && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/>}
+      <div className='listed-adverts-container'>
+        {adData && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/>}
+      </div>
       {activeStatus === true && <div className='add-advert'>
         <button onClick={() => {setAdvertModal(true)}}>
           +
