@@ -235,14 +235,13 @@
 
 /* calendar CSS 
 -------------------------*/
+
+/* CSS for all calendar elements */
 .calendar {
     display: flex;
     flex-direction: column;
-    width:90%;
-    height: 30%;
     align-items: center;
     background-color: rgba(127, 255, 212, 0.534);
-    padding: 1%;
 }
 
 .calendar .calendar-buttons {
@@ -305,6 +304,34 @@
     font-size:small;
     padding: 0;
     margin: 5%;
+}
+
+/* Week only calendar CSS */
+.calendar.week {
+    height: 30%;
+    width:90%;
+    padding: 1%;
+}
+
+/* Month calendar popout CSS */
+.modal-form-container.month {
+    align-items: center;
+    height: 80%;
+    width:9%;
+    background-color: rgba(5, 23, 35, 0.966);
+    border: solid white;
+    overflow: hidden;
+}
+
+.modal-form-container.month .calendar.month {
+    min-height: 100%;
+    width: 95%;
+    padding: 2%;
+}
+
+.calendar.month .calendar-elements {
+    height: 10%;
+    min-height: 15%;
 }
 
 /* Modal to log purchase & payment events

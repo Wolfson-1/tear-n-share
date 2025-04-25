@@ -39,7 +39,7 @@ export default function Calendar({loggedData,setCalEvent,setCalendarMonth}) {
 
   return (
     <>
-      {currCalendar && <div className='calendar'>
+      {currCalendar && <div className='calendar week'>
         <div className='calendar-buttons'>
           <div className='cycle-weeks'>
             <button onClick={()=>{offsetWeek('-')}}>{'<'}</button>
@@ -48,7 +48,7 @@ export default function Calendar({loggedData,setCalEvent,setCalendarMonth}) {
           <button className='open-month' onClick={()=>setCalendarMonth(true)}>Open Month</button>
         </div>
         <h3 className='calendar-month'>{currCalendar.month},{currCalendar.year.toString()}</h3>
-        <CalendarWeekList currCalendar={currCalendar} setCalEvent={setCalEvent} loggedData={loggedData}/>
+        <CalendarWeekList currCalendar={currCalendar.currWeek} setCalEvent={setCalEvent} loggedData={loggedData}/>
       </div>}
     </>
 

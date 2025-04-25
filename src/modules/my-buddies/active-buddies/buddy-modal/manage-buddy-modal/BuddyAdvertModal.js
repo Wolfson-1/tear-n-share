@@ -160,7 +160,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
       {deleteModal && <DeleteAdModal setDelete={setDeleteAdId} setDeleteModal={setDeleteModal} sortedEvents={sortedEvents} adId={advert.id}/>}
-      {calendarMonth && <CalendarMonth setCalendarMonth={setCalendarMonth}/>}
+      {calendarMonth && <CalendarMonth setCalendarMonth={setCalendarMonth} loggedData={loggedData} setCalEvent={setCalEvent}/>}
     </div>
   )
 };
