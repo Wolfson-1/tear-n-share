@@ -2,6 +2,7 @@ import React, { useState,useContext, useEffect } from 'react'
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useFetchDocsFilter from '../../../hooks/useFetchDocsFilter';
+import useAddDoc from '../../../hooks/useAddDoc';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import AdvertList from './AdvertList';
 import NewAdvertModal from './NewAdvertModal';
@@ -20,6 +21,8 @@ export default function AdvertSection() {
 
   //state to update ad data for active status & changes to info on edit.
   const [updateData,setUpdateData] = useState(null);
+  // State for use in firebase hooks to upload new data based on form
+  const [uploadData,setUploadData] = useState(null);
 
   /* Hooks
   ----------------------*/
@@ -30,21 +33,25 @@ export default function AdvertSection() {
   //updating ad data (new data & advert active status) 
   const updateExistingAd = useUpdateDoc(updateData,db,['userData',user.userUid,'adverts',existingAdId]);
 
+  // hooks for addition of formData to userDatabse
+  const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'adverts']);
+
+
   /* useEffects
   ----------------------*/
 
   // useEffect to close out modal & clear selected ad ID if update of ad data is complete
   useEffect(() => {
-    // if condition for completion of setting an advert to active
-   if(updateExistingAd.isComplete === false) {
-    return;
-   }
-   
-   if (updateExistingAd.isComplete === true) {
+  if (updateExistingAd.isComplete === true) {
     setUpdateData(null);
     setExistingAdId(null);
+    setAdvertModal(false);
    };
-  },[updateExistingAd.isComplete]);
+
+  if(uploadNewAd.isComplete === true) {
+      setUploadData(null);
+  };
+  },[updateExistingAd.isComplete,uploadNewAd.isComplete]);
 
   /* functions for advert manipulation
   ------------------------------------------*/
@@ -76,7 +83,7 @@ export default function AdvertSection() {
           +
         </button>
       </div>}
-      {advertModal ? <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId} setAdvertId={setExistingAdId} setUpdateData={setUpdateData}/> : null}
+      {advertModal && <NewAdvertModal closeModal={setAdvertModal} advertId={existingAdId} setUploadData={setUploadData} setUpdateData={setUpdateData}/>}
     </div>
   )
 }

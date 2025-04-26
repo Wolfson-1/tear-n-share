@@ -10,7 +10,7 @@ import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
 
-export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpdateData} ) {
+export default function NewAdvertModal( {closeModal,advertId,setUpdateData,setUploadData} ) {
 
     /* State 
     ----------------------------------------*/
@@ -18,9 +18,6 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
     // State for form inputs & form error handling
     const [formData,setFormData] = useState({});
     const [formError,setFormError] = useState(null);
-
-    // State for use in firebase hooks to upload new data based on form
-    const [uploadData,setUploadData] = useState(null);
 
     // context for user info 
     const user = useContext(ContextUser);
@@ -31,33 +28,22 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
     // hook for pulling in existing advert data if advertId exists
     const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts'],advertId);
 
-    // hooks for addition of formData to userDatabse
-    const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'adverts']);
-
     /*useEffects
     --------------------------------------- */
 
     // Pre load state of initial form data where default values exist
     useEffect (() => {
-        if(advertId) {
+        if(existingAdvertData) {
             setFormData(existingAdvertData);
         } if (!existingAdvertData) {
-            setFormData({...formData,reduced:false,
+            setFormData({reduced:false,
                 breadSplit:50,
                 breadFrequency:1,
                 breadSpend:0,
-                active:true}
-                );
+                active:true
+            });
         }
     },[existingAdvertData]);
-
-    //useEffect for closing out modal once upload/update/delete of form data is complete
-    useEffect(() => {
-        if(uploadNewAd.isComplete === true) {
-            closeModal(false) 
-            setAdvertId(null);
-        };
-    },[uploadNewAd.isComplete]);
 
     /* Form handling
     --------------------------------------- */ 
@@ -67,7 +53,9 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
         e.preventDefault();
         //init variables for errors & clear state for any previous existing error
         let error = false;
+        //clear any previous values for formErro and updateData
         setFormError(null);
+        setUpdateData(null);
     
         // init array for checking variables are filled
         let fieldsCheckArr = [];
@@ -98,13 +86,14 @@ export default function NewAdvertModal( {closeModal,advertId,setAdvertId,setUpda
 
         // if formError is false after checks, set state of new Advert to be added to database
         advertId ? setUpdateData(formData) : setUploadData([{...formData,adOwner:user.userUid}]);
+        //once state is set for either uplaod or update, close modal
+        closeModal(false);
     };
 
   return (
     <div className='modal-background'>
         <div className='modal-form-container new-advert-modal-form-container'>
             <button onClick={() => {
-                                    setAdvertId(null)
                                     closeModal(false)
                                     }} className='close-modal'>x</button>
             <h3>Create a New Advert</h3>

@@ -7,14 +7,16 @@ export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
                     <div className='info-container'>
                         <div className='key-ad-info'>
                             <span>Bread Type: {advert.breadType}</span>
+                            <span> | </span>
                             <span>{advert.loafType}</span>
                         </div>
                         <div>
                             <div className='info-carousel'>
-                                <span>Max spend: {advert.breadSpend}</span>
-                                <span>Split: {advert.breadSplit}</span>
+                                <span>Max spend: £{advert.breadSpend}</span>
+                                <span> | </span>
+                                <span>Split: {advert.breadSplit}%</span>
                             </div>
-                            {advert.reduced === true ? <span>Reduced</span> : null}
+                            {advert.reduced === true ? <span>Reduced: True</span> : <span>Reduced: False</span>}
                         </div>
                     </div>
                     <div className='button-container'>
