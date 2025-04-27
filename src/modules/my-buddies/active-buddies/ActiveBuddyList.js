@@ -6,15 +6,19 @@ export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector})
     <div className='active-buddy-list'>
       {buddys.map((buddy) => {
         return <div className='active-buddy'>
-                    <div>
+                    <div className='user-info'>
                         <h2>{buddy.displayName}</h2>
+                        <hr></hr>
                         <h3>Distance:{buddy.distance}</h3>
-                        <div>
+                      <div>
                           <button onClick={()=>setManageBuddy(buddy)}>Manage</button>
+                          <span>|</span>
                           <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
                         </div>
                     </div>
-                    <img alt={buddy.displayName}></img>
+                    <picture>
+                      <img alt={buddy.displayName}></img>
+                    </picture>
                </div>
       })}
     </div>

@@ -158,6 +158,7 @@
     height: 60px;
     font-size: xx-large;
     font-weight: bold;
+    transition: background-color 0.8s;
 }
 
 .add-advert button:hover {
@@ -217,6 +218,7 @@
 
 .buddies-container > h1 {
     align-self: flex-start;
+    font-size: x-large;
     margin-left: 5%;
 }
 
@@ -224,14 +226,63 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 95%;
-    border: white dashed 0.5px;
+    width: 98%;
+    background-color: rgba(255, 255, 255, 0.093);
+    border-radius: 25px;
 }
 
-.active-buddy > div {
+.active-buddy > .user-info {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    margin-left: 5%;
+    flex: 0.8;
 }
+
+.active-buddy > .user-info h2 {
+    margin: 5% 0% 0.5% 0%;
+} 
+
+.active-buddy .user-info hr {
+    width: 100%;
+    border: solid rgba(0, 0, 0, 0.189) 1px;
+    margin: 0%;
+    padding: 0%;
+} 
+
+.active-buddy .user-info > div {
+    display: flex;
+    margin-bottom: 10%;
+    gap: 5%;
+    width: 100%;
+    height: 40%;
+} 
+
+.active-buddy .user-info > div > button {
+    flex: 0.8;
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.active-buddy .user-info > div > button:hover {
+    color: rgb(66, 66, 66);
+}
+
+.active-buddy picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 2px rgba(0, 0, 0, 0.189);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-right: 10%;
+}
+
+
 
 /* Styling specifc for active user modal  */
 
