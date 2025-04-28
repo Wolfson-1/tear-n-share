@@ -179,3 +179,30 @@ datalist {
     overflow-y: scroll;
   }
 
+  /* Generic icon & button styling */
+
+  /* Add button styling */
+  .add-button {
+    background: none;
+    border-radius: 50%;
+    border: none;
+    color: rgba(224, 224, 224, 0.385);
+    width: 60px;
+    height: 60px;
+    font-size: xx-large;
+    font-weight: bold;
+    transition: background-color 0.8s;
+  }
+
+  .add-button:hover {
+    background-color: rgba(255, 255, 255, 0.096);
+}
+
+/* base information tile CSS */
+
+.info-tile {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.093);
+  border-radius: 25px;
+  width: 98%;
+}

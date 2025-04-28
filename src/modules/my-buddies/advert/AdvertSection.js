@@ -79,7 +79,7 @@ export default function AdvertSection() {
         {adData && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/>}
       </div>
       {activeStatus === true && <div className='add-advert'>
-        <button onClick={() => {setAdvertModal(true)}}>
+        <button className='add-button' onClick={() => {setAdvertModal(true)}}>
           +
         </button>
       </div>}

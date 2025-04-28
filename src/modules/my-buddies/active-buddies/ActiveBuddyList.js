@@ -5,7 +5,7 @@ export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector})
     return (
     <div className='active-buddy-list'>
       {buddys.map((buddy) => {
-        return <div className='active-buddy'>
+        return <div className='info-tile active-buddy'>
                     <div className='user-info'>
                         <h2>{buddy.displayName}</h2>
                         <hr></hr>

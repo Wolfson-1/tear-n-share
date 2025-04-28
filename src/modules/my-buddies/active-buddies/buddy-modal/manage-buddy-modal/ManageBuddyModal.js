@@ -62,13 +62,12 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                 <h1>{manageBuddy.displayName}</h1>
                 <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
-            {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>}
-            {!matchedAdverts && !manageAd && 
-            <div>
+            {matchedAdverts ? <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>
+            :<div>
                 <p>You currently have no existing agreements. You will still be able to access your historical chat & message in order to arrange another if so wish. Or until one of you unmatches.</p>
                 <button onClick={()=>{setDeleteUserModal({active:false})}}>unmatch</button>
             </div>}
-            {matchUserInfo && manageAd && <BuddyAdvertModal matchUserInfo={matchUserInfo} advert={manageAd} setManageAd={setManageAd}/>}
+            {manageAd && <BuddyAdvertModal matchUserInfo={matchUserInfo} advert={manageAd} setManageAd={setManageAd}/>}
             {deleteUserModal && <DeleteUserModal setDisableMatch={setDisableMatch} deleteUserModal={deleteUserModal} setDeleteUserModal={setDeleteUserModal}/>}
         </div>
       </div>

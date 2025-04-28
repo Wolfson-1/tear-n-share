@@ -5,6 +5,7 @@ import useAddDoc from '../../../hooks/useAddDoc';
 import ChatMessage from './ChatMessage';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
+import useUpdateDocs from '../../../hooks/useUpdateDocs';
 
 export default function Chat({currentChat,setCurrentChat}) {
     // context for user
@@ -14,12 +15,15 @@ export default function Chat({currentChat,setCurrentChat}) {
     ---------------------- */
     //state for storing text from message html input
     const [messageText,setMessageText] = useState(null);
-    //state for hook to upload message object & to indicate if chat exists
+    //state for hooks to upload message object & to indicate if chat exists
     const [messageObj,setMessageObj] = useState(null);
     const [chatTracker,setChatTracker] = useState(null);
     //username for display at top of chat
     const [userTitle,setUserTitle] = useState(null);
-
+    // state for id's of unread messages to updat read status
+    const [unreadIdsArr,setUnreadIdsArr] = useState(null);
+    //state for displaying if last message has been read or not (for if user is looking at their own last message sent without a reply yet being received)
+    const [lastMessageRead,setLastMessageRead] = useState(false);
 
     /* Hooks
     -----------------------*/
@@ -28,6 +32,8 @@ export default function Chat({currentChat,setCurrentChat}) {
     //hook to uplaod new message on execution of sendMessage function
     const uploadMessage = useAddDoc(messageObj,db,['sharedUserData',currentChat.id,'chat']);
     const uploadChatTrack = useUpdateDoc(chatTracker,db,['sharedUserData',currentChat.id]);
+    //hook for updating read messages status when user reads them
+    const updateRead = useUpdateDocs({read:true},db,['sharedUserData',currentChat.id,'chat'],unreadIdsArr)
 
     /*useEffects
     --------------------- */
@@ -47,18 +53,42 @@ export default function Chat({currentChat,setCurrentChat}) {
         setUserTitle(chatUser[0].userName);
     },[])
 
-    /* Functions 
+    //useEffect to run on completion of fetching messages to set unread messages to read
+    useEffect(()=>{
+        if(messageData){
+            //init arr for pushing ids of received messages that are unread
+            const unreadArr = [];
+            
+            // filter messageData down to ones from user & use if logic to push id's of messages to unreadArr if they are unread
+            const received = messageData.filter(message => {
+                return message.senderId !== user.userUid
+            }).forEach(message => {
+                if(message.read === false) unreadArr.push(message.id);
+            });
+            
+            //if unread messages exist, set them to unreadIdsArr state for update in backend.
+            if(unreadArr.length > 0) setUnreadIdsArr(unreadArr);     
+        }
+    },[messageData]);
+
+    /* event handlers 
     ----------------------- */
+
     //function to handle sending message by creating object with needed data & uploading this to chat collection of shared user doc. 
-    const sendMessage = (e) => {
+    const handleMessageSend = (e) => {
     const dateNow = Date.now();
         e.preventDefault();
+
+        //return out of sendMessage if no value to submit 
+        if(!messageText || null) return;
+
     // create object for uplaoding to chat in backend
     const obj ={
         sender:user.displayName,
         senderId:user.userUid,
         text: messageText,
-        dateTimeSent: dateNow
+        dateTimeSent: dateNow,
+        read:false
     }
     //data to be added to sharedUser doc to track chat
     const chatTrack = {
@@ -71,21 +101,39 @@ export default function Chat({currentChat,setCurrentChat}) {
     setMessageObj([obj]);
     setChatTracker(chatTrack);
     setMessageText('');
-    }
+    };
+
+    //handle key stroke so pressing enter submits message rather than create new line
+    const handleKeyDown = (e) => {
+        if (e.keyCode === 13 && !e.shiftKey) {
+          handleMessageSend(e);
+        }
+      };
     
     return (
-    <div>
+    <>
       <button onClick={()=>{setCurrentChat(null)}}>{`<- Back`}</button>
       <h2>{userTitle}</h2>
-      {messageData && <div className='message-reel'>
-                            {messageData.map((message)=>{
-                                return <ChatMessage message={message}/>
+      <div className='message-reel'>
+                            {messageData && messageData.map((message, index)=>{
+                                //logic to set state for read message flag to display if last message was read or not
+                                let lastMessage = false;
+                                //once at last message run check for if message is read & sender matches userUid
+                                if(index +1 === messageData.length) {
+                                    //if logged in user maches user message & message is read then set last message to true
+                                    if (user.userUid === message.senderId && message.read === true) {
+                                        lastMessage = true ;
+                                    } 
+                                }
+
+                                return <ChatMessage user={user} message={message} readMessage={lastMessage}/>
                             })}
-                        </div>}
-        <form>
-            <input type='text' placeholder='Type here'id='messageText' name='messageText' value={messageText} onChange={(e) => {setMessageText(e.target.value)}}></input>
-            <input onClick={sendMessage} type='submit' value='send'></input>
+                            {lastMessageRead && <p>Read </p>}
+                        </div>
+        <form className='chat-submit'>
+            <textarea className='text' type='text' placeholder='Type here'id='messageText' name='messageText' value={messageText} onKeyDown={handleKeyDown} onChange={(e) => {setMessageText(e.target.value)}}></textarea>
+            <input className='submit' onClick={handleMessageSend} type='submit' value='send'></input>
         </form>
-    </div>
+    </>
   )
 }

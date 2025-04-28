@@ -70,14 +70,14 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
         const dateTime = new Date(data.latestMessageDateTime);
         const date = dateTime.toDateString();
 
-        return <div className='chat-preview' onClick={()=>{messageOnClick(data)}}>
+        return <div className='info-tile chat-preview' onClick={()=>{messageOnClick(data)}}>
                   <h2>{chatUser[0].userName}</h2>
                   <p>{data.latestMessageUser}: {data.latestMessageText}</p>
                   <p>{date.slice(8,10)} {date.slice(4,7)}</p>
               </div>
       })}
     </div>:<p>No current chats yet!</p>}
-    <button onClick={()=>{setAddChatModal(true)}}>+</button>
+    <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>
     {addChatModal === true && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
     </>
     

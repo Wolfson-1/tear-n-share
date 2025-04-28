@@ -54,14 +54,14 @@ export default function ReceivedRequests({user}) {
     };
   
     return (
-    <div>
-      <p>received requests</p>
+    <div className='received-requests'>
+      <h2>received requests</h2>
       {receivedRequests && receivedRequests.map((request) => {
             //time date calculation for how long past since request made
             const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
 
             return <div>
-                        <div>
+                        <div className='info-tile received-requests'>
                             <h3>User: {request.displayName}</h3>
                             <p>{request.basicAdInfo}</p>
                             {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}
