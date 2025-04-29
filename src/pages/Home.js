@@ -11,6 +11,7 @@ import UserInfoModal from '../modules/UserInfoModal';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
 import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
 import useAddDoc from '../hooks/useAddDoc';
+import NotificationsMain from '../modules/notifications/NotificationsMain';
 
 export default function Home() {
   //access user status from context
@@ -92,6 +93,7 @@ export default function Home() {
             <button className='nav-home'>-</button>
             <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Breat Buds</button>
           </div>
+          <NotificationsMain/>
         </main>
     </div>}
     </>
