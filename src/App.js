@@ -5,19 +5,24 @@ import { ContextNotification } from './context/ContextNotification';
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
 import authUserCheck from './utils/authUserCheck';
-import useAddDoc from './hooks/useAddDoc';
 
 function App() {
 
-  //reducer function for upd
+  //reducer function for updating updateNotificaton state
   const reducer = (state,action) =>{
     const {type,payload} = action
     switch (type) {
       case 'add-notification':
         console.log('add-notification:',payload);
-        return [{...state,payload}];
+        return {updateObj:[{
+          dateTime:Date.now(),
+          read:false,
+          type:payload.type,
+          userId:payload.userId,
+          userName:payload.userName}],
+        userId:payload.userId};
         case 'clear-data':
-          return { updateData: null };
+          return  [] ;
         default:
           return state;
       }
@@ -29,7 +34,7 @@ function App() {
   // State for user Login
   const [user,setUser] = useState({loggedIn:'', displayName:'', userUid:'', email:''});
   //useReducer state for updating infomraiton to uplaod data for notifications.
-  const [updateNotification,dispatch] = useReducer(reducer, {updateData: null});
+  const [updateNotification,dispatch] = useReducer(reducer, {updateObj:[],userId:null});
 
 
   /* useEffects

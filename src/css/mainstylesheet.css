@@ -105,6 +105,21 @@ main {
   padding: 1%;
 }
 
+.notifications-container .unread-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 50%;
+  right: 0;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  background-color: rgb(170, 13, 13);
+  color: whitesmoke;
+  font-weight:bolder;
+}
+
 .notifications-container .notifications-reel {
   width: 90%;
   height: 94%;

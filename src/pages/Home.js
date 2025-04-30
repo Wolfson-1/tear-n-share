@@ -49,7 +49,7 @@ export default function Home() {
     const visibleUsers = useFetchDocsFilter(db,['userData'],'show',true);
 
     //hook to make a new notification on action
-    const newNotification = useAddDoc(notificationsUpdate.updateState,db,['userData',user.userUid,'notificationsReel']);
+    const newNotification = useAddDoc(notificationsUpdate.updateState.updateObj,db,['userData',notificationsUpdate.updateState.userId,'notificationsReel']);
 
     /* useEffects
     ---------------------- */
@@ -76,11 +76,8 @@ export default function Home() {
         }
       },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
 
-      useEffect(()=>{
-        console.log(notificationsUpdate.updateState);
-    },[notificationsUpdate.updateState]);
-
-      /*---------------*/
+      /* Event Handlers
+      ------------------*/
 
       //selector function for toggling between account & buddy management draw
       const drawToggle = (on,off) => {
@@ -105,7 +102,7 @@ export default function Home() {
             <button className='nav-home'>-</button>
             <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Bread Buds</button>
           </div>
-          <NotificationsMain/>
+          <NotificationsMain user={user}/>
         </main>
     </div>}
     </>

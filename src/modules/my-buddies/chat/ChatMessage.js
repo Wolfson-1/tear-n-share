@@ -1,16 +1,14 @@
 import React from 'react'
+import { epochtoReadable } from '../../../utils/timeDateCalcs';
 
 export default function ChatMessage({user, message,readMessage}) {
 
-
-  //variable for dateTime
-  const dateTime = new Date(message.dateTimeSent);
-  const time = dateTime.toTimeString();
-  const date = dateTime.toDateString();
+  //use epoch to readable function to convert epoch dateTime to reable for use in DOM
+  const dateAndTime = epochtoReadable(message.dateTimeSent,'short');
 
   return (
     <div className={user.userUid === message.senderId ? 'chat-message sent' : 'chat-message received'}>
-      <p>{time.slice(0,5)}, {date.slice(8,10)} {date.slice(4,7)}, {date.slice(11,15)}</p>
+      <p>{dateAndTime}</p>
       <div className='info-tile message-text'>
         <p>{message.text}</p>
       </div>

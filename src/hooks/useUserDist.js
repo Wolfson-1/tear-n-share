@@ -39,7 +39,6 @@ export default function useUserDist(location, distanceInKm, users) {
             if (d < distanceInKm && d !== 0) filteredArr.push({...user,distToUser:d});
     });
 
-    console.log(filteredArr);
     setReturnUsers(filteredArr);
     };
 

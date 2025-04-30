@@ -67,7 +67,6 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
   useEffect(() => {
     const mInMile = 1609.344 // number of meters in a mile
     if (userData.distance) {
-      console.log(userData.distance)
       const mDist = userData.distance * mInMile;
       setCircleRadius(mDist); 
     }  

@@ -21,7 +21,7 @@ export default function Chat({currentChat,setCurrentChat}) {
     const [messageObj,setMessageObj] = useState(null);
     const [chatTracker,setChatTracker] = useState(null);
     //username for display at top of chat
-    const [userTitle,setUserTitle] = useState(null);
+    const [chatPartner,setChatPartner] = useState(null);
     // state for id's of unread messages to updat read status
     const [unreadIdsArr,setUnreadIdsArr] = useState(null);
     //state for displaying if last message has been read or not (for if user is looking at their own last message sent without a reply yet being received)
@@ -52,7 +52,7 @@ export default function Chat({currentChat,setCurrentChat}) {
         const chatUser = currentChat.matchedUsers.filter((match)=>{
             return match.userId !== user.userUid
         });
-        setUserTitle(chatUser[0].userName);
+        setChatPartner(chatUser[0]);
     },[])
 
     //useEffect to run on completion of fetching messages to set unread messages to read
@@ -79,33 +79,40 @@ export default function Chat({currentChat,setCurrentChat}) {
     //function to handle sending message by creating object with needed data & uploading this to chat collection of shared user doc. 
     const handleMessageSend = (e) => {
     const dateNow = Date.now();
-        e.preventDefault();
-
-        notificationsUpdate.updateDispatch( {type:'add-notification',payload:{messageText     
-                                          }});                      
+        e.preventDefault();                
     
-    //     //return out of sendMessage if no value to submit 
-    //     if(!messageText || null) return;
+        //return out of sendMessage if no value to submit 
+        if(!messageText || null) return;
 
-    // // create object for uplaoding to chat in backend
-    // const obj ={
-    //     sender:user.displayName,
-    //     senderId:user.userUid,
-    //     text: messageText,
-    //     dateTimeSent: dateNow,
-    //     read:false
-    // }
-    // //data to be added to sharedUser doc to track chat
-    // const chatTrack = {
-    //     latestMessageUser: user.displayName,
-    //     latestMessageText:messageText,
-    //     latestMessageDateTime: dateNow,
-    //     latestMessageRead: false
-    // }
-    // //set state for upload & update in backend
-    // setMessageObj([obj]);
-    // setChatTracker(chatTrack);
-    // setMessageText('');
+    // create object for uplaoding to chat in backend
+    const obj ={
+        sender:user.displayName,
+        senderId:user.userUid,
+        text: messageText,
+        dateTimeSent: dateNow,
+        read:false
+    }
+    //data to be added to sharedUser doc to track chat
+    const chatTrack = {
+        latestMessageUser: user.displayName,
+        latestMessageText:messageText,
+        latestMessageDateTime: dateNow,
+        latestMessageRead: false
+    }    
+
+    //set state for upload & update in backend
+    setMessageObj([obj]);
+    setChatTracker(chatTrack);
+
+    //set Reducer state for sending a notification of new message
+    notificationsUpdate.updateDispatch( {type:'add-notification',
+    payload:{type:'new-chat-message',
+            ...chatPartner
+            }
+    });
+    
+    // reset state for message text input
+    setMessageText('');
     };
 
     // //handle key stroke so pressing enter submits message rather than create new line
@@ -118,7 +125,7 @@ export default function Chat({currentChat,setCurrentChat}) {
     return (
     <>
       <button onClick={()=>{setCurrentChat(null)}}>{`<- Back`}</button>
-      <h2>{userTitle}</h2>
+      <h2>{chatPartner && chatPartner.userName}</h2>
       <div className='message-reel'>
                             {messageData && messageData.map((message, index)=>{
                                 //logic to set state for read message flag to display if last message was read or not

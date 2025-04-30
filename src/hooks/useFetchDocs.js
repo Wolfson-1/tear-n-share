@@ -4,7 +4,7 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 export default function useFetchDocs(database,path,order) {
   //NOTES FOR USE
   // path & order need to be in their own arrays. 
-  // format for order arr: ['variable','desc']. For defaul fetch use: ['createdAt']
+  // format for order arr: ['variable','desc']. For default fetch use: ['createdAt']
 
   const [dataExport, setData] = useState([]);
 
