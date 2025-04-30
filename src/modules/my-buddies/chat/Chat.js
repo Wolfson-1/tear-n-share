@@ -1,5 +1,6 @@
 import React, { useState,useContext, useEffect } from 'react'
 import {ContextUser} from '../../../context/ContextUser';
+import { ContextNotification } from '../../../context/ContextNotification';
 import {db} from '../../../firebase/config';
 import useAddDoc from '../../../hooks/useAddDoc';
 import ChatMessage from './ChatMessage';
@@ -8,8 +9,9 @@ import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import useUpdateDocs from '../../../hooks/useUpdateDocs';
 
 export default function Chat({currentChat,setCurrentChat}) {
-    // context for user
+    // context for user & notificaitons state
     const user = useContext(ContextUser);
+    const notificationsUpdate = useContext(ContextNotification);
 
     /* State
     ---------------------- */
@@ -79,36 +81,39 @@ export default function Chat({currentChat,setCurrentChat}) {
     const dateNow = Date.now();
         e.preventDefault();
 
-        //return out of sendMessage if no value to submit 
-        if(!messageText || null) return;
+        notificationsUpdate.updateDispatch( {type:'add-notification',payload:{messageText     
+                                          }});                      
+    
+    //     //return out of sendMessage if no value to submit 
+    //     if(!messageText || null) return;
 
-    // create object for uplaoding to chat in backend
-    const obj ={
-        sender:user.displayName,
-        senderId:user.userUid,
-        text: messageText,
-        dateTimeSent: dateNow,
-        read:false
-    }
-    //data to be added to sharedUser doc to track chat
-    const chatTrack = {
-        latestMessageUser: user.displayName,
-        latestMessageText:messageText,
-        latestMessageDateTime: dateNow,
-        latestMessageRead: false
-    }
-    //set state for upload & update in backend
-    setMessageObj([obj]);
-    setChatTracker(chatTrack);
-    setMessageText('');
+    // // create object for uplaoding to chat in backend
+    // const obj ={
+    //     sender:user.displayName,
+    //     senderId:user.userUid,
+    //     text: messageText,
+    //     dateTimeSent: dateNow,
+    //     read:false
+    // }
+    // //data to be added to sharedUser doc to track chat
+    // const chatTrack = {
+    //     latestMessageUser: user.displayName,
+    //     latestMessageText:messageText,
+    //     latestMessageDateTime: dateNow,
+    //     latestMessageRead: false
+    // }
+    // //set state for upload & update in backend
+    // setMessageObj([obj]);
+    // setChatTracker(chatTrack);
+    // setMessageText('');
     };
 
-    //handle key stroke so pressing enter submits message rather than create new line
+    // //handle key stroke so pressing enter submits message rather than create new line
     const handleKeyDown = (e) => {
         if (e.keyCode === 13 && !e.shiftKey) {
-          handleMessageSend(e);
+        handleMessageSend(e);
         }
-      };
+    };
     
     return (
     <>

@@ -1,13 +1,39 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useReducer } from 'react';
 import './css/mainstylesheet.css';
-import {ContextUser} from './context/ContextUser';
+import { ContextUser } from './context/ContextUser';
+import { ContextNotification } from './context/ContextNotification';
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
 import authUserCheck from './utils/authUserCheck';
+import useAddDoc from './hooks/useAddDoc';
 
 function App() {
+
+  //reducer function for upd
+  const reducer = (state,action) =>{
+    const {type,payload} = action
+    switch (type) {
+      case 'add-notification':
+        console.log('add-notification:',payload);
+        return [{...state,payload}];
+        case 'clear-data':
+          return { updateData: null };
+        default:
+          return state;
+      }
+  };
+
+  /* State
+  -------------------- */
+
   // State for user Login
   const [user,setUser] = useState({loggedIn:'', displayName:'', userUid:'', email:''});
+  //useReducer state for updating infomraiton to uplaod data for notifications.
+  const [updateNotification,dispatch] = useReducer(reducer, {updateData: null});
+
+
+  /* useEffects
+  ----------------------*/
 
   //Auth user check for if user is logged in. if logged in sets state for user
   useEffect(()=> {
@@ -22,10 +48,12 @@ function App() {
   if(user.loggedIn === true && user.displayName) {
     return (
     <>
+    <ContextNotification.Provider value={{updateState:updateNotification, updateDispatch: dispatch}}>
       <ContextUser.Provider value={user}>
         {<Home/>}
       </ContextUser.Provider>
-    </>      
+    </ContextNotification.Provider>
+    </>
     );
   } else if (user.loggedIn === false) {
     return (

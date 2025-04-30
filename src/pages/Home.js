@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {ContextUser} from '../context/ContextUser';
+import { ContextNotification } from '../context/ContextNotification';
 import { db } from '../firebase/config';
 import useUpdateDoc from '../hooks/useUpdateDoc';
 import useFetchDoc from '../hooks/useFetchDoc';
@@ -16,6 +17,7 @@ import NotificationsMain from '../modules/notifications/NotificationsMain';
 export default function Home() {
   //access user status from context
   const user = useContext(ContextUser);
+  const notificationsUpdate = useContext(ContextNotification);
 
   /*state 
     --------------------*/
@@ -46,6 +48,9 @@ export default function Home() {
     // user data for populating users in close proximity
     const visibleUsers = useFetchDocsFilter(db,['userData'],'show',true);
 
+    //hook to make a new notification on action
+    const newNotification = useAddDoc(notificationsUpdate.updateState,db,['userData',user.userUid,'notificationsReel']);
+
     /* useEffects
     ---------------------- */
 
@@ -66,7 +71,14 @@ export default function Home() {
       useEffect(() => {
         if(updateUserInfo.isComplete === true) setUpdateData(null);
         if(newUserInfo.isComplete === true) setNewUser(null);
-      },[updateUserInfo.isComplete,newUserInfo.isComplete])
+        if(newNotification.isComplete === true) {
+          notificationsUpdate.updateDispatch({type:'clear-data',payload:null});
+        }
+      },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
+
+      useEffect(()=>{
+        console.log(notificationsUpdate.updateState);
+    },[notificationsUpdate.updateState]);
 
       /*---------------*/
 
@@ -91,7 +103,7 @@ export default function Home() {
           <div className='nav-button-container'> 
             <button className='nav-my-account' onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
             <button className='nav-home'>-</button>
-            <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Breat Buds</button>
+            <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Bread Buds</button>
           </div>
           <NotificationsMain/>
         </main>
