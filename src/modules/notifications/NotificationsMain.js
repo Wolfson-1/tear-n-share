@@ -17,7 +17,7 @@ export default function NotificationsMain({user}) {
 
   /*Hooks */
   //hook the fetch notifications from backend
-  const notifications = useFetchDocs(db,['userData',user.userUid,'notificationsReel'],['createdAt']);
+  const notifications = useFetchDocs(db,['userData',user.userUid,'notificationsReel'],['createdAt','desc']);
   //hook for updating read status of notifications
   const updateRead = useUpdateDocs({read:true},db,['userData',user.userUid,'notificationsReel'],updateIds);
 

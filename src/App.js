@@ -19,7 +19,7 @@ function App() {
           dateTime:Date.now(),
           read:false,
           ...payload}],
-          sendId:sendId}    
+          sendId:sendId};   
       //case to clear data usually in case of when uplaod of notificaiton is finished 
       case 'clear-data':
           return  [] ;

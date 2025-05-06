@@ -17,7 +17,6 @@ export default function useUpdateDocs(updateObj,database,path,ids) {
         if(isComplete === true) setIsComplete(false);
         //check to make sure updateObj is not blank or no ids have been provided
         if(!updateObj || updateObj === null || !ids || ids.length === 0) {
-            console.log('Update object or ids are missing from hook');
             return;
         }
 

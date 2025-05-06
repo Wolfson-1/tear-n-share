@@ -33,8 +33,14 @@ const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,
 
 //check for when updateDistance is complete to clear out state for updateFig
 useEffect(() => {
-    if(adRequestDoc.isComplete === true) setUserRequest(null);
-    if(userRequestTracker.isComplete === true) setRequestTracker(null);
+    if(adRequestDoc.isComplete && userRequestTracker.isComplete) {
+        
+
+
+        //clear upload state
+        setUserRequest(null);
+        setRequestTracker(null);
+    };
 },[adRequestDoc.isComplete,userRequestTracker.isComplete])
 
  /* event handlers 

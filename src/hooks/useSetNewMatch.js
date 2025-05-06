@@ -22,6 +22,7 @@ export default function useSetNewMatch(user,receivedRequests) {
 
     /* State
     --------------- */
+
     //state for changed request once filtered from array of logged in user requests
     const [changedRequest,setChangedRequest] = useState({});
     // state for userId for use in dynamic path to add data to requesting user when logged user accepts request 
@@ -30,6 +31,11 @@ export default function useSetNewMatch(user,receivedRequests) {
     const [existingBuddyId,setExistingBuddyId] = useState(null);
     const [adDataExisting,setAdDataExisting] = useState([]);
     
+    //ref state in order to lock function from trying to process multiple changes at once
+    const isProcessingRef = useRef(false);
+    //state for triggeringRerun to check for any qued
+    const [triggerRerun, setTriggerRerun] = useState(false);
+
     /* FORUSERADREFS
     const [updateObj,setUpdateObj] = useState(null);
     ------------------------*/
@@ -74,6 +80,12 @@ export default function useSetNewMatch(user,receivedRequests) {
 
     //runs checks on change of a requests status (from pending to accept or reject) then executs code accordingly.
     useEffect(() => {
+        //if processing is currently true or no requests at all. return out of the functiuon
+        if (isProcessingRef.current || !receivedRequests) {
+            console.log('processing or no requests');
+            return;
+        }
+
         //logic to find received request with changed status (when receivedRequests exists)
         if(receivedRequests) {
             const changeRequest = receivedRequests.find((request)=> {
@@ -82,16 +94,22 @@ export default function useSetNewMatch(user,receivedRequests) {
 
             //if changed request exists, execute code to access if status is accepted or rejected
             if(changeRequest) {
-            //set id for request user state to retreive related requests advert data
-            setRequestUserId(changeRequest.requestUserId)
-            console.log('changed request' + changeRequest);
-            //set state for change request for use in hooks
-            setChangedRequest(changeRequest);
-            console.log('changed request exists');
-            
-                //if changed status of request is accepted, check for existing buddy pairing between users
+
+                //if state is rejected return out of setting match function
+                if(changeRequest.status === 'rejected') {
+                    setDeleteObj({...deleteObj,request:[changeRequest.id]})
+                    return;
+                } 
+                    
                 if(changeRequest.status === 'accepted') {
-                    console.log('change request is accept')
+                    //if a change requests exists, set to true so this locks function from being run twice on multiple changes
+                    isProcessingRef.current = true;
+                    //set id for request user state to retreive related requests advert data
+                    setRequestUserId(changeRequest.requestUserId)
+                    console.log('changed request' + changeRequest.requestUserId);
+                    //set state for change request for use in hooks
+                    setChangedRequest(changeRequest);
+                    console.log('changed request exists');
 
                     //if user has existing matches already, filter for match with requesting user
                     if(currentBuddys) {
@@ -110,7 +128,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                             //set existing buddy id variable to complete path for adding ad data to shared user data doc
                             setExistingBuddyId(existingBuddy.id);
                             //set update obj for adding new advert ID for refference for requester & accepter
-                           // FORUSERADREFS: setUpdateObj(existingBuddy.matchedAdverts ? {matchedAdverts:[...existingBuddy.matchedAdverts,adIdRef.current]} : {matchedAdverts:[adIdRef.current]});
+                            // FORUSERADREFS: setUpdateObj(existingBuddy.matchedAdverts ? {matchedAdverts:[...existingBuddy.matchedAdverts,adIdRef.current]} : {matchedAdverts:[adIdRef.current]});
                         //if no existing buddy or buddys list at all, set new buddy for user and requester
                         } else if (!existingBuddy) {
                             console.log('no existing buddy')
@@ -123,7 +141,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                                 buddySince: buddySince,
                                 matchedUserUid: changeRequest.requestUserId,
                                 active:true,
-                               //FORUSERADREFS: matchedAdverts:[adIdRef.current]
+                                //FORUSERADREFS: matchedAdverts:[adIdRef.current]
                             }]);
                             setNewBuddyRequester([{
                                 displayName: user.displayName,
@@ -131,11 +149,11 @@ export default function useSetNewMatch(user,receivedRequests) {
                                 buddySince: buddySince,
                                 matchedUserUid: user.userUid,
                                 active:true,
-                              //FORUSERADREFS  matchedAdverts:[adIdRef.current]
+                                //FORUSERADREFS  matchedAdverts:[adIdRef.current]
                             }]);
                             setSharedUserObj({
                             matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
-                                          {userName:user.displayName,userId:user.userUid}],
+                                            {userName:user.displayName,userId:user.userUid}],
                             buddySince: buddySince,
                             active:true
                             });
@@ -153,7 +171,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                     else if (!currentBuddys) {
                         console.log('no existing buddy list!')
                         const buddySince = Date.now()
-                        
+
                         setNewBuddyUser([{
                             displayName: changeRequest.displayName,
                             distance: changeRequest.distance,
@@ -172,7 +190,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                         }]);
                         setSharedUserObj({
                         matchedUsers:[{userName:changeRequest.displayName,userId:changeRequest.requestUserId},
-                                      {userName:user.displayName,userId:user.userUid}],
+                                        {userName:user.displayName,userId:user.userUid}],
                         buddySince: buddySince,
                         active:true
                         });
@@ -189,7 +207,7 @@ export default function useSetNewMatch(user,receivedRequests) {
                 }
             };
         }
-    },[receivedRequests]);
+    },[receivedRequests,triggerRerun]);
 
     //use Effect to run once fetched advert data is received from back end. 
         useEffect(() => { 
@@ -212,11 +230,16 @@ export default function useSetNewMatch(user,receivedRequests) {
         buddyIdRef.current = uuidv4();
         adIdRef.current = uuidv4();
 
-          //clear state
-          setNewBuddyUser(null);
-          setNewBuddyRequester(null);
-          setExistingBuddyId(null);
-          setSharedUserObj(null);
+        //clear variables
+        setNewBuddyUser(null);
+        setNewBuddyRequester(null);
+        setExistingBuddyId(null);
+        setChangedRequest({});
+        setSharedUserObj(null);
+        setRequestUserId(null);
+
+        //trigger rerun to check for any other requests changed whilst current change request was being processed
+        setTriggerRerun(prev => !prev);
         }
 
         // clear state for creating new match for an existing user once completed
@@ -224,15 +247,30 @@ export default function useSetNewMatch(user,receivedRequests) {
             //set delete for advert and request on completion 
             setDeleteObj({advert:[changedRequest.adId],request:[changedRequest.id]});
 
-
             // Reset UUIDs for next match cycle
             buddyIdRef.current = uuidv4();
             adIdRef.current = uuidv4();
 
-            //clear state
+            //clear state & unlock function
            //FORUSERADREFS setUpdateObj(null);
             setExistingBuddyId(null);
-            setAdDataExisting(null);
+            setAdDataExisting([]);
+
+            //trigger rerun to check for any other requests changed whilst current change request was being processed
+            setTriggerRerun(prev => !prev);
         };
       },[addBuddyUser.isComplete,addBuddyRequester.isComplete,addAdvertSharedObj.isComplete,addSharedUserData.isComplete])
+
+
+      useEffect(()=>{
+        //clear delete object state in line with objects removed 
+        if(deleteRequest.isComplete) {
+            console.log({...deleteObj,request:[]})
+            setDeleteObj({...deleteObj,request:[]})
+            //clear state & unlock function ready for use again
+            isProcessingRef.current = false;
+        };
+        //reset deleteObj state on
+        if(deleteAdvert.isComplete) setDeleteObj({...deleteObj,advert:[]});
+      },[deleteRequest.isComplete,deleteAdvert.isComplete])
 };

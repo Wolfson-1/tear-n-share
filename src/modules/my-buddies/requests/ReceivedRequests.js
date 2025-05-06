@@ -56,7 +56,7 @@ export default function ReceivedRequests({user}) {
       if (accept === false) setRequest({status:'rejected'});
 
       //set Reducer state using context for sending a notification of a new request
-      notificationsUpdate.updateDispatch( {type:'add-notification',
+      notificationsUpdate.updateDispatch({type:'add-notification',
         payload:{type:'request-response-notification',
               userId: user.userUid,
               userName: user.displayName,
