@@ -49,7 +49,7 @@ export default function Home() {
     const visibleUsers = useFetchDocsFilter(db,['userData'],'show',true);
 
     //hook to make a new notification on action
-    const newNotification = useAddDoc(notificationsUpdate.updateState.updateObj,db,['userData',notificationsUpdate.updateState.userId,'notificationsReel']);
+    const newNotification = useAddDoc(notificationsUpdate.updateState.updateObj,db,['userData',notificationsUpdate.updateState.sendId,'notificationsReel']);
 
     /* useEffects
     ---------------------- */
@@ -72,9 +72,14 @@ export default function Home() {
         if(updateUserInfo.isComplete === true) setUpdateData(null);
         if(newUserInfo.isComplete === true) setNewUser(null);
         if(newNotification.isComplete === true) {
+          console.log('clearing data')
           notificationsUpdate.updateDispatch({type:'clear-data',payload:null});
         }
       },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
+
+      useEffect(()=>{
+        if(newNotification) console.log(notificationsUpdate);
+      },[newNotification])
 
       /* Event Handlers
       ------------------*/

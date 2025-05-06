@@ -7,7 +7,6 @@ export default function AdvertListItem({advert,focusProfile,requestEventHandler}
  //access user status from context
 const user = useContext(ContextUser);
 
-console.log(focusProfile);
 // fetch existing request if request already sent
 const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);
 

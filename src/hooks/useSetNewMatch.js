@@ -1,17 +1,20 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import {db} from '../firebase/config';
 import useAddSubDoc from './useAddSubDoc';
 import useFetchDoc from './useFetchDoc';
 import useFetchDocs from './useFetchDocs';
 import useAddDoc from './useAddDoc';
 import useDeleteDoc from './useDeleteDoc';
+import { ContextNotification } from '../context/ContextNotification';
 import { v4 as uuidv4} from 'uuid';
-import useUpdateDoc from './useUpdateDoc';
 
 export default function useSetNewMatch(user,receivedRequests) {
 
     // key:
     //FORUSERADREFS = code currently not needed that can create array of ids for adverts matched with another user. but in the user pairing obect. unblock for use
+
+    //context for setting new buddy notificaiton
+    const notificationsUpdate = useContext(ContextNotification);
 
     //customID for buddy & advert objects so these are the same for logged in and requesting user when created 
     const buddyIdRef = useRef(uuidv4());
@@ -137,6 +140,14 @@ export default function useSetNewMatch(user,receivedRequests) {
                             active:true
                             });
                         
+                            //set Reducer state using context for sending a notification of new buddy
+                            notificationsUpdate.updateDispatch( {type:'add-notification',
+                                payload:{type:'new-buddy-match',
+                                        userName: user.displayName,
+                                        userId: user.userUid
+                                        },
+                                sendId: changeRequest.requestUserId
+                            });
                         }
                     } //if no existing buddys at all, create new & add advert to new
                     else if (!currentBuddys) {
@@ -164,6 +175,15 @@ export default function useSetNewMatch(user,receivedRequests) {
                                       {userName:user.displayName,userId:user.userUid}],
                         buddySince: buddySince,
                         active:true
+                        });
+
+                        //set Reducer state using context for sending a notification of new buddy
+                        notificationsUpdate.updateDispatch( {type:'add-notification',
+                        payload:{type:'new-buddy-match',
+                                userName: user.displayName,
+                                userId: user.userUid
+                                },
+                        sendId: changeRequest.requestUserId
                         });
                     };
                 }

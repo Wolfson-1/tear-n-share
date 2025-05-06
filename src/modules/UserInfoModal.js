@@ -1,13 +1,15 @@
 import React, { useContext, useEffect,useState } from 'react'
 import { db } from '../firebase/config';
 import {ContextUser} from '../context/ContextUser';
+import { ContextNotification } from '../context/ContextNotification';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter'
 import useAddDoc from '../hooks/useAddDoc';
 import AdvertListItem from './multi-use-modules/AdvertListItem';
 
 export default function UserInfoModal({focusProfile,setFocusProfile}) {  
-//access user status from context
+//access user status & notifications update state from context
 const user = useContext(ContextUser);
+const notificationsUpdate = useContext(ContextNotification);
 
 /* state
 ----------- */
@@ -61,6 +63,17 @@ const submitAdvertRequest = (user,adUser,advert,requestAdPath) => {
         distance:adUser.distance,
         status:'pending',
         requestTime:currTime}]);
+
+    //set Reducer state using context for sending a notification of a new request
+    notificationsUpdate.updateDispatch( {type:'add-notification',
+        payload:{type:'advert-request-notification',
+                userId: user.userUid,
+                userName: user.displayName,
+                adId:advert.id
+                },
+        sendId:adUser.id
+        });
+
 };
 
 return (
@@ -75,7 +88,6 @@ return (
                 <div className='advert-list-container'>
                     {adverts && <div className='advert-list'>
                         {adverts.map((advert)=> {
-                            console.log(advert);
                             return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest}/>
                         })}   
                     </div>}

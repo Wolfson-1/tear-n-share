@@ -10,20 +10,21 @@ function App() {
 
   //reducer function for updating updateNotificaton state
   const reducer = (state,action) =>{
-    const {type,payload} = action
+    const {type,payload,sendId} = action
     switch (type) {
+      //for addition of a new message notification 
       case 'add-notification':
         console.log('add-notification:',payload);
         return {updateObj:[{
           dateTime:Date.now(),
           read:false,
-          type:payload.type,
-          userId:payload.userId,
-          userName:payload.userName}],
-        userId:payload.userId};
-        case 'clear-data':
+          ...payload}],
+          sendId:sendId}    
+      //case to clear data usually in case of when uplaod of notificaiton is finished 
+      case 'clear-data':
           return  [] ;
-        default:
+      //default to retun current state  
+      default:
           return state;
       }
   };

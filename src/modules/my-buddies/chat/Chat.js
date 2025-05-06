@@ -104,13 +104,15 @@ export default function Chat({currentChat,setCurrentChat}) {
     setMessageObj([obj]);
     setChatTracker(chatTrack);
 
-    //set Reducer state for sending a notification of new message
+    //set Reducer state using context for sending a notification of new message
     notificationsUpdate.updateDispatch( {type:'add-notification',
     payload:{type:'new-chat-message',
-            ...chatPartner
-            }
+            userName: user.displayName,
+            userId: user.userUid
+            },
+    sendId: chatPartner.userId
     });
-    
+
     // reset state for message text input
     setMessageText('');
     };

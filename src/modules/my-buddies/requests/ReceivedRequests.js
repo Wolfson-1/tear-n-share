@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
 import useSetNewMatch from '../../../hooks/useSetNewMatch';
+import { ContextNotification } from '../../../context/ContextNotification';
 
 export default function ReceivedRequests({user}) {
+    //context for sending a notification on accept or reject of a request received
+    const notificationsUpdate = useContext(ContextNotification);
 
       /* State
     --------------- */
@@ -51,6 +54,17 @@ export default function ReceivedRequests({user}) {
       //set update doc baed on accept value
       if (accept === true) setRequest({status:'accepted'});
       if (accept === false) setRequest({status:'rejected'});
+
+      //set Reducer state using context for sending a notification of a new request
+      notificationsUpdate.updateDispatch( {type:'add-notification',
+        payload:{type:'request-response-notification',
+              userId: user.userUid,
+              userName: user.displayName,
+              adId:request.id,
+              status: accept ? 'accepted' : 'rejected'
+              },
+        sendId:request.requestUserId
+      });
     };
   
     return (
