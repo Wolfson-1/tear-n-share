@@ -13,6 +13,9 @@ export default function useAddDoc(uploadObjs,database,path,id) {
                 //return if no objects are found
                 if (!uploadObjs || uploadObjs.length === 0) return;
                 
+                console.log(path);
+                console.log(uploadObjs);
+
                 // Initialize doc ref & array for docIds
                 let docRef
                 let docIds = [];
