@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { serverTimestamp, addDoc, collection, setDoc, doc } from 'firebase/firestore';
+import { upload } from '@testing-library/user-event/dist/upload';
 
 export default function useAddSubDoc(uploadObj,subObj,database,path,subCollection,id,subId) {    
     
@@ -9,8 +10,7 @@ export default function useAddSubDoc(uploadObj,subObj,database,path,subCollectio
     useEffect(() => {
             const uploadData = async () => {
                 //return if object or sub object do not exist.
-                if (!uploadObj || !subObj) return;     
-
+                if (!uploadObj || !subObj) return;
 
                 //conditional logic to set specific Id if exists
                 if(id && subId) {

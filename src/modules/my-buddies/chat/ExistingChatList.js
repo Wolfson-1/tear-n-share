@@ -77,7 +77,9 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
               </div>
       })}
     </div>:<p>No current chats yet!</p>}
-    <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>
+    {sharedUserData ? 
+    <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>:
+    <p>match with other users & you will be able to chat with them here!</p>}
     {addChatModal === true && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
     </>
     

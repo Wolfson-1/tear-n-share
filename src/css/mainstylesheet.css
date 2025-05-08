@@ -124,7 +124,30 @@ main {
   width: 90%;
   height: 94%;
   border-radius: 50px 50px 0px 0px;
+  padding: 4% 2% 0% 2%;
   background-color: rgb(34, 34, 34);
+  overflow-y: scroll;
+  gap: 2%;
+}
+
+.notifications-container .notifications-reel .info-tile.notification {
+  background: none;
+  color: whitesmoke;
+  border-radius: 0%;
+  margin: 2% 0% 2% 0%;
+  border-bottom: solid rgba(245, 245, 245, 0.192) 1px;
+  flex-direction: column;
+}
+
+.notifications-container .notifications-reel .info-tile.notification span {
+  align-self: flex-end;
+  margin: 1% 2% 0% 0%;
+  font-size: small;
+}
+
+
+.notifications-container .notifications-reel .info-tile.notification p {
+  margin: 0% 2% 1% 2%;
 }
 
 /* standard modal styling */

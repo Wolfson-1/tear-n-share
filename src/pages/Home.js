@@ -36,7 +36,7 @@ export default function Home() {
 
     /* Hooks
     -------------- */
-    //fetch userData-
+    //fetch userData
     const userData = useFetchDoc(db,['userData'],user.userUid);
 
     //update user data in backend on change

@@ -1,7 +1,7 @@
 import React from 'react'
 import { flushSync } from 'react-dom'
 
-export default function DeleteUserModal({setDisableMatch,deleteUserModal,setDeleteUserModal}) {
+export default function DeleteUserModal({setDisableMatch,setDeleteUserModal}) {
   return (
     <div className='modal-form-container'>
             <button className='close-modal' onClick={()=>setDeleteUserModal(null)}>x</button>

@@ -87,12 +87,16 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                 <h1>{manageBuddy.displayName}</h1>
                 <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
-            {matchedAdverts && !manageAd && <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>}
-            {!matchedAdverts && !manageAd && <div>
-                <p>You currently have no existing agreements. You will still be able to access your historical chat & message in order to arrange another if so wish. Or until one of you unmatches.</p>
-                <button onClick={()=>{setDeleteUserModal(true)}}>unmatch</button>
-            </div>}
-            {manageAd && <BuddyAdvertModal matchUserInfo={matchUserInfo} sortedUsers={sortedUsers} advert={manageAd} setManageAd={setManageAd}/>}
+            {!manageAd ? 
+                matchedAdverts ? 
+                <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>
+                :
+                <div>
+                    <p>You currently have no existing agreements. You will still be able to access your historical chat & message in order to arrange another if so wish. Or until one of you unmatches.</p>
+                    <button onClick={()=>{setDeleteUserModal(true)}}>unmatch</button>
+                </div>
+            :
+            <BuddyAdvertModal matchUserInfo={matchUserInfo} sortedUsers={sortedUsers} advert={manageAd} setManageAd={setManageAd}/>}
             {deleteUserModal && <DeleteUserModal setDisableMatch={setDisableMatch} setDeleteUserModal={setDeleteUserModal}/>}
         </div>
       </div>
