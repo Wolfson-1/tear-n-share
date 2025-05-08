@@ -4,7 +4,9 @@ import AcceptRejectAdRequest from './notification-tiles/AcceptRejectAdRequest'
 import ReceivedRequest from './notification-tiles/ReceivedRequest'
 import NewBuddyMatch from './notification-tiles/NewBuddyMatch'
 import AdEvent from './notification-tiles/AdEvent'
+import DeleteEvent from './notification-tiles/DeleteEvent'
 import { epochtoReadable } from '../../utils/timeDateCalcs'
+
 
 export default function NotificationsReel({notifications}) {
 
@@ -24,8 +26,10 @@ export default function NotificationsReel({notifications}) {
                     return <NewBuddyMatch notification={notification} timeStamp={timeStamp}/>
                 case 'advert-request-notification':
                     return <ReceivedRequest notification={notification} timeStamp={timeStamp}/>
-                case 'advert-event': 
+                case 'new-ad-event': 
                     return <AdEvent notification={notification} timeStamp={timeStamp}/>
+                case 'delete-event':
+                    return <DeleteEvent notification={notification} timeStamp={timeStamp}/>
             }
             })
         }

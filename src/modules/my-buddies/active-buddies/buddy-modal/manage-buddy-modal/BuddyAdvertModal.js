@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {db} from '../../../../../firebase/config';
-import {ContextUser} from '../../../../../context/ContextUser';
+import { ContextNotification } from '../../../../../context/ContextNotification';
 import Calendar from '../calander/Calendar';
 import useFetchDocs from '../../../../../hooks/useFetchDocs';
 import LogEventModal from '../log-event-modal/LogEventModal';
@@ -9,15 +9,13 @@ import DeleteAdModal from '../delete-modules/DeleteAdModal';
 import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
 import CalendarMonth from '../calander/CalendarMonth';
 
-export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
+export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setManageAd}) {
 
   // context for user
-  const user = useContext(ContextUser);
+  const notificationsUpdate = useContext(ContextNotification);
 
   /* State
   ----------------*/
-  //state for matched users (who is signed in and who is paired)
-  const [sortedUsers,setSortedUsers] = useState(null);
   //state for module to add an aditional event (purchase or payment)
   const [eventModal,setEventModal] = useState(null);
   //state for calendar related events (calEvent=state to open modal with a specific calander event info, monmthCalander = state to open month wide calendar.)
@@ -36,17 +34,6 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
   //delete hook to remove ad if user choses to end agreement
   const deleteAd = useDeleteDoc(deleteAdId,db,['sharedUserData',matchUserInfo.id,'matchedAdverts']);
 
-  /* useEffects
-  ----------------*/
-  useEffect(()=>{
-    // logic to seperate user specific data for loading to dom (for logged in user & secondary user)
-    if(matchUserInfo){
-     setSortedUsers({loggedIn:matchUserInfo.matchedUsers[0].userName === user.displayName ? matchUserInfo.matchedUsers[0].userName : matchUserInfo.matchedUsers[1].userName,
-              paired:matchUserInfo.matchedUsers[0].userName === user.displayName ? matchUserInfo.matchedUsers[1].userName : matchUserInfo.matchedUsers[0].userName
-              })
-    }
-  },[matchUserInfo]);
-
   //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user for props & display in dom
   useEffect(()=>{
 
@@ -63,16 +50,16 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
         //logic to continue only if paid status is false (currently unpaid)
         if(data.paid === false) {
           //logic to push unpaid event to correct array for either upaind by logged user or unpaid by paired user
-          if(data.eventUser === sortedUsers.loggedIn) {
+          if(data.eventUser === sortedUsers.loggedIn.userName) {
             pairedUnpaidArr.push(data)
-          }  else if(data.eventUser === sortedUsers.paired) {
+          }  else if(data.eventUser === sortedUsers.paired.userName) {
             loggedInUnpaidArr.push(data)
           }
         } else if (data.paid === true) {
           //logic to push unpaid event to correct array for either upaind by logged user or unpaid by paired user
-          if(data.eventUser === sortedUsers.loggedIn) {
+          if(data.eventUser === sortedUsers.loggedIn.userName) {
             pairedPaidArr.push(data)
-          }  else if(data.eventUser === sortedUsers.paired) {
+          }  else if(data.eventUser === sortedUsers.paired.userName) {
             loggedInPaidArr.push(data)
           }
         }
@@ -107,9 +94,22 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
     };
   },[loggedData,sortedUsers]);
 
+  /* useEffects
+  ----------------*/
+
   //isComplete cleanup useEffect after hooks finish
   useEffect(()=>{
     if(deleteAd.isComplete === true) {
+        //set Reducer state using context for sending a notification of new message
+        notificationsUpdate.updateDispatch( {type:'add-notification',
+          payload:{type:'delete-event',
+                  userName: sortedUsers.loggedIn.userName,
+                  userId: sortedUsers.loggedIn.userId,
+                  deleteType:'advert'
+                  },
+          sendId: sortedUsers.paired.userId
+      });
+
       setDeleteAdId(null);
       setManageAd(null);
     }
@@ -139,11 +139,11 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
           <h3>Balance</h3>
           <div>
             <div>
-              <p>{sortedUsers.loggedIn}</p>
+              <p>{sortedUsers.loggedIn.userName}</p>
               <p>£{sortedEvents.unpaidLoggedTot.unpaidVal}</p>
             </div>
             <div>
-              <p>{sortedUsers.paired}</p>
+              <p>{sortedUsers.paired.userName}</p>
               <p>£{sortedEvents.unpaidPairedTot.unpaidVal}</p>
             </div>
           </div>
@@ -157,7 +157,7 @@ export default function BuddyAdvertModal({matchUserInfo,advert,setManageAd}) {
       <div className='advert-info-ammend'>
         <button onClick={()=>setDeleteModal(true)}>End agreement</button>
       </div>
-      {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}}/>}
+      {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}} notificationUser={sortedUsers.paired}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
       {deleteModal && <DeleteAdModal setDelete={setDeleteAdId} setDeleteModal={setDeleteModal} sortedEvents={sortedEvents} adId={advert.id}/>}
       {calendarMonth && <CalendarMonth setCalendarMonth={setCalendarMonth} loggedData={loggedData} setCalEvent={setCalEvent}/>}

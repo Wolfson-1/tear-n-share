@@ -1,16 +1,18 @@
 import React, {useEffect, useState,useContext} from 'react'
-import {db} from '../../../../../firebase/config';
-import {ContextUser} from '../../../../../context/ContextUser';
+import { db } from '../../../../../firebase/config';
+import { ContextUser } from '../../../../../context/ContextUser';
+import { ContextNotification } from '../../../../../context/ContextNotification';
 import useAddDoc from '../../../../../hooks/useAddDoc';
 import PurchaseForm from './PurchaseForm';
 import PaymentForm from './PaymentForm';
 import useUpdateDocs from '../../../../../hooks/useUpdateDocs';
 
-export default function LogEventModal({advert,sortedEvents,eventType,setEventModal,uploadPath}) {
+export default function LogEventModal({advert,sortedEvents,eventType,setEventModal,uploadPath,notificationUser}) {
     //uplaodPathIds need to be set in following format for use in uplaodEvent hook: {sharedData:'',advert:''}
 
     // context for user
     const user = useContext(ContextUser);
+    const notificationsUpdate = useContext(ContextNotification);
 
     // State for use in firebase hooks to upload new data based on form
     const [uploadObj,setUploadObj] = useState(null);
@@ -19,6 +21,9 @@ export default function LogEventModal({advert,sortedEvents,eventType,setEventMod
     //formError state
     const [formError,setFormError] = useState(false);
  
+    console.log(advert)
+    console.log(sortedEvents)
+
     /* Hooks
     ----------------------*/
     const uploadEvent = useAddDoc(uploadObj,db,['sharedUserData',uploadPath.sharedData,'matchedAdverts',uploadPath.advert,'advertLogs']);
@@ -28,6 +33,17 @@ export default function LogEventModal({advert,sortedEvents,eventType,setEventMod
     useEffect(()=>{
         //if upload object has completed following submit. Close modal.
         if(uploadEvent.isComplete === true) {
+            //set Reducer state using context for sending a notification of new message
+            notificationsUpdate.updateDispatch( {type:'add-notification',
+                payload:{type:'new-ad-event',
+                        userName: user.displayName,
+                        userId: user.userUid,
+                        advertId:advert.id,
+                        eventType:eventType
+                        },
+                sendId: notificationUser.userId
+            });
+            //close event modal
             setEventModal(null);
         }
     },[uploadEvent.isComplete]);
