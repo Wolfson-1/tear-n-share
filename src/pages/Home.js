@@ -77,10 +77,6 @@ export default function Home() {
         }
       },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
 
-      useEffect(()=>{
-        if(newNotification) console.log(notificationsUpdate);
-      },[newNotification])
-
       /* Event Handlers
       ------------------*/
 
