@@ -5,46 +5,45 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
 ;
     /*useState
   --------------------- */
-  //existingChat data to populate dom with existing previews to current chats & ability to open them
-  const [existingChat,setExistingChat] = useState([]);
   // handling of new/add chat modal is open or not
   const [addChatModal,setAddChatModal] = useState(false);
+  //existingChat data to populate dom with existing previews to current chats & ability to open them
+  const [existingChat,setExistingChat] = useState(undefined);
   //for undread message counter to display unread message number to dom
   const [unreadCounter,setUnreadCounter] = useState(0);
 
-  /*useEffects
-  --------------------- */
-  //useEffect to filter out any users that already have a chat
-  useEffect(()=>{
-    if(sharedUserData) {
-      const usersExistingChat = sharedUserData.filter((item)=>{
-        return item.latestMessageDateTime
-    })
+  /*useEffect 
+  ----------------------*/
 
-    setExistingChat(usersExistingChat);
-    }
-  },[sharedUserData]);
+       //runs on fetch of shared data between logged user & paired matches. Then filteres to count current unread messages
+       useEffect(()=>{
+        // init counter for tracking unread messages 
+        let counter = 0
+        let chatArr = []
+    
+        //return if there is currently no shared user data (not arrived from backend)
+        if(!sharedUserData) {
+          return;
+        };
+    
+        //for each set of data shared with a matched user check for current message if sent by other user & if currently unread
+        sharedUserData.forEach((data)=>{
+          //if there is no data linked to messages, return
+          if(!data.latestMessageUser) return;
 
-    //runs on fetch of shared data between logged user & paired matches. Then filteres to count current unread messages
-    useEffect(()=>{
-      // init counter for tracking unread messages 
-      let counter = 0
+          //push data to arr for users that have an existing chat
+          chatArr = [...chatArr,data];
+          
+          // increment counter if latest message is unread & it was sent by other user in chat.
+          if(data.latestMessageRead === false && data.latestMessageUser !== user.displayName) {
+           counter = ++counter;
+          }
+        })
   
-      //return if there is currently no shared user data (not arrived from backend)
-      if(!sharedUserData || sharedUserData === null) return;
-  
-      //for each set of data shared with a matched user check for current message if sent by other user & if currently unread
-      sharedUserData.forEach((data)=>{
-        //if there is no data linked to messages, return
-        if(data.latestMessageRead == null || data.latestMessageRead == undefined) return;
-        // increment counter if latest message is unread & it was sent by other user in chat.
-        if(data.latestMessageRead === false && data.latestMessageUser !== user.displayName) {
-         counter = ++counter;
-        }
-      })
-      //set state for unread counter once check is complete
-      setUnreadCounter(counter);
-    },[sharedUserData])
+        setExistingChat(chatArr);
+        setUnreadCounter(counter);
+      },[sharedUserData])
+
 
   /* finctions & handlers
   ----------------------- */
@@ -58,8 +57,8 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
   return (
     <>
     <h2>Chats</h2>
-    {sharedUserData && <h3> Unread Messages: {unreadCounter.toString()}</h3>}
-    {existingChat && existingChat.length > 0 ? <div className='existing-chats'>  
+    <h3> Unread Messages: {unreadCounter.toString()}</h3>
+    {existingChat !== undefined ? <div className='existing-chats'>  
       {existingChat.map((data)=>{
         //pull user & id from chatPreview for display in DOM
         const chatUser = data.matchedUsers.filter((match)=>{

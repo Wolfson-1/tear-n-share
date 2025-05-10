@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { db } from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
+import { TailSpin } from 'react-loader-spinner';
 import ExistingChatList from './ExistingChatList';
 import Chat from './Chat';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
@@ -18,6 +19,7 @@ export default function ChatsSection() {
   // state for updating read status of message
   const [messageRead,setMessageRead] = useState({read:null,messageRead:null});
   const [buddyIds,setBuddyIds] = useState([]);
+  
 
   /* Hooks
   -------------- */
@@ -50,7 +52,10 @@ export default function ChatsSection() {
     <div className='chat-container'>
       {currentChat ? 
       <Chat currentChat={currentChat} setCurrentChat={setCurrentChat}/> : 
-      <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>}
+      sharedUserData === undefined ? 
+        <TailSpin color="#00BFFF" height={80} width={80} />
+        :
+        <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>}
     </div>
   )
 }

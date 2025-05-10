@@ -2,18 +2,13 @@ import { useEffect, useState } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
 
 export default function useFetchDocsFilterIds(database, path, filterIds) {
-  const [dataExport, setDataExport] = useState([]);
+  const [dataExport, setDataExport] = useState(undefined);
 
   useEffect(() => {
     if (!filterIds || filterIds.length === 0) return;
 
-    const unsubscribes = [];
     const tempData = [];
-    let receivedCount = 0;
     let isMounted = true;
-
-    // Clear old data
-    setDataExport([]);
 
     filterIds.forEach((id, index) => {
       const unsub = onSnapshot(doc(database, ...path, id), (docSnap) => {
@@ -22,23 +17,18 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
         const docData = { ...docSnap.data(), id: docSnap.id };
         tempData[index] = docData;
 
-        if (isMounted) {
-          setDataExport(prev => {
-            const updated = [...tempData];
-            return updated.filter(Boolean); // keep only non-null
-          });
+        //set data if it meets length of filterIds length 
+        if (tempData.filter(Boolean).length === filterIds.length && isMounted) {
+          setDataExport([...tempData]);
         }
-      });
-
-      unsubscribes.push(unsub);
+    });
     });
 
     return () => {
       isMounted = false;
-      unsubscribes.forEach(unsub => unsub());
-      setDataExport([]);
+      setDataExport(undefined);
     };
   }, [filterIds]);
 
-  return dataExport.length > 0 ? dataExport : null;
+  return dataExport;
 };

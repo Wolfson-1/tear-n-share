@@ -7,7 +7,7 @@ export default function useFetchDocs(database,path,order) {
   // format for order arr: ['variable','desc']. For default fetch use: ['createdAt']
 
   const [dataExport, setData] = useState([]);
-  const [isLoading,setIsLoading] = useState(false);
+  const [isLoading,setIsLoading] = useState(true);
 
   useEffect(() => {
     //qualify passed down parameters to make sure appropriate for loading
@@ -42,5 +42,5 @@ export default function useFetchDocs(database,path,order) {
   }, []);
 
   // return data only if available
-  return dataExport.length > 0 ? {dataExport:dataExport, loading:isLoading} : {dataExport:null,loading:isLoading};
+  return dataExport.length > 0 ? {data:dataExport, loading:isLoading} : {data:null,loading:isLoading};
 };

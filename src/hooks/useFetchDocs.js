@@ -31,5 +31,5 @@ export default function useFetchDocs(database,path,order) {
   }, []);
 
   // return data only when it's available
-  return dataExport.length > 0 ? dataExport : null;
+  return dataExport.length > 0 ? dataExport : undefined;
 };
