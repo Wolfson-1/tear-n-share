@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
+import { TailSpin } from 'react-loader-spinner';
 import { db } from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
-import { TailSpin } from 'react-loader-spinner';
 import ExistingChatList from './ExistingChatList';
 import Chat from './Chat';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
@@ -52,10 +52,10 @@ export default function ChatsSection() {
     <div className='chat-container'>
       {currentChat ? 
       <Chat currentChat={currentChat} setCurrentChat={setCurrentChat}/> : 
-      sharedUserData === undefined ? 
-        <TailSpin color="#00BFFF" height={80} width={80} />
-        :
-        <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>}
+      sharedUserData ? 
+      <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>
+      :
+      <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
 
 export default function useFetchDocsFilterIds(database, path, filterIds) {
-  const [dataExport, setDataExport] = useState(undefined);
+  const [dataExport, setDataExport] = useState(null);
 
   useEffect(() => {
     if (!filterIds || filterIds.length === 0) return;
@@ -20,13 +20,15 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
         //set data if it meets length of filterIds length 
         if (tempData.filter(Boolean).length === filterIds.length && isMounted) {
           setDataExport([...tempData]);
+        } else {
+          setDataExport([]);
         }
     });
     });
 
     return () => {
       isMounted = false;
-      setDataExport(undefined);
+      setDataExport(null);
     };
   }, [filterIds]);
 

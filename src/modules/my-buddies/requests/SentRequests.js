@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { TailSpin } from 'react-loader-spinner';
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import * as timeDateCalcs from '../../../utils/timeDateCalcs';
@@ -29,6 +30,9 @@ export default function SentRequests({user}) {
                 return request.status !== 'pending'
             })
             
+            console.log(active);
+            console.log(historical);
+
             //set state for filtered historical &
             setHistorical(historical)
             setActive(active)
@@ -37,7 +41,8 @@ export default function SentRequests({user}) {
 
 
   return (
-    <div className='sent-requests'>
+    <>
+    {active && historical ? <div className='sent-requests'>
         <div className='sent active'>
             <h2>active requests</h2>
             {active && active.map((request) => {
@@ -81,6 +86,8 @@ export default function SentRequests({user}) {
             })}
         </div>
     </div>
- 
+    :
+    <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
+    </>
 )
 }

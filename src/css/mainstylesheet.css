@@ -20,6 +20,16 @@ main {
  .leaflet-top, .leaflet-bottom {z-index: 0 !important}
  
 
+/* Loading spinner CSS
+--------------------------- */
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-self: center;
+}
+
 /* main nav buttons */
 
 .nav-button-container {

@@ -1,4 +1,5 @@
 import React, { useState,useContext, useEffect } from 'react'
+import { TailSpin } from 'react-loader-spinner';
 import {ContextUser} from '../../../context/ContextUser';
 import { ContextNotification } from '../../../context/ContextNotification';
 import {db} from '../../../firebase/config';
@@ -57,6 +58,7 @@ export default function Chat({currentChat,setCurrentChat}) {
 
     //useEffect to run on completion of fetching messages to set unread messages to read
     useEffect(()=>{
+        console.log(messageData);
         if(messageData){
             //init arr for pushing ids of received messages that are unread
             const unreadArr = [];
@@ -129,19 +131,22 @@ export default function Chat({currentChat,setCurrentChat}) {
       <button onClick={()=>{setCurrentChat(null)}}>{`<- Back`}</button>
       <h2>{chatPartner && chatPartner.userName}</h2>
       <div className='message-reel'>
-                            {messageData && messageData.map((message, index)=>{
-                                //logic to set state for read message flag to display if last message was read or not
-                                let lastMessage = false;
-                                //once at last message run check for if message is read & sender matches userUid
-                                if(index +1 === messageData.length) {
-                                    //if logged in user maches user message & message is read then set last message to true
-                                    if (user.userUid === message.senderId && message.read === true) {
-                                        lastMessage = true ;
-                                    } 
-                                }
+                            {messageData ?
+                                messageData.length > 0 && messageData.map((message, index)=>{
+                                    //logic to set state for read message flag to display if last message was read or not
+                                    let lastMessage = false;
+                                    //once at last message run check for if message is read & sender matches userUid
+                                    if(index +1 === messageData.length) {
+                                        //if logged in user maches user message & message is read then set last message to true
+                                        if (user.userUid === message.senderId && message.read === true) {
+                                            lastMessage = true ;
+                                        } 
+                                    }
 
-                                return <ChatMessage user={user} message={message} readMessage={lastMessage}/>
-                            })}
+                                    return <ChatMessage user={user} message={message} readMessage={lastMessage}/>
+                                })
+                                :
+                                <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80} />}
                             {lastMessageRead && <p>Read </p>}
                         </div>
         <form className='chat-submit'>

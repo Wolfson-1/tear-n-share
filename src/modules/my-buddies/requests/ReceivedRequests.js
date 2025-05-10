@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { TailSpin } from 'react-loader-spinner';
 import {db} from '../../../firebase/config';
 import useFetchDocs from '../../../hooks/useFetchDocs';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
@@ -70,10 +71,9 @@ export default function ReceivedRequests({user}) {
     return (
     <div className='received-requests'>
       <h2>received requests</h2>
-      {receivedRequests && receivedRequests.map((request) => {
+      {receivedRequests ? receivedRequests.map((request) => {
             //time date calculation for how long past since request made
             const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
-
             return <div>
                         <div className='info-tile received-requests'>
                             <h3>User: {request.displayName}</h3>
@@ -88,7 +88,9 @@ export default function ReceivedRequests({user}) {
                         </div>}
                         {request.status !== 'pending' && <p>{request.status}</p>}
                    </div>
-        })}
+        })
+        :<TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>
+        }
     </div>
   )
 }

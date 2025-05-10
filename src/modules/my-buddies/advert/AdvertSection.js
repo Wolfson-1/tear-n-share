@@ -1,4 +1,5 @@
-import React, { useState,useContext, useEffect } from 'react'
+import React, { useState,useContext, useEffect } from 'react';
+import { TailSpin } from 'react-loader-spinner';
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
 import useFetchDocsFilter from '../../../hooks/useFetchDocsFilter';
@@ -6,6 +7,7 @@ import useAddDoc from '../../../hooks/useAddDoc';
 import useUpdateDoc from '../../../hooks/useUpdateDoc';
 import AdvertList from './AdvertList';
 import NewAdvertModal from './NewAdvertModal';
+
 
 export default function AdvertSection() {
 
@@ -67,7 +69,12 @@ export default function AdvertSection() {
         setExistingAdId(id);
         setAdvertModal(true);
     };
-  
+    
+    useEffect(()=>{
+      console.log(adData)
+    },[adData])
+
+
   return (
     <div className='buddies-container advert'>
       <div className='active-inactive-toggle'>
@@ -75,10 +82,11 @@ export default function AdvertSection() {
         <p>|</p>
         <button className={activeStatus === false ? 'active' : 'inactive'} onClick={()=>{if(activeStatus !== false) setActiveStatus(false)}}>Deactivated Adverts</button>
       </div>
-      <div className='listed-adverts-container'>
-        {adData && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/>}
-      </div>
-      {activeStatus === true && <div className='add-advert'>
+        {adData ?
+        adData.length > 0 && <AdvertList adverts={adData} activeStatus={activeStatus} editAd={editAd} toggleAd={toggleAd}/> 
+        :
+        <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
+      {activeStatus && <div className='add-advert'>
         <button className='add-button' onClick={() => {setAdvertModal(true)}}>
           +
         </button>

@@ -8,6 +8,7 @@ import EventModal from './EventModal';
 import DeleteAdModal from '../delete-modules/DeleteAdModal';
 import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
 import CalendarMonth from '../calander/CalendarMonth';
+import { TailSpin } from 'react-loader-spinner';
 
 export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setManageAd}) {
 
@@ -36,6 +37,8 @@ export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setMa
 
   //useEffect runs when sorted users & matchUserInfo are both available to sort current outstanding logged payments by each user for props & display in dom
   useEffect(()=>{
+    //if loggedData or no sorted users yet, return
+    if(!loggedData || !sortedUsers) return
 
     //init filtered data variable & owed cost
     let loggedInUnpaidArr = [];
@@ -44,8 +47,7 @@ export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setMa
     let pairedPaidArr = []; 
 
     //logic to filter loggedData if exists for purchase events that have not been paid
-    if(loggedData && sortedUsers) {
-      console.log(sortedUsers);
+    if(loggedData.length > 0) {
       loggedData.forEach((data)=>{
         //logic to continue only if paid status is false (currently unpaid)
         if(data.paid === false) {
@@ -118,45 +120,50 @@ export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setMa
   return (
     <div className='buddy-modal-manageAd'>
       <button className='back-button' onClick={()=>{setManageAd(null)}}>Go back</button>
-      <div className='advert-info'>
-          <p>Bread Type: <span>{advert.breadType}</span></p>
-          <p>loaf Type: <span>{advert.loafType}</span></p>
-          <p>Split: <span>{advert.breadSplit}%</span></p>
-          <p>Max Spend: <span>£{advert.breadSpend}</span></p>
-          <p>Reduced: <span>{advert.reduced ? 'Yes': 'No'}</span></p>
-      </div>
-      <div className='log-activity'>
-        <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
-        <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
-      </div>
-      {sortedEvents ? <div className='paid-and-purchase-status'>
-        <div className='purchase-status'>
-          <p>Who bought last: {sortedEvents.mostRecentPurch.eventUser}</p>
-          <p>Cost: {sortedEvents.mostRecentPurch.purchasePrice}</p>
-          <p>Paid: {sortedEvents.mostRecentPurch.paid === true ? 'Yes' : 'No'}<span></span></p>
+      {loggedData ? 
+      <>
+        <div className='advert-info'>
+            <p>Bread Type: <span>{advert.breadType}</span></p>
+            <p>loaf Type: <span>{advert.loafType}</span></p>
+            <p>Split: <span>{advert.breadSplit}%</span></p>
+            <p>Max Spend: <span>£{advert.breadSpend}</span></p>
+            <p>Reduced: <span>{advert.reduced ? 'Yes': 'No'}</span></p>
         </div>
-        <div className='balance-status'>
-          <h3>Balance</h3>
-          <div>
+        <div className='log-activity'>
+          <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
+          <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
+        </div>
+        {sortedEvents ? <div className='paid-and-purchase-status'>
+          <div className='purchase-status'>
+            <p>Who bought last: {sortedEvents.mostRecentPurch.eventUser}</p>
+            <p>Cost: {sortedEvents.mostRecentPurch.purchasePrice}</p>
+            <p>Paid: {sortedEvents.mostRecentPurch.paid === true ? 'Yes' : 'No'}<span></span></p>
+          </div>
+          <div className='balance-status'>
+            <h3>Balance</h3>
             <div>
-              <p>{sortedUsers.loggedIn.userName}</p>
-              <p>£{sortedEvents.unpaidLoggedTot.unpaidVal}</p>
-            </div>
-            <div>
-              <p>{sortedUsers.paired.userName}</p>
-              <p>£{sortedEvents.unpaidPairedTot.unpaidVal}</p>
+              <div>
+                <p>{sortedUsers.loggedIn.userName}</p>
+                <p>£{sortedEvents.unpaidLoggedTot.unpaidVal}</p>
+              </div>
+              <div>
+                <p>{sortedUsers.paired.userName}</p>
+                <p>£{sortedEvents.unpaidPairedTot.unpaidVal}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        :
+        <div>
+          Log events to see tracking stats.
+        </div>}
+        <Calendar loggedData={loggedData} setCalEvent={setCalEvent} setCalendarMonth={setCalendarMonth}/>
+        <div className='advert-info-ammend'>
+          <button onClick={()=>setDeleteModal(true)}>End agreement</button>
+        </div>
+      </>
       :
-      <div>
-        Log events to see tracking stats.
-      </div>}
-      <Calendar loggedData={loggedData} setCalEvent={setCalEvent} setCalendarMonth={setCalendarMonth}/>
-      <div className='advert-info-ammend'>
-        <button onClick={()=>setDeleteModal(true)}>End agreement</button>
-      </div>
+      <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
       {eventModal && <LogEventModal advert={advert} sortedEvents={sortedEvents} eventType={eventModal} setEventModal={setEventModal} uploadPath={{sharedData:matchUserInfo.id,advert:advert.id}} notificationUser={sortedUsers.paired}/>}
       {calEvent && <EventModal event={calEvent} setCalEvent={setCalEvent} sortedEvents={sortedEvents}/>}
       {deleteModal && <DeleteAdModal setDelete={setDeleteAdId} setDeleteModal={setDeleteModal} sortedEvents={sortedEvents} adId={advert.id}/>}

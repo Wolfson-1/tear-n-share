@@ -6,13 +6,13 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
   // path needs to be in its own array. 
   // docs are fetched on load or on change of filterParamaters
 
-  const [dataExport, setData] = useState([]);
+  const [dataExport, setData] = useState(null);
 
   useEffect(() => {
 
   const getData = async () => {
-    //clear previous data
-    setData([]);
+    console.log(filterParam);
+    if (!filter || filterParam === undefined) return;
     
     try {
       // fetch data using get docs
@@ -23,7 +23,9 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
           id: doc.id,
         }));
         // set data to new filtered data
-        setData(filteredData);
+        console.log(filteredData);
+        if(filteredData) setData(filteredData);
+        if(!filteredData) setData([]);
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -35,10 +37,10 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
 
     // cleanup
     return () => {
-      setData([]);
+      setData(null);
     }
   },[filterParam]);
 
-  // return data only when it's available
-  return dataExport.length > 0 ? dataExport : null;
+  // return data
+  return dataExport;
 };

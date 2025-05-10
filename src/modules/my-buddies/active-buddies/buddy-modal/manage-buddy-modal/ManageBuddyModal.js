@@ -4,7 +4,7 @@ import { ContextUser } from '../../../../../context/ContextUser';
 import { ContextNotification } from '../../../../../context/ContextNotification';
 import useFetchDocs from '../../../../../hooks/useFetchDocs';
 import useFetchDoc from '../../../../../hooks/useFetchDoc';
-import BuddyModal from '../BuddyModal';
+import BuddyAdvertsList from '../BuddyAdvertsList';
 import BuddyAdvertModal from './BuddyAdvertModal';
 import useDeleteDoc from '../../../../../hooks/useDeleteDoc';
 import DeleteUserModal from '../delete-modules/DeleteUserModal';
@@ -88,13 +88,7 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                 <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
             {!manageAd ? 
-                matchedAdverts ? 
-                <BuddyModal matchedAdverts={matchedAdverts} setManageAd={setManageAd}/>
-                :
-                <div>
-                    <p>You currently have no existing agreements. You will still be able to access your historical chat & message in order to arrange another if so wish. Or until one of you unmatches.</p>
-                    <button onClick={()=>{setDeleteUserModal(true)}}>unmatch</button>
-                </div>
+            <BuddyAdvertsList matchedAdverts={matchedAdverts} setManageAd={setManageAd} setDeleteUserModal={setDeleteUserModal}/>
             :
             <BuddyAdvertModal matchUserInfo={matchUserInfo} sortedUsers={sortedUsers} advert={manageAd} setManageAd={setManageAd}/>}
             {deleteUserModal && <DeleteUserModal setDisableMatch={setDisableMatch} setDeleteUserModal={setDeleteUserModal}/>}

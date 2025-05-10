@@ -2,7 +2,9 @@ import React from 'react'
 
 export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
 
-    return (adverts.map(advert => {
+    return (
+    <div className='listed-adverts-container'>
+        {adverts.map(advert => {
         return <div className='info-tile bread-advert active'>
                     <div className='ad-info'>
                         <div className='key-info'>
@@ -25,5 +27,7 @@ export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
                         {activeStatus === false && <button onClick={()=>{toggleAd(advert.id,true)}}>ReActivate</button>}
                     </div>
                </div>
-    }))
+        })}
+    </div>
+    )
 };

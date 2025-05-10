@@ -302,10 +302,6 @@
     align-items: center;
 }
 
-.modal-form-container.buddy-container .buddy-modal-manageAd > div {
-    width: 100%;
-}
-
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info {
     display: flex;
     flex-direction: column;
@@ -313,11 +309,13 @@
     height: 20%;
     flex-wrap: wrap;
     align-items: center;
+    width: 100%;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info-ammend {
     display: flex;
     justify-content: center;
+    width: 100%;
     gap:10px;
 }
 
@@ -327,7 +325,7 @@
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status {
     display: flex;
-    width:90%;
+    width:100%;
     justify-content: center;
 }
 
@@ -349,6 +347,7 @@
     justify-content: center;
     display: flex;
     gap:5px;
+    width: 90%;
     margin: 3%;
 }
 
@@ -364,6 +363,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 90%;
     background-color: rgba(127, 255, 212, 0.534);
 }
 

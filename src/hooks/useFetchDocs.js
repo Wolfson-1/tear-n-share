@@ -6,7 +6,7 @@ export default function useFetchDocs(database,path,order) {
   // path & order need to be in their own arrays. 
   // format for order arr: ['variable','desc']. For default fetch use: ['createdAt']
 
-  const [dataExport, setData] = useState([]);
+  const [dataExport, setData] = useState(null);
 
   useEffect(() => {
   const getData = async () => {
@@ -18,8 +18,9 @@ export default function useFetchDocs(database,path,order) {
           ...doc.data(),
           id: doc.id,
         }));
-        // set data to new filtered data
-        setData(filteredData);
+        // set data to new filtered data. if it doesnt exist, set to null
+        if(filteredData) setData(filteredData);
+        if(!filteredData) setData([]);
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -30,6 +31,6 @@ export default function useFetchDocs(database,path,order) {
     getData();
   }, []);
 
-  // return data only when it's available
-  return dataExport.length > 0 ? dataExport : undefined;
+  // return data
+  return dataExport;
 };
