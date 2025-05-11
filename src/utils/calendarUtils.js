@@ -65,7 +65,7 @@ export const getCalendarMonth = (historical) =>{
   const currMonth = [];
   const currWeek = getCurrentWeek(historical,null);
 
-  //condition flag for if we have changed months
+  //condition flag for if change of months needed
   let changedMonths = {historical:false,future:false};
 
   //push current week into currMonth array
@@ -84,14 +84,20 @@ export const getCalendarMonth = (historical) =>{
         return;
       }
     });
+
+    //filter check to make sure week contains atleast 1 day of current month
+    const excludeWeek = generatedWeek.currWeek.filter((day)=>{
+      return day.month === currWeek.monthIndex
+    })
     //unshift current generated week to full month array (so it is placed in front of current week obj)
-    currMonth.unshift(generatedWeek.currWeek);
+    if(excludeWeek.length > 0) currMonth.unshift(generatedWeek.currWeek);
   };
 
   //FOR LOOP TO FILL IN FUTURE WEEKS OF MONTH
   for (let i = -7; changedMonths.future === false; i -= 7) {
     //generate week data using offset value 
     const generatedWeek = getCurrentWeek(historical,i);
+
     //loop through current week in generateWeek to check if month has changed. if so set changed months to true 
     generatedWeek.currWeek.forEach(day => {
       //if logic to flag month change as true if any of the days month is different to monthIndex in current week data. this will stop for loop
@@ -100,8 +106,13 @@ export const getCalendarMonth = (historical) =>{
         return;
       }
     });
+    
+    //filter check to make sure week contains atleast 1 day of current month
+    const excludeWeek = generatedWeek.currWeek.filter((day)=>{
+      return day.month === currWeek.monthIndex
+    })
     //push current generated week to full month array (so it falls behind current week obj)
-    currMonth.push(generatedWeek.currWeek);
+    if(excludeWeek.length > 0) currMonth.push(generatedWeek.currWeek);
   };
   return {currMonth:currMonth,currDay:{day:currWeek.day,month:currWeek.month,year:currWeek.year,monthIndex:currWeek.monthIndex,date:currWeek.date}}
 };
