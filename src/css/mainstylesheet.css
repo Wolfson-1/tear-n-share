@@ -34,27 +34,47 @@ main {
 
 .nav-button-container {
     position: absolute;
-    top: 83%;
+    top: 80%;
     right: 0;
     left: 0;
     z-index: 1;
     margin: auto;
-    width: 300px;
-    height: 70px;
+    width: 280px;
+    height: 100px;
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.566);
+    background-color: rgba(0, 0, 0, 0.842);
     border-radius: 20px;
 }
 
-.nav-home {
-    position: relative;
-    padding: 30px;
-    background-color: var(--accent);
-    border-radius: 100%;
-    width: fit-content;
+.nav-button-container button {
+  height: inherit;
+  width: 50%;
+  border: none;
+  transition: all 0.2s;
+  background-color: rgba(48, 48, 48, 0.456);
+  color: antiquewhite;
+  font-size: larger;
+  font-weight: bold;
 }
+
+.nav-button-container .nav-my-account {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+.nav-button-container .nav-my-buddies {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.nav-button-container .active {
+  transform: scale(0.98);
+  color: yellow;
+  /* box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); */
+}
+
+
 
 /* Main pull out sections CSS */
 

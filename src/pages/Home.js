@@ -99,9 +99,8 @@ export default function Home() {
           {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
           {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
           <div className='nav-button-container'> 
-            <button className='nav-my-account' onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
-            <button className='nav-home'>-</button>
-            <button className='nav-my-buddies' onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Bread Buds</button>
+            <button className={`nav-my-account ${myAccount ? 'active' : 'inactive'}`} onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>
+            <button className={`nav-my-buddies ${myBuddies ? 'active' : 'inactive'}`} onClick={() => {drawToggle(setMyBuddies,setMyAccount)}}>Bread Buds</button>
           </div>
           <NotificationsMain user={user}/>
         </main>
