@@ -172,7 +172,7 @@ main {
     justify-content: center;
     top:0;
     left: 0;
-    background:rgba(0, 0, 0, 0.418);
+    background:rgba(0, 0, 0, 0.444);
     overflow: hidden;
 }
 
@@ -186,7 +186,7 @@ main {
     position: absolute;
     height: 80%;
     width: 30%;
-    background:rgba(5, 23, 35, 0.825);
+    background:rgba(220, 169, 2, 0.825);
     color: antiquewhite;
 }
 
@@ -238,38 +238,6 @@ datalist {
     margin: 3%;
   }
 
-  /* user section & modal stylings 
-  --------------------------------------------*/
-
-  /* top level other user modal styling */
-
-  .modal-form-container.user-container {
-    align-items: center;
-  }
-
-  .modal-form-container.user-container .advert-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    width: 90%;
-    height: 50%;
-  }
-
-  .advert-section h3 {
-    align-self: flex-start;
-    margin-left: 5%;
-    margin-bottom: 2%;
-  }
-
-  .advert-section .advert-list-container {
-    width:90%;
-    height:90%;
-    border: solid azure 1px;
-    overflow-y: scroll;
-  }
-
-
   /* Generic icon & button styling 
   ---------------------------------------*/
 
@@ -290,6 +258,21 @@ datalist {
     background-color: rgba(255, 255, 255, 0.096);
 }
 
+/* go to chat button */
+
+.user-chat-button {
+  background: none;
+  border:none;
+  font-weight: bolder;
+  font-size: medium;
+  color: rgba(250, 235, 215, 0.488);
+  transition: color 1s;
+}
+
+.user-chat-button:hover {
+  color: antiquewhite;
+}
+
 /* base information tile CSS */
 
 .info-tile {
@@ -297,4 +280,16 @@ datalist {
   background-color: rgba(255, 255, 255, 0.093);
   border-radius: 25px;
   width: 98%;
+}
+
+/* basic profile image styling */
+
+.profile-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 2px rgba(0, 0, 0, 0.189);
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
 }

@@ -12,8 +12,8 @@ export default function CalendarWeekList({currCalendar,setCalEvent,loggedData,co
   const daysOfWeek = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'];
 
   //CSS styling for tiles
-  const currMonthStyle = {backgroundColor:'blue'}
-  const diffMonthStyle = {backgroundColor:`red`}
+  const currMonthStyle = {backgroundColor:`rgba(${244}, ${244}, ${244}, ${0.150})`}
+  const diffMonthStyle = {backgroundColor:'none'}
 
   return (
     <div className='calendar-elements'>

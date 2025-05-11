@@ -3,7 +3,7 @@ import React from 'react'
 export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector}) {
   
     return (
-    <div className='active-buddy-list'>
+    <>
       {buddys.map((buddy) => {
         return <div className='info-tile active-buddy'>
                     <div className='user-info'>
@@ -16,11 +16,11 @@ export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector})
                           <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
                         </div>
                     </div>
-                    <picture>
+                    <picture className='profile-img'>
                       <img alt={buddy.displayName}></img>
                     </picture>
                </div>
       })}
-    </div>
+    </>
   )
 }

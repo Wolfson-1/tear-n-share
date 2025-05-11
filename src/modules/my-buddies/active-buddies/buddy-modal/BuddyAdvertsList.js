@@ -5,11 +5,9 @@ import BuddyAdListItem from './BuddyAdListItem';
 export default function BuddyAdvertsList({matchedAdverts,setManageAd,setDeleteUserModal}) {
 
   return (
-    <div className='advert-section'>    
-      <h3>Adverts</h3>
+    <>    
         {matchedAdverts ? 
-          <div className='advert-list-container'>
-              {<div className='advert-list'>
+          <div className='advert-section'>
                 {matchedAdverts.length > 0 ? matchedAdverts.map((advert)=>{
                     return <BuddyAdListItem advert={advert} setManageAd={setManageAd}/>
                   })
@@ -19,10 +17,9 @@ export default function BuddyAdvertsList({matchedAdverts,setManageAd,setDeleteUs
                     <button onClick={()=>{setDeleteUserModal(true)}}>unmatch</button>
                   </>
                   }
-                </div>}
             </div>
           :
           <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
-    </div>
+    </>
   )
 }

@@ -83,9 +83,11 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
         <div className={manageAd ? 'modal-form-container buddy-container' : 'modal-form-container user-container'}>
             <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button> 
             <div className='user-info'>
-                <img alt='profile picture'></img>
+                <picture className='profile-img'>
+                    <img alt='profile picture'></img>
+                </picture>
                 <h1>{manageBuddy.displayName}</h1>
-                <button onClick={()=>{setMainSelector('chat')}}>Chat</button>
+                <button className='user-chat-button' onClick={()=>{setMainSelector('chat')}}>Chat</button>
             </div>
             {!manageAd ? 
             <BuddyAdvertsList matchedAdverts={matchedAdverts} setManageAd={setManageAd} setDeleteUserModal={setDeleteUserModal}/>

@@ -70,9 +70,11 @@ export default function CalendarMonth({setCalendarMonth,setCalEvent,loggedData})
               <button onClick={()=>{changeMonth('+')}}>{'>'}</button>
           </div>
           <h3 className='calendar-curr-month'>{currDay.month},{currDay.year.toString()}</h3>
-          {monthArr.map((item)=>{
+          <div className='weeks-container'>
+            {monthArr.map((item)=>{
               return <CalendarWeekList currCalendar={item} setCalEvent={setCalEvent} loggedData={loggedData} condMonth={currDay.monthIndex}/>
             })}
+          </div>
         </div>
       </div>}
     </>  

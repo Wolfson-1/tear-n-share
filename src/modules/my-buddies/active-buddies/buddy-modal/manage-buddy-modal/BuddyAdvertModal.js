@@ -131,32 +131,32 @@ export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setMa
         </div>
         <div className='log-activity'>
           <button onClick={()=>{setEventModal('purchase')}}>Log Purchase</button>
+          <span>|</span>
           <button onClick={()=>{setEventModal('payment')}}>Log Payment</button>
-        </div>
-        {sortedEvents ? <div className='paid-and-purchase-status'>
-          <div className='purchase-status'>
-            <p>Who bought last: {sortedEvents.mostRecentPurch.eventUser}</p>
-            <p>Cost: {sortedEvents.mostRecentPurch.purchasePrice}</p>
-            <p>Paid: {sortedEvents.mostRecentPurch.paid === true ? 'Yes' : 'No'}<span></span></p>
-          </div>
-          <div className='balance-status'>
-            <h3>Balance</h3>
-            <div>
+        </div> 
+          <div className='paid-and-purchase-status'>
+            <div className='purchase-status'>
+              <p>Who bought last: {sortedEvents && sortedEvents.mostRecentPurch.eventUser}</p>
+              <p>Cost: {sortedEvents && sortedEvents.mostRecentPurch.purchasePrice}</p>
+              <p>Paid: {sortedEvents && sortedEvents.mostRecentPurch.paid === true ? 'Yes' : 'No'}</p>
+            </div>
+            <div className='balance-status'>
+              <h3>Balance</h3>
               <div>
-                <p>{sortedUsers.loggedIn.userName}</p>
-                <p>£{sortedEvents.unpaidLoggedTot.unpaidVal}</p>
-              </div>
-              <div>
-                <p>{sortedUsers.paired.userName}</p>
-                <p>£{sortedEvents.unpaidPairedTot.unpaidVal}</p>
+                <div>
+                  <p>{sortedUsers.loggedIn.userName}</p>
+                  <p>£{sortedEvents && sortedEvents.unpaidLoggedTot.unpaidVal}</p>
+                </div>
+                <div>
+                  <p>{sortedUsers.paired.userName}</p>
+                  <p>£{sortedEvents && sortedEvents.unpaidPairedTot.unpaidVal}</p>
+                </div>
               </div>
             </div>
+            {!sortedEvents && <div className='no-events'>
+                <p>log events to see payment stats</p>
+              </div>}
           </div>
-        </div>
-        :
-        <div>
-          Log events to see tracking stats.
-        </div>}
         <Calendar loggedData={loggedData} setCalEvent={setCalEvent} setCalendarMonth={setCalendarMonth}/>
         <div className='advert-info-ammend'>
           <button onClick={()=>setDeleteModal(true)}>End agreement</button>

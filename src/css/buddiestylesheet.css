@@ -246,19 +246,70 @@
 }
 
 .active-buddy picture {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: solid 2px rgba(0, 0, 0, 0.189);
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
     margin-right: 10%;
 }
 
-
-
 /* Styling specifc for active user modal  */
+
+/* matched actice buddy modal styling  */
+
+
+.modal-form-container.user-container {
+    align-items: center;
+}
+
+.modal-form-container.user-container .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.modal-form-container.user-container .advert-section {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    padding-top: 5%;
+    margin-top: 5%;
+    width: 90%;
+    height: 70%;
+    border-top: solid azure 1px;
+    overflow-y: scroll;
+  }
+
+  .modal-form-container.user-container .advert-section .info-tile.advert {
+    width: 90%;
+    height: 20%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-form-container.user-container .advert-section .info-tile.advert .key-ad-info {
+    margin-left: 10%;
+  }
+
+  .modal-form-container.user-container .advert-section .info-tile.advert button {
+    height: 100%;
+    width: 25%;
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+    background: none;
+    border: none;
+    color: antiquewhite;
+    font-weight: bold;
+    font-size: medium;
+    margin: none;
+    transition: background-color 2s;
+  }
+
+  .modal-form-container.user-container .advert-section .info-tile.advert button:hover {
+    background-color: rgba(0, 0, 0, 0.079);
+  }
+
+/*advert management modal specific styling */
 
 .modal-form-container.buddy-container {
     align-items: center;
@@ -271,11 +322,19 @@
 .modal-form-container.buddy-container .user-info {
     align-self: flex-start;
     align-items: center;
+    justify-content: center;
     position: absolute;
     height: 5%;
     width: 25%;
-    gap: 2%;
+    gap: 10%;
     margin: 1% 0% 0% 1%;
+}
+
+
+.modal-form-container.buddy-container .user-info .profile-img {
+    width:30px;
+    height:30px;
+    margin-left: 30%;
 }
 
 .modal-form-container.buddy-container .user-info h1 {
@@ -316,17 +375,31 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    gap:10px;
+    gap: 5px;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info-ammend > button {
-    width:30%;
+    width:60%;
+    margin: none;
+    background: none;
+    border: none;
+    font-size: x-large;
+    font-weight: bold;
+    color: rgba(250, 235, 215, 0.542);
+    transition: color 2s;
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .advert-info-ammend > button:hover {
+    color: rgb(141, 4, 4);
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status {
+    position: relative;
     display: flex;
+    height: 25%;
     width:100%;
     justify-content: center;
+    align-items: center;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .purchase-status {
@@ -343,17 +416,48 @@
     gap:5px;
 }
 
+/* no-events cover css. to indicate user should add events to see statistics */
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .no-events {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:0;
+    bottom:0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.129);
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .no-events p {
+    font-size: large;
+    font-weight: bold;
+}
+
 .modal-form-container.buddy-container .buddy-modal-manageAd .log-activity  {
     justify-content: center;
+    align-items: center;
     display: flex;
     gap:5px;
     width: 90%;
-    margin: 3%;
+    margin: 2%;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .log-activity > button  {
     width: 45%;
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: large;
+    color: rgba(250, 235, 215, 0.542);
+    transition:color 2s;
 }
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .log-activity > button:hover {
+    color: rgb(250, 235, 215);
+}
+
 
 /* calendar CSS 
 -------------------------*/
@@ -364,17 +468,25 @@
     flex-direction: column;
     align-items: center;
     width: 90%;
-    background-color: rgba(127, 255, 212, 0.534);
 }
 
 .calendar .calendar-buttons {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+}
+
+.calendar .calendar-buttons button {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: antiquewhite;
 }
 
 .calendar .calendar-month {
     width: 100%;
+    margin: 2%;
 }
 
 .calendar .calendar-elements {
@@ -389,7 +501,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    border: solid 0.2px;
+    border: solid 1px;
     height: 90%;
     overflow: hidden;
 }
@@ -431,7 +543,8 @@
 
 /* Week only calendar CSS */
 .calendar.week {
-    height: 30%;
+    margin-top: 5%;
+    height: 25%;
     width:90%;
     padding: 1%;
 }
@@ -440,20 +553,45 @@
 .modal-form-container.month {
     align-items: center;
     height: 80%;
-    width:9%;
-    background-color: rgba(5, 23, 35, 0.966);
+    width: 90%;
+    background-color: rgb(193, 149, 5);
     border: solid white;
     overflow: hidden;
 }
 
+.modal-form-container.month button {
+    align-self: flex-end;
+    margin: 1%;
+    background: none;
+    border: none;
+    font-size: medium;
+    font-weight: bold;
+    color: antiquewhite;
+}
+
+.modal-form-container.month .calendar-curr-month {
+    margin: 5%;
+}
+
 .modal-form-container.month .calendar.month {
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
     width: 95%;
     padding: 2%;
 }
 
-.calendar.month .calendar-elements {
-    height: 10%;
+.weeks-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+    flex: 1;
+}
+
+.calendar.month .weeks-container .calendar-elements {
     min-height: 15%;
 }
 

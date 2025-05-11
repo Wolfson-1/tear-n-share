@@ -47,7 +47,7 @@ export default function Calendar({loggedData,setCalEvent,setCalendarMonth}) {
           <button className='open-month' onClick={()=>setCalendarMonth(true)}>Open Month</button>
         </div>
         <h3 className='calendar-month'>{currCalendar.month},{currCalendar.year.toString()}</h3>
-        <CalendarWeekList currCalendar={currCalendar.currWeek} setCalEvent={setCalEvent} loggedData={loggedData}/>
+        <CalendarWeekList currCalendar={currCalendar.currWeek} setCalEvent={setCalEvent} loggedData={loggedData} condMonth={currCalendar.monthIndex}/>
       </div>}
     </>
 
