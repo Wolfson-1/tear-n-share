@@ -71,10 +71,7 @@ main {
 .nav-button-container .active {
   transform: scale(0.98);
   color: yellow;
-  /* box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); */
 }
-
-
 
 /* Main pull out sections CSS */
 
@@ -218,7 +215,17 @@ main {
 
 .modal-form-container .close-modal {
     align-self: flex-end;
-    margin: 10px;
+    margin: 2px;
+    background: none;
+    border:none;
+    font-size: x-large;
+    font-weight: bold;
+    color: rgba(250, 235, 215, 0.505);
+    transition: color 1s;
+}
+
+.modal-form-container .close-modal:hover {
+    color: rgba(250, 235, 215, 0.867);
 }
 
 .modal-form {
@@ -226,6 +233,9 @@ main {
     flex-direction: column;
     align-items: flex-start;
 }
+
+/* basic form styling
+------------------------------ */
 
 /* form input slider default styling */
 
@@ -251,7 +261,7 @@ datalist {
     margin: 0;
   }
 
-  /* Form checkbox basic styleing */
+  /* Form checkbox basic styling */
 
   .form-checkbox-list {
     display: flex;
@@ -262,6 +272,15 @@ datalist {
 
   .form-checkbox-list li {
     margin: 3%;
+  }
+
+  input[type='submit'] {
+    width: 50%;
+    height: 8%;
+    font-size: larger;
+    border-radius: 5px;
+    border: rgba(0, 0, 0, 0.236) solid 2px;
+    background-color: rgba(210, 162, 5, 0.922);
   }
 
   /* Generic icon & button styling 

@@ -10,33 +10,26 @@ export default function useFetchDocsFilter(database,path,filter,filterParam) {
 
   useEffect(() => {
 
-  const getData = async () => {
-    console.log(filterParam);
-    if (!filter || filterParam === undefined) return;
-    
-    try {
-      // fetch data using get docs
-      let q = query(collection(database, ...path), where(filter, '==', filterParam));
-      const data = onSnapshot(q, (collection) => {
-        const filteredData = collection.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        // set data to new filtered data
-        console.log(filteredData);
-        if(filteredData) setData(filteredData);
-        if(!filteredData) setData([]);
-      });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  }
+    if (!filter || filterParam === undefined) {
+      return;
+    } 
 
-    // run get data function
-    getData();
+    let q = query(collection(database, ...path), where(filter, '==', filterParam));
+    
+    const unsubscribe = onSnapshot(q, (collection) => {
+      const filteredData = collection.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+      setData(filteredData.length > 0 ? filteredData : []);
+    }, (error) => {
+      console.error('Error fetching data:', error);
+    });
 
     // cleanup
     return () => {
+      unsubscribe();
       setData(null);
     }
   },[filterParam]);

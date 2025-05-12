@@ -74,7 +74,6 @@ export default function AdvertSection() {
       console.log(adData)
     },[adData])
 
-
   return (
     <div className='buddies-container advert'>
       <div className='active-inactive-toggle'>

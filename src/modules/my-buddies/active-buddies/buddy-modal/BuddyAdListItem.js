@@ -4,7 +4,7 @@ export default function BuddyAdListItem({advert,setManageAd}) {
 
     return (
     <div className='info-tile advert'>
-        <div className='key-ad-info'>
+        <div className='key-ad-info' key={advert.id}>
             <div>
                 <span>Bread Type: {advert.breadType}</span>
                 <span>{advert.loafType}</span>

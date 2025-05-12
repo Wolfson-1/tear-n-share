@@ -48,6 +48,10 @@ export default function ChatsSection() {
     if(updateReadMessage.isComplete === true) setMessageRead({read:null,messageRead:null});
   },[updateReadMessage.isComplete]);
 
+  useEffect(()=>{
+    console.log(sharedUserData)
+  },[sharedUserData]);
+
   return (
     <div className='chat-container'>
       {currentChat ? 

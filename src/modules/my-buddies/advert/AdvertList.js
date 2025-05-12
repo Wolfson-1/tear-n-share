@@ -5,7 +5,7 @@ export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
     return (
     <div className='listed-adverts-container'>
         {adverts.map(advert => {
-        return <div className='info-tile bread-advert active'>
+        return <div className='info-tile bread-advert active' key={advert.id}>
                     <div className='ad-info'>
                         <div className='key-info'>
                             <span>Bread Type: {advert.breadType}</span>

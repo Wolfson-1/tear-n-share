@@ -28,7 +28,7 @@ export default function CalendarWeekList({currCalendar,setCalEvent,loggedData,co
           logged = null;
         }
 
-        return <div className='calendar-day' style={condMonth ? condMonth === currCalendar[index].month ? {gridColumn:`${index+1}/${index+2}`,...currMonthStyle} : {gridColumn:`${index+1}/${index+2}`,diffMonthStyle} : {gridColumn:`${index+1}/${index+2}`,...currMonthStyle}}>
+        return <div className='calendar-day' key={`${day}-${currCalendar[index].day}`} style={condMonth ? condMonth === currCalendar[index].month ? {gridColumn:`${index+1}/${index+2}`,...currMonthStyle} : {gridColumn:`${index+1}/${index+2}`,diffMonthStyle} : {gridColumn:`${index+1}/${index+2}`,...currMonthStyle}}>
           <div className='day-date'>
             <p>{day}</p>
             <p>{currCalendar[index].day}</p>

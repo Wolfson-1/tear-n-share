@@ -56,7 +56,7 @@ export default function PaymentForm({sortedEvents,setUpdateObj}) {
     {sortedEvents ? <form className='log-event-form payment'> 
         {sortedEvents.unpaidLoggedLogs.length > 0 && <p>Total Marked As Paid:£{checkedTotal}</p>}
         {sortedEvents.unpaidLoggedLogs.length > 0 ? sortedEvents.unpaidLoggedLogs.map((data,index)=>{
-            return <label>
+            return <label key={data.id}>
             <p>Date: {data.purchaseDate}</p>    
             <p>Price: £{data.purchasePrice}</p>
             <p>You Owe: £{data.costRatio.pairedUser}</p>

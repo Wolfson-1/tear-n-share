@@ -3,33 +3,56 @@ import { onSnapshot, doc } from 'firebase/firestore';
 
 export default function useFetchDocsFilterIds(database, path, filterIds) {
   const [dataExport, setDataExport] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!filterIds || filterIds.length === 0) return;
+    if (!filterIds || filterIds.length === 0) {
+      setDataExport(null);
+      setError(null);
+      return;
+    }
 
-    const tempData = [];
-    let isMounted = true;
+    const tempData = new Array(filterIds.length);
+    const unsubscribes = [];
+
+    setError(null);
 
     filterIds.forEach((id, index) => {
-      const unsub = onSnapshot(doc(database, ...path, id), (docSnap) => {
-        if (!docSnap.exists()) return;
+      try {
+        const unsubscribe = onSnapshot(
+          doc(database, ...path, id),
+          (docSnap) => {
+            if (!docSnap.exists()) {
+              tempData[index] = null;
+              return;
+            }
 
-        const docData = { ...docSnap.data(), id: docSnap.id };
-        tempData[index] = docData;
+            tempData[index] = { ...docSnap.data(), id: docSnap.id };
 
-        //set data if it meets length of filterIds length 
-        if (tempData.filter(Boolean).length === filterIds.length && isMounted) {
-          setDataExport([...tempData]);
-        } else {
-          setDataExport([]);
-        }
-    });
+            if (tempData.every(item => item !== undefined)) {
+              setDataExport([...tempData]);
+            } else {
+              //set arr to empty to differentate that hook has run but full data not retreived.
+              setDataExport([]);
+            }
+          },
+          (err) => {
+            console.error(`Snapshot error for ID ${id}:`, err);
+              setError(err.message || 'Unknown error');
+          }
+        );
+
+        unsubscribes.push(unsubscribe);
+      } catch (err) {
+        console.error(`Setup error for ID ${id}:`, err);
+          setError(err.message || 'Unknown error during setup');
+      }
     });
 
     return () => {
-      isMounted = false;
+      unsubscribes.forEach(unsub => unsub());
       setDataExport(null);
-    };
+    }; 
   }, [filterIds]);
 
   return dataExport;
