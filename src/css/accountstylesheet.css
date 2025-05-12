@@ -1,0 +1,63 @@
+.account-close {
+    align-self: flex-end;
+    margin: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(133, 105, 13);
+    font-weight: bolder;
+    font-size: x-large;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.account-close:hover {
+    background-color: rgba(236, 210, 18, 0.095)
+}
+
+/* profile details section of account pull out */
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5%;
+}
+
+.profile-details .profile-img {
+    width: 120px;
+    height: 120px;
+}
+
+.profile-details button {
+    background: none;
+    border: none;
+} 
+
+.profile-details button:hover {
+    text-decoration: underline;
+}
+
+.profile-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+.profile-inputs > label {
+    margin: 8%;
+}
+
+.user-signout {
+    position: absolute;
+    bottom: 3%;
+    background: none;
+    border: none;
+    font-size: larger;
+    font-weight: bold;
+    color: rgba(250, 235, 215, 0.542);
+    transition: color 2s;
+}
+
+.user-signout:hover {
+    color: rgba(94, 91, 85, 0.785);
+}

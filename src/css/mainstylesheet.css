@@ -79,6 +79,9 @@ main {
 /* Main pull out sections CSS */
 
 .my-account-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100%;
     width: 25%;
     position: absolute;
@@ -90,6 +93,9 @@ main {
 }
 
 .my-buddies-main {
+    display: flex;
+    flex-direction:column;
+    align-items:center;
     height: 100%;
     width: 25%;
     position: absolute;
