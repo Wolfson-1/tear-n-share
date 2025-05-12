@@ -7,7 +7,7 @@ export default function ChatMessage({user, message,readMessage}) {
   const dateAndTime = epochtoReadable(message.dateTimeSent,'short');
 
   return (
-    <div className={user.userUid === message.senderId ? 'chat-message sent' : 'chat-message received'}>
+    <div className={user.userUid === message.senderId ? 'chat-message sent' : 'chat-message received'} key={message.id}>
       <p>{dateAndTime}</p>
       <div className='info-tile message-text'>
         <p>{message.text}</p>

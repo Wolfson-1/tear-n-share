@@ -31,9 +31,6 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
 
             if (tempData.every(item => item !== undefined)) {
               setDataExport([...tempData]);
-            } else {
-              //set arr to empty to differentate that hook has run but full data not retreived.
-              setDataExport([]);
             }
           },
           (err) => {

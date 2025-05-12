@@ -69,10 +69,15 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
         const dateTime = new Date(data.latestMessageDateTime);
         const date = dateTime.toDateString();
 
-        return <div className='info-tile chat-preview' onClick={()=>{messageOnClick(data)}}>
-                  <h2>{chatUser[0].userName}</h2>
-                  <p>{data.latestMessageUser}: {data.latestMessageText}</p>
-                  <p>{date.slice(8,10)} {date.slice(4,7)}</p>
+        return <div className='info-tile chat-preview' key={data.id} onClick={()=>{messageOnClick(data)}}>
+                  <picture className='profile-img'>
+                    <img alt={chatUser[0].userName}></img>
+                  </picture>
+                  <div className='message-info'>
+                    <h2>{chatUser[0].userName}</h2>
+                    <p>{data.latestMessageUser}: {data.latestMessageText}</p>
+                    <span>{date.slice(8,10)} {date.slice(4,7)}</span>
+                  </div>
               </div>
       })}
     </div>:<p>No current chats yet!</p>}
