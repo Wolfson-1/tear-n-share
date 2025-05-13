@@ -49,7 +49,7 @@ export default function SentRequests({user}) {
                 //time date calculation for how long past since request made
                 const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
 
-                return <div className='info-tile sent-request'>
+                return <div className='info-tile sent-request' key={request.id}>
                             <div>
                                 <h3>User: {request.displayName}</h3>
                                 <p>{request.basicAdInfo}</p>

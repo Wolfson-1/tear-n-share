@@ -704,6 +704,7 @@
     overflow: scroll;
     height: 50%;
     gap:2%;
+    scroll-behavior: smooth;
 }
 
 /* Chat message CSS */

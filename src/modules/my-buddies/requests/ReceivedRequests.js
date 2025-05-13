@@ -75,7 +75,7 @@ export default function ReceivedRequests({user}) {
             //time date calculation for how long past since request made
             const timePassed = timeDateCalcs.lastCheckInSum(request.requestTime,Date.now());
             return <div>
-                        <div className='info-tile received-requests'>
+                        <div className='info-tile received-requests' key={request.id}>
                             <h3>User: {request.displayName}</h3>
                             <p>{request.basicAdInfo}</p>
                             {timePassed.hoursTotal < 1 && <p> {timePassed.minTotal.toString()} minutes ago</p>}

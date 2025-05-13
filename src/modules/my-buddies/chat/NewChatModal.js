@@ -35,7 +35,7 @@ export default function NewChatModal({sharedUserData,setCurrentChat,setAddChatMo
                         return match.userId !== user.userUid
                     })
 
-                    return <div className='active-buddy'>
+                    return <div className='active-buddy' key={data.id}>
                                 <h3>{chatUser[0].userName}</h3>
                                 <button onClick={()=>{setNewChat(data)}}>Chat</button>
                            </div>

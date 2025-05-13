@@ -1,4 +1,4 @@
-import React, { useState,useContext, useEffect } from 'react'
+import React, { useState,useContext, useEffect, useRef } from 'react'
 import { TailSpin } from 'react-loader-spinner';
 import {ContextUser} from '../../../context/ContextUser';
 import { ContextNotification } from '../../../context/ContextNotification';
@@ -27,6 +27,8 @@ export default function Chat({currentChat,setCurrentChat}) {
     const [unreadIdsArr,setUnreadIdsArr] = useState(null);
     //state for displaying if last message has been read or not (for if user is looking at their own last message sent without a reply yet being received)
     const [lastMessageRead,setLastMessageRead] = useState(false);
+    //useRef state for message reel container
+    const messageReel = useRef(null);
 
     /* Hooks
     -----------------------*/
@@ -74,6 +76,13 @@ export default function Chat({currentChat,setCurrentChat}) {
             if(unreadArr.length > 0) setUnreadIdsArr(unreadArr);     
         }
     },[messageData]);
+
+    //listens to when a new message is uploaded & scrolls it into view upon completion
+    useEffect(()=>{
+        if(uploadMessage.isComplete) {
+            messageReel.current.lastElementChild.scrollIntoView(true);
+        };
+    },[uploadMessage.isComplete])
 
     /* event handlers 
     ----------------------- */
@@ -130,7 +139,7 @@ export default function Chat({currentChat,setCurrentChat}) {
     <>
       <button onClick={()=>{setCurrentChat(null)}}>{`<- Back`}</button>
       <h2>{chatPartner && chatPartner.userName}</h2>
-      <div className='message-reel'>
+      <div className='message-reel' ref={messageReel}>
                             {messageData ?
                                 messageData.length > 0 && messageData.map((message, index)=>{
                                     //logic to set state for read message flag to display if last message was read or not

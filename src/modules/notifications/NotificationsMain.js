@@ -62,6 +62,7 @@ export default function NotificationsMain({user}) {
     <>
         <div className={`notifications-container ${notificationExpand ? 'expand' : 'collapse'}`}>
             {!notificationExpand && unreadCounter > 0 && <div className='unread-counter'>{unreadCounter}</div>}
+            <div className='spacer'></div>
             <button className='expand-button' onClick={expandNotifications}>{notificationExpand === true ? 'collapse' : 'expand'}</button>
             {notificationExpand && notifications && <NotificationsReel notifications={notifications}/>}
             {notificationExpand && !notifications && <p>You currently have no updates</p>}

@@ -133,9 +133,9 @@ main {
   background: none;
   color: whitesmoke;
   font-weight: bolder;
-  font-size: larger;
+  font-size: large;
   border: none;
-  padding: 1%;
+  margin: 1%;
 }
 
 .notifications-container .unread-counter {
@@ -283,7 +283,7 @@ datalist {
     background-color: rgba(210, 162, 5, 0.922);
   }
 
-  /* Generic icon & button styling 
+  /* Generic icons & button styling 
   ---------------------------------------*/
 
   /* Add button styling */
@@ -301,7 +301,18 @@ datalist {
 
   .add-button:hover {
     background-color: rgba(255, 255, 255, 0.096);
-}
+  }
+
+  /* Generic spacer icon */
+  .spacer {
+    z-index: 0;
+    height: 2px;
+    position: absolute;
+    width: 8%;
+    background-color: antiquewhite;
+    margin: 0.5%;
+  }
+
 
 /* go to chat button */
 
