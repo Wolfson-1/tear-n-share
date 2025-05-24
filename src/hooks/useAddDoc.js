@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { serverTimestamp, setDoc, doc, addDoc, collection } from 'firebase/firestore';
 
 export default function useAddDoc(uploadObjs,database,path,id) {

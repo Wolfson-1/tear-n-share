@@ -8,7 +8,7 @@ import useFetchDocsFilter from '../hooks/useFetchDocsFilter';
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
 import SimpleModal from '../modules/multi-use-modules/SimpleModal';
-import UserInfoModal from '../modules/UserInfoModal';
+import MapUserInfoModal from '../modules/MapUserInfoModal';
 import MyAccountMain from '../modules/my-account/MyAccountMain';
 import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
 import useAddDoc from '../hooks/useAddDoc';
@@ -92,7 +92,7 @@ export default function Home() {
     <>
       {userData && <div>
         {!userData.show && <SimpleModal message={'Turn on visibility to view map'}/>}
-        {userModal && <UserInfoModal focusProfile={userModal} setFocusProfile={setUserModal}/>}
+        {userModal && <MapUserInfoModal focusProfile={userModal} setFocusProfile={setUserModal}/>}
         {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
         <main>
           {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}

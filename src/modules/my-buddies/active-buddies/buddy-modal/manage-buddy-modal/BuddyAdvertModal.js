@@ -153,7 +153,7 @@ export default function BuddyAdvertModal({matchUserInfo,sortedUsers,advert,setMa
                 </div>
               </div>
             </div>
-            {!sortedEvents && <div className='no-events'>
+            {!sortedEvents && <div className='div-blocker'>
                 <p>log events to see payment stats</p>
               </div>}
           </div>

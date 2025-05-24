@@ -244,6 +244,22 @@ label {
     flex-direction: column;
 }
 
+input {
+  background-color: rgba(220, 169, 2, 0.825);
+  border-radius: 5px;
+  padding: 2%;
+  color: antiquewhite;
+  font-weight: bold;
+}
+
+select {
+  background-color: rgba(220, 169, 2, 0.825);
+  border-radius: 5px;
+  padding: 2%;
+  color: antiquewhite;
+  font-weight: bold;
+}
+
 datalist {
     display: flex;
     flex-direction: column;
@@ -348,4 +364,23 @@ datalist {
   border-radius: 50%;
   width: 90px;
   height: 90px;
+}
+
+/* div cover css. for use when a certain container needs blocking out or rendering unusable */
+
+.div-blocker {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top:0;
+  bottom:0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.304);
+}
+
+.div-blocker p {
+  font-size: large;
+  font-weight: bold;
 }

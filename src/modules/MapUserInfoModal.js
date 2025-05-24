@@ -86,7 +86,9 @@ return (
     <div className='modal-background'>
       <div className='modal-form-container user-container'>
             <button className={'close-modal'} onClick={()=>{setFocusProfile(null)}}>x</button>
-            <img alt='profile picture'></img>
+            <picture className='profile-img'>
+                <img alt='profile picture'></img>
+            </picture>
             <h1>{focusProfile.displayName}</h1>
             <h3>Distance: {Math.round(focusProfile.distToUser * 100) / 100}</h3>        
             <div className={'advert-section'}>
