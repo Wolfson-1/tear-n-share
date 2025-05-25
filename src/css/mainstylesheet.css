@@ -183,6 +183,53 @@ main {
   margin: 0% 2% 1% 2%;
 }
 
+/* mapLeaflet css styling for user popups */
+
+.leaflet-popup .leaflet-popup-content-wrapper {
+  background-color: rgb(30, 34, 78);
+}
+
+.leaflet-popup .leaflet-popup-tip {
+  background-color:  rgb(30, 34, 78);
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
+  color: antiquewhite;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content > * {
+  margin: 5% 0% 0% 0%;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content picture {
+  border-color: antiquewhite;
+  border-width: 3px;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content .spacer {
+  position: relative;
+  width: 60%;
+  margin-top: 2%;
+  height: 1px;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content button {
+  border: none;
+  background: none;
+  color: rgba(250, 235, 215, 0.459);
+  font-weight: bolder;
+  transition: color 2s;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content button:hover {
+  color: antiquewhite;
+}
+
+
 /* standard modal styling */
 
 .modal-background {

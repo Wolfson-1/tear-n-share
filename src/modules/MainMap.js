@@ -97,9 +97,13 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
       {filteredUsers && filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>
-                {visUser.displayName} <br/> 
-                Distance: {Math.round(visUser.distToUser * 100) / 100} <br/>
-                <button onClick={() => {setUserModal(visUser)}}>More info</button>
+                  <picture className='profile-img'>
+                    <img alt='acc-img'></img> 
+                  </picture>
+                  <h3>{visUser.displayName}</h3>
+                  <div className='spacer'></div>
+                  <p>Distance: {Math.round(visUser.distToUser * 100) / 100}</p>
+                  <button onClick={() => {setUserModal(visUser)}}>More info</button>
                 </Popup>
               </Marker>
       })}
