@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+- [T] Project title and one-line description
+- [ ] Live demo link (and optional screenshot or GIF)
+- [T] Tech stack used
+- [T] Key features of the project
+- [ ] Screenshots or demo GIFs of core UI
+- [ ] Local setup instructions (clone, install, run)
+- [ ] Firebase/environment variable setup info (if applicable)
+- [T] Learning goals or reason for building the project
+- [T] Known issues or planned improvements
+- [ ] Feedback and contact info
+- [ ] License information
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Tear-n-Share - A dynamic single page React application for users to share the cost of baked goods with other users within their local area
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+- HTML
+- CSS
+- Javascript ES6
+- React
+- React Leaflet
+- Firebase (Auth + Firestore)
+- UUID
 
-### `npm start`
+## Key Project Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- User registration & authentication using Firebase Auth
+- Real time data sync with Firebase Firestore
+- Responsive single page UI application design
+- ability to view users within local area using map based distance logic applied visually using React leaflet
+- Matchmaking logic between users based on sent and received request acceptance
+- Matched user management system with built in time stapmed activity tracker & dynamic calander dispaly setup.
+- in-built chat function to allow communnication between matched users
+- Real time notification management to alert users to recent activity
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Local Setup Instructions
 
-### `npm test`
+```
+//Clone the repo
+git clone git@github.com:Wolfson-1/tear-n-share.git
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+//Navigate into the project
+cd tear-n-share
 
-### `npm run build`
+// Install dependencies
+npm install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+// Start the dev server
+npm run dev
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Learning goals & Aims With This Project
 
-### `npm run eject`
+I took on this project idea for a few reasons. Initially, the idea of creating an application with the purpose to help its users reduce the cost of their groceries via sharing or even bulk buying is something I am passionate about as an idea. And although a specific application focused just on bread & bakery products is rather limited in its scope...This project acts as a perfect proof of concept I hope to build on and expand in the future.  
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+As we as a concept I am passionate about As I started to plan out the design & features of this project it was my belief that this would also demonstraigt a wide range of skills I have for the purpose of apply to entry front end web development positions whilst building on & improving these skills at the same time. 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Being a single page application gives the project a mondern look & feel highlighting the relevance of my skillset within a modern company in need of web developers. Whilst also demonstraighting my capabilities to run the end to end development of a full stack user based project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Known Issues & Planned Improvements
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Planned Improvements
 
-## Learn More
+- distance unit toggle so logged in user can choose between miles and kilometers & have this factored into map distance logic 
+- the addition of firebase storage for the following purposes: 
+    - User upload of a profile picture on account creation as well as ability to change profile picture in account settings
+    - Add images for proof of purchases and payment to other users in activity tracker of matched users
+- Futher asthetical improvements using CSS for the purpose of co-ordinating application style across all segments.
+- Mobile & smaller screen CSS addition. Currently setup only to work on full screen  
+- Addition of further react context/reduce functionality to enable ability click on notifications to take user to the section affiliated (eg: clicking a notification of a new message from a matched user takes logged in user to that chat window)
+- Addition of regex qualification of users email, username, and password upon account creation.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Known Issues
+- Refinement needed in filtering users to specific distance area algorythm. Currently an application scaling risk where initially all created users are fetched from the back end before filtering & rendering map. As application grows in users, this will cause a crash.
+- bug where if user enters wrong user/password combination on login sometimes page needs refreshing prior to log in then working. Likely an issue in clearance of previous form values and/or error value before retrying login attempt. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Feedback and Contact Info
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+As this project still remains one of my first full stack projects & I am looking to improve anywhere I can as i code, any feedback is most welcome. Please feel free to open an issue or message me via my github account.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Licence
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
