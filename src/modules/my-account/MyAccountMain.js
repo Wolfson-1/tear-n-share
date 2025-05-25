@@ -1,11 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import '../../css/accountstylesheet.css';
-import { db } from '../../firebase/config';
 import { ContextUser } from '../../context/ContextUser';
 import userSignOut from '../../utils/userSignOut';
-import useCollectionCount from '../../hooks/useCollectionCount';
 
-export default function MyAccountMain({ setMyAccount, setUpdateData, userData }) {
+export default function MyAccountMain({ setMyAccount, setUpdateData, userData, advertCount }) {
   //access user status from context
   const user = useContext(ContextUser);
 
@@ -15,11 +13,6 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData })
   //state values for user distance & show/dont show prefernces
   const [distance,setDistance] = useState(0);
   const [show,setShow] = useState(true);
-
-  /* Hooks
-  ------------------------ */
-  //count nmumber of adverts for conditional usage of showing user in map toggle
-  const advertCount = useCollectionCount(db,['userData',user.userUid,'adverts'],['active', '==', true]);
 
   /* useEffects
   -------------------------*/

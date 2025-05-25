@@ -38,21 +38,21 @@ export default function AdvertSection() {
   // hooks for addition of formData to userDatabse
   const uploadNewAd = useAddDoc(uploadData,db,['userData',user.userUid,'adverts']);
 
-
   /* useEffects
   ----------------------*/
 
   // useEffect to close out modal & clear selected ad ID if update of ad data is complete
   useEffect(() => {
-  if (updateExistingAd.isComplete === true) {
-    setUpdateData(null);
-    setExistingAdId(null);
-    setAdvertModal(false);
-   };
+    if (updateExistingAd.isComplete === true) {
+      setUpdateData(null);
+      setExistingAdId(null);
+      setAdvertModal(false);
+    };
 
-  if(uploadNewAd.isComplete === true) {
-      setUploadData(null);
-  };
+    if(uploadNewAd.isComplete === true) {
+        setUploadData(null);
+    };
+    
   },[updateExistingAd.isComplete,uploadNewAd.isComplete]);
 
   /* functions for advert manipulation

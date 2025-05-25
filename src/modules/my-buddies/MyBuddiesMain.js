@@ -5,7 +5,7 @@ import RequestsSection from './requests/RequestsSection'
 import AdvertSection from './advert/AdvertSection'
 import ChatsSection from './chat/ChatsSection'
 
-export default function MyBuddiesMain({setMyBuddies}) {
+export default function MyBuddiesMain({ setMyBuddies }) {
 
   //state for selector of what section within buddys tab is currently showing
   const selectorsArr = ['adverts','active','requests','chat'];

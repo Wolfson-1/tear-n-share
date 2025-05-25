@@ -5,6 +5,7 @@ import { db } from '../firebase/config';
 import useUpdateDoc from '../hooks/useUpdateDoc';
 import useFetchDoc from '../hooks/useFetchDoc';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter';
+import useCollectionCount from '../hooks/useCollectionCount';
 import MainMap from '../modules/MainMap';
 import UserWelcome from '../modules/login/UserWelcome';
 import SimpleModal from '../modules/multi-use-modules/SimpleModal';
@@ -33,6 +34,8 @@ export default function Home() {
     const [updateData,setUpdateData] = useState(null);
     //state for user in focus for more info modal
     const [userModal,setUserModal] = useState(null);
+    //previous advert number state 
+    const [prevAdCount,setPrevAdCount] = useState(null);
 
     /* Hooks
     -------------- */
@@ -51,6 +54,9 @@ export default function Home() {
     //hook to make a new notification on action
     const newNotification = useAddDoc(notificationsUpdate.updateState.updateObj,db,['userData',notificationsUpdate.updateState.sendId,'notificationsReel']);
 
+    //hook to listen to number of adverts user has listed
+    const advertCount = useCollectionCount(db,['userData',user.userUid,'adverts'],['active', '==', true]); 
+
     /* useEffects
     ---------------------- */
 
@@ -67,15 +73,33 @@ export default function Home() {
         }
     },[isFirstLogin]);
 
-      //check for when updateDistance is complete to clear out state for updateFig
-      useEffect(() => {
-        if(updateUserInfo.isComplete === true) setUpdateData(null);
-        if(newUserInfo.isComplete === true) setNewUser(null);
-        if(newNotification.isComplete === true) {
-          console.log('clearing data')
-          notificationsUpdate.updateDispatch({type:'clear-data',payload:null});
-        }
-      },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
+    //check for when updateDistance is complete to clear out state for updateFig
+    useEffect(() => {
+      if(updateUserInfo.isComplete === true) setUpdateData(null);
+      if(newUserInfo.isComplete === true) setNewUser(null);
+      if(newNotification.isComplete === true) {
+        console.log('clearing data')
+        notificationsUpdate.updateDispatch({type:'clear-data',payload:null});
+      }
+    },[updateUserInfo.isComplete,newUserInfo.isComplete,newNotification.isComplete])
+
+    //useEffect to track advert count and set user show status accordingly
+    useEffect(()=>{
+      //if first render and no prevAdCount exist, set to advert count and return
+      if(prevAdCount === null) {
+        setPrevAdCount(advertCount);
+        return
+      };
+
+      //if active advert count === 0 & user show status is true set user show status to false
+      if(advertCount === 0 && userData.show === true) setUpdateData({show: false});
+
+      //if advert count goes above 0 and the previous number was 0. set show to true.
+      if(advertCount > 0 && prevAdCount === 0) setUpdateData({show: true});
+
+      //once checks are complete set advertCount to prevAdCount
+      setPrevAdCount(advertCount);
+    },[advertCount]);
 
       /* Event Handlers
       ------------------*/
@@ -96,7 +120,7 @@ export default function Home() {
         {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
         <main>
           {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}
-          {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData}/>}
+          {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData} advertCount={advertCount}/>}
           {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
           <div className='nav-button-container'> 
             <button className={`nav-my-account ${myAccount ? 'active' : 'inactive'}`} onClick={() => {drawToggle(setMyAccount,setMyBuddies)}}>Account</button>

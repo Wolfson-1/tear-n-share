@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {db} from '../../../firebase/config';
 import {ContextUser} from '../../../context/ContextUser';
-import useAddDoc from '../../../hooks/useAddDoc';
 import useFetchDoc from '../../../hooks/useFetchDoc';
 import LoafForm from './bread-forms/LoafForm';
 import BunBagelForm from './bread-forms/BunBagelForm';
@@ -9,6 +8,7 @@ import PastryForm from './bread-forms/PastryForm';
 import OtherBreadForm from './bread-forms/OtherBreadForm';
 import GeneralFormSliders from './bread-forms/GeneralFormSliders';
 import * as formHandlingUtils from '../../../utils/formHandlingUtils';
+import useCollectionCount from '../../../hooks/useCollectionCount';
 
 export default function NewAdvertModal( {closeModal,advertId,setUpdateData,setUploadData} ) {
 
@@ -27,6 +27,8 @@ export default function NewAdvertModal( {closeModal,advertId,setUpdateData,setUp
 
     // hook for pulling in existing advert data if advertId exists
     const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts'],advertId);
+    //hook to count number of current adverts
+    const advertCount = useCollectionCount(db,['userData',user.userUid,'adverts'],['active', '==', true]);
 
     /*useEffects
     --------------------------------------- */
