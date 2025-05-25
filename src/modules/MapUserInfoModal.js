@@ -34,9 +34,6 @@ const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,
 //check for when updateDistance is complete to clear out state for updateFig
 useEffect(() => {
     if(adRequestDoc.isComplete && userRequestTracker.isComplete) {
-        
-
-
         //clear upload state
         setUserRequest(null);
         setRequestTracker(null);
@@ -96,7 +93,7 @@ return (
                 <div className='advert-list-container'>
                     {adverts && <div className='advert-list'>
                         {adverts.map((advert)=> {
-                            return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest}/>
+                            return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest} key={advert.id}/>
                         })}   
                     </div>}
                 </div>

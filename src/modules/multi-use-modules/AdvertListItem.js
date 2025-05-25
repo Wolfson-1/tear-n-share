@@ -24,7 +24,7 @@ const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequ
         </div>
         {advert.reduced === true ? <span>Reduced</span> : null}
     </div>
-    {existingRequest ?
+    {existingRequest && existingRequest.length > 0 ?
         <>
             {existingRequest[0].status === 'pending' && <p>Requested</p>}
             {existingRequest[0].status === 'rejected' && <p>Rejected</p>}
