@@ -11,6 +11,10 @@ main {
     height: 100%;
 }
 
+* {
+  font-family: cursive;
+}
+
  /* main page
  --------------------------- */
  /* Map properties to set layering order priority */

@@ -7,9 +7,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    background-image: url(https://images.pexels.com/photos/5732752/pexels-photo-5732752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    background-color: rgba(255, 255, 255, 0.108);
+    background-image: url(https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
     background-size: 100% auto;
-    background-repeat: no-repeat;
+    background-position-y: 45%;
+    background-blend-mode:overlay;
 }
 
 /* header/login section
@@ -20,12 +22,14 @@ header {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 15%;
-    background-color: rgba(255, 166, 0, 0.862);
+    height: 17%;
+    background-color: rgba(255, 166, 0, 0.786);
 }
 
 header h1 {
     margin: 0% 0% 0% 2%;
+    font-size: 40px;
+    font-weight:bolder;
 }
 
 /* login form
@@ -45,6 +49,78 @@ header form label {
     flex-direction: row;
     align-items: center;
     gap: 5px;
+    font-size: large;
+}
+
+header form label input {
+    background-color: rgba(250, 235, 215, 0.37);
+    border: none;
+    font-size: large;
+}
+
+header form input[type='submit'] {
+    font-size: small;
+    width: auto;
+    height: auto;
+    margin: none;
+    padding: none;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+/* main & registeration div section
+---------------------------------------*/
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .login-info {
+    height: 65%;
+    width: 35%;
+    padding: 1% 3% 3% 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.582);
+    border-radius: 20px;
+    margin-left: 50%;
+}
+
+main div > * {
+    text-align: center;
+}
+
+main div h2 {
+    font-weight: bolder;
+}
+
+main div p {
+    font-size:large ;
+    font-weight:bold;
+    width: 80%;
+}
+
+main div .reg-container {
+    width: 60%;
+}
+
+main div .reg-container p {
+    font-size: medium;
+    font-weight: lighter;
+    width: auto;
+}
+
+main div .reg-container button {
+    background: none;
+    border: none;
+    font-size: medium;    
+}
+
+main div .reg-container button:hover {
+    text-decoration: underline;
 }
 
 /* registration modal & form */
@@ -65,8 +141,7 @@ footer {
     align-self: flex-end;
     height: 15%;
     width: 100%;
-    background-color: antiquewhite;
     align-items: center;
     justify-content: center;
-    background-color:  rgba(255, 166, 0, 0.862);
+    background-color: rgba(255, 166, 0, 0.786);
 }

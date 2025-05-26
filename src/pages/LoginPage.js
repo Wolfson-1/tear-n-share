@@ -13,8 +13,15 @@ export default function LoginPage({setUser}) {
         <h1>Tear N' Share</h1>
         <LoginForm/>
       </header>
-      <main className='login-page-reg-container'>
-        <button onClick={()=>{setShouldRegister(true)}}>Register</button>      
+      <main>
+        <div className='login-info'>
+          <h2>Tear N' Share! - Only pay for the bread you need</h2>
+          <p>Share the cost of breads, pastries & baked goods with your community to pay for only what you need & save more</p>
+          <div className='reg-container'>
+            <p>Don't have an account? Register below!</p>
+            <button onClick={()=>{setShouldRegister(true)}}>Register</button>
+          </div>
+        </div>
       </main>
       <footer>
         <h3>© 2025 Wolfson-1</h3>
