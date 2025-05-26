@@ -9,12 +9,17 @@ export default function LoginPage({setUser}) {
 
     return (
     <div className='login-background'>
-      <div className='login-section'>
-        <h3>Tear N' Share</h3>
+      <header className='login-section'>
+        <h1>Tear N' Share</h1>
         <LoginForm/>
-        <button onClick={()=>{setShouldRegister(true)}}>Register</button>
-        {shouldRegister && <UserRegistration setShouldRegister={setShouldRegister} setUser={setUser}/>}
-      </div>
+      </header>
+      <main className='login-page-reg-container'>
+        <button onClick={()=>{setShouldRegister(true)}}>Register</button>      
+      </main>
+      <footer>
+        <h3>© 2025 Wolfson-1</h3>
+      </footer>
+      {shouldRegister && <UserRegistration setShouldRegister={setShouldRegister} setUser={setUser}/>}
     </div>
   )
 }

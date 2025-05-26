@@ -431,25 +431,6 @@
     gap:5px;
 }
 
-/* no-events cover css. to indicate user should add events to see statistics */
-
-.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .no-events {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top:0;
-    bottom:0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.304);
-}
-
-.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .no-events p {
-    font-size: large;
-    font-weight: bold;
-}
-
 .modal-form-container.buddy-container .buddy-modal-manageAd .log-activity  {
     justify-content: center;
     align-items: center;

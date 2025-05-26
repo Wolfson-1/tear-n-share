@@ -27,8 +27,6 @@ export default function NewAdvertModal( {closeModal,advertId,setUpdateData,setUp
 
     // hook for pulling in existing advert data if advertId exists
     const existingAdvertData = useFetchDoc(db,['userData',user.userUid,'adverts'],advertId);
-    //hook to count number of current adverts
-    const advertCount = useCollectionCount(db,['userData',user.userUid,'adverts'],['active', '==', true]);
 
     /*useEffects
     --------------------------------------- */
