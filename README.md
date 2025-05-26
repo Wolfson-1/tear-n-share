@@ -8,7 +8,7 @@
 - [T] Learning goals or reason for building the project
 - [T] Known issues or planned improvements
 - [ ] Feedback and contact info
-- [ ] License information
+- [T] License information
 
 # Tear-n-Share - A dynamic single page React application for users to share the cost of baked goods with other users within their local area
 
@@ -79,11 +79,14 @@ Being a single page application gives the project a mondern look & feel highligh
 
 ---
 
-As this project still remains one of my first full stack projects & I am looking to improve anywhere I can as i code, any feedback is most welcome. Please feel free to open an issue or message me via my github account.
+As this project still remains one of my first full stack projects & I am looking to improve anywhere I in my coding journey, any feedback is most welcome. Please feel free to open an issue or message me via my github account.
 
 ---
 
-## Licence
+## License
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).
+
 
 
 
