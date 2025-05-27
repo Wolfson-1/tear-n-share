@@ -56,10 +56,10 @@ export default function ChatsSection() {
     <div className='chat-container'>
       {currentChat ? 
       <Chat currentChat={currentChat} setCurrentChat={setCurrentChat}/> : 
-      sharedUserData ? 
-      <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>
+      sharedUserData === undefined ?
+      <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>
       :
-      <TailSpin wrapperClass='loading-spinner' color="#00BFFF" height={80} width={80}/>}
+      <ExistingChatList user={user} sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setMessageRead={setMessageRead}/>}
     </div>
   )
 }

@@ -54,38 +54,49 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
     setCurrentChat(data);
   }
 
+  useEffect(()=>{
+    console.log(sharedUserData)
+  },[sharedUserData])
+
   return (
     <>
-    <h2>Chats</h2>
-    <h3> Unread Messages: {unreadCounter.toString()}</h3>
-    {existingChat !== undefined ? <div className='existing-chats'>  
-      {existingChat.map((data)=>{
-        //pull user & id from chatPreview for display in DOM
-        const chatUser = data.matchedUsers.filter((match)=>{
-          return match.userId !== user.userUid
-        })
+      <h2>Chats</h2>
+      <h3> Unread Messages: {unreadCounter.toString()}</h3>
+      {existingChat && <>
+        {existingChat.length === 0 ? 
+        <p>No current chats yet!</p> 
+        :
+        <div className='existing-chats'>  
+          {existingChat.map((data)=>{
+            //pull user & id from chatPreview for display in DOM
+            const chatUser = data.matchedUsers.filter((match)=>{
+              return match.userId !== user.userUid
+            })
 
-        //covert date for display in DOM
-        const dateTime = new Date(data.latestMessageDateTime);
-        const date = dateTime.toDateString();
+            //covert date for display in DOM
+            const dateTime = new Date(data.latestMessageDateTime);
+            const date = dateTime.toDateString();
 
-        return <div className='info-tile chat-preview' key={data.id} onClick={()=>{messageOnClick(data)}}>
-                  <picture className='profile-img'>
-                    <img alt={chatUser[0].userName}></img>
-                  </picture>
-                  <div className='message-info'>
-                    <h2>{chatUser[0].userName}</h2>
-                    <p>{data.latestMessageUser}: {data.latestMessageText}</p>
-                    <span>{date.slice(8,10)} {date.slice(4,7)}</span>
+            return <div className='info-tile chat-preview' key={data.id} onClick={()=>{messageOnClick(data)}}>
+                      <picture className='profile-img'>
+                        <img alt={chatUser[0].userName}></img>
+                      </picture>
+                      <div className='message-info'>
+                        <h2>{chatUser[0].userName}</h2>
+                        <p>{data.latestMessageUser}: {data.latestMessageText}</p>
+                        <span>{date.slice(8,10)} {date.slice(4,7)}</span>
+                      </div>
                   </div>
-              </div>
-      })}
-    </div>:<p>No current chats yet!</p>}
-    {sharedUserData ? 
-    <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>:
-    <p>match with other users & you will be able to chat with them here!</p>}
-    {addChatModal === true && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
+          })}
+        </div>}
+      </>}
+      {sharedUserData !== undefined &&
+      <>
+        {sharedUserData === null ? <p>match with other users & you will be able to chat with them here!</p>:
+        <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>}
+      </>
+      }
+      {addChatModal === true && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
     </>
-    
   )
 }

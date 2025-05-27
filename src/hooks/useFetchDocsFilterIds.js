@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { onSnapshot, doc } from 'firebase/firestore';
 
 export default function useFetchDocsFilterIds(database, path, filterIds) {
-  const [dataExport, setDataExport] = useState(null);
+  const [dataExport, setDataExport] = useState(undefined);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -31,6 +31,9 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
 
             if (tempData.every(item => item !== undefined)) {
               setDataExport([...tempData]);
+            } else {
+              console.log('setting empty arr')
+              setDataExport([]);
             }
           },
           (err) => {

@@ -8,7 +8,7 @@ export default function UserWelcome({setIsFirstLogin}) {
     
   return (
     <div className='modal-background'>
-      <div className='user-reg-modal thanks'>
+      <div className='modal-form-container thanks'>
         <p>Welcome {user.displayName}. Get ready to get your bread on!</p>
         <button onClick={()=>{setIsFirstLogin('false')}}>Proceed</button>
       </div>

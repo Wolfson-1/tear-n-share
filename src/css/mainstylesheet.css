@@ -127,7 +127,7 @@ main {
 }
 
 .notifications-container.collapse {
-  height: 4%;
+  height: 5%;
 }
 
 .notifications-container.expand {
@@ -154,11 +154,12 @@ main {
   height: 25px;
   width: 25px;
   background-color: rgb(170, 13, 13);
-  color: whitesmoke;
+  color: antiquewhite;
   font-weight:bolder;
 }
 
 .notifications-container .notifications-reel {
+  color: antiquewhite;
   width: 90%;
   height: 94%;
   border-radius: 50px 50px 0px 0px;
@@ -170,7 +171,6 @@ main {
 
 .notifications-container .notifications-reel .info-tile.notification {
   background: none;
-  color: whitesmoke;
   border-radius: 0%;
   margin: 2% 0% 2% 0%;
   border-bottom: solid rgba(245, 245, 245, 0.192) 1px;
@@ -181,11 +181,13 @@ main {
   align-self: flex-end;
   margin: 1% 2% 0% 0%;
   font-size: small;
+  color: antiquewhite;
 }
 
 
 .notifications-container .notifications-reel .info-tile.notification p {
   margin: 0% 2% 1% 2%;
+  color: antiquewhite;
 }
 
 /* mapLeaflet css styling for user popups */
@@ -434,4 +436,23 @@ datalist {
 .div-blocker p {
   font-size: large;
   font-weight: bold;
+}
+
+
+/* User welcome modal CSS 
+----------------------------*/
+
+.modal-form-container.thanks {
+  height: auto;
+  align-items: center;
+  padding: 1%;
+  opacity: 0.98;
+}
+
+.modal-form-container.thanks button {
+  width: 20%;
+  font-size: larger;
+  border-radius: 5px;
+  border: rgba(0, 0, 0, 0.236) solid 2px;
+  background-color: rgba(210, 162, 5, 0.922);
 }
