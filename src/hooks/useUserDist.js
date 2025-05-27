@@ -8,12 +8,14 @@ export default function useUserDist(location, distanceInKm, users) {
     //init array for filtered list of users by distance 
     const [returnUsers,setReturnUsers] = useState([]);
 
+    console.log(location)
+    console.log(distanceInKm)
     //function to calculate distances between other users & logged in user.
     const userDistances = () => {
         let filteredArr = [];
         
         //logic to return if nessicary data does not exist yet
-        if(location === undefined) return;
+        if(location === undefined || !location) return;
         
         // convert current logged in user lat/long to radions
         const latRad = location.lat * Math.PI/180;

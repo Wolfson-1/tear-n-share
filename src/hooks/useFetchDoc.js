@@ -16,7 +16,7 @@ export default function useFetchDoc(database, path, id) {
       if (docSnap.exists()) {
         setData({ ...docSnap.data(), id: docSnap.id });
       } else {
-        setData(undefined); // Handle case where document doesn't exist
+        setData(null); // Handle case where document doesn't exist
       }
     }, (error) => {
       console.error('Error fetching data:', error);

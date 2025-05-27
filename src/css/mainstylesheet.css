@@ -13,6 +13,7 @@ main {
 
 * {
   font-family: cursive;
+  color:rgb(46, 46, 46);
 }
 
  /* main page
@@ -295,18 +296,18 @@ label {
 }
 
 input {
-  background-color: rgba(220, 169, 2, 0.825);
-  border-radius: 5px;
+  background-color: rgba(250, 235, 215, 0.37);
+  border: none;
   padding: 2%;
-  color: antiquewhite;
+  color: rgb(46, 46, 46);
   font-weight: bold;
 }
 
 select {
-  background-color: rgba(220, 169, 2, 0.825);
-  border-radius: 5px;
+  background-color: rgba(250, 235, 215, 0.37);
+  border: none;
   padding: 2%;
-  color: antiquewhite;
+  color: rgb(46, 46, 46);
   font-weight: bold;
 }
 

@@ -7,7 +7,7 @@ import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
 import useUserDist from '../hooks/useUserDist';
 
-export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,setUserModal}) {
+export default function MainMap({setUpdateData,userData,visibleUsers,setUserModal}) {
   //access user status from context
   const user = useContext(ContextUser);  
   
@@ -28,17 +28,17 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     //map dinmentions
     const {width,height} = useWindowDimentions();
     //current location
-    const [location,setLocation] = useState(userData && userData.location);
+    const [location,setLocation] = useState(userData.location);
     //user distance
-    const [distance,setDistance] = useState(userData && userData.distance);
+    const [distance,setDistance] = useState(userData.distance);
     //user circle radius in M
     const [circleRadius,setCircleRadius] = useState(null); 
     const [mapBounds,setMapBounds] = useState(null);
 
     /* hooks 
     -------------------- */
-    
-    const filteredUsers = useUserDist(userData.location,userData.distance,visibleUsers);
+
+    const filteredUsers = useUserDist(location, distance, visibleUsers);
 
     /*useEffects
     -------------------- */
@@ -46,11 +46,24 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     useEffect(() => {
       //set location data on first render
       geoLocation().then(data => {
-        //if location data doesnt exist or differs to current userdata, update location
-        if(!userData.location) {
-          setNewUser([{displayName: user.displayName, location:data, show:true}]);
-        } else if (userData.location.lat !== data.lat || userData.location.lng !== data.lng) {
-          setUpdateData({location:data});
+        if (
+          !userData.location ||
+          userData.location.lat !== data.lat ||
+          userData.location.lng !== data.lng
+        ) {
+          setUpdateData({ location: data });
+        }
+      }) //if there is an error in fetching geoLocation. set backup co-ordinates.
+      .catch(() => {
+        // fallback location (e.g., Southampton or UK center)
+        const fallback = { lat: 0.0, lng: 180.0 };
+  
+        if (
+          !userData.location ||
+          userData.location.lat == '' ||
+          userData.location.lng == ''
+        ) {
+          setUpdateData({ location: fallback });
         }
       });
     },[]);
@@ -60,7 +73,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     if (userData.distance && userData.location) {
       if(userData.distance !== distance) setDistance(userData.distance);
       if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
-    } 
+    }
   }, [userData]);
 
   //Convert & set radius for map circle layer based on user set distance prefference change
@@ -69,7 +82,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
     if (userData.distance) {
       const mDist = userData.distance * mInMile;
       setCircleRadius(mDist); 
-    }  
+    }
   },[distance]);
 
   //useEffect to run on set of location to create map bounds so user cant scroll across whole planet.
@@ -82,18 +95,19 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
       //set state for MapBounds
       setMapBounds({swLatLong:swLatLong,neLatLong:neLatLong});
     }
-  },[location],)
+  },[location])
 
   /* -------------------- */
 
   return (
     <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
-    {mapBounds && userData && <MapContainer style={{width: '100%', height: '100%'}} center={location ? [location.lat.toString(),location.lng.toString()] : ['51.5032','0.1195']} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
+    {mapBounds && location &&
+    <MapContainer style={{width: '100%', height: '100%'}} center={location} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
       <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
-      <Circle center={userData.location} fillColor="blue" radius={circleRadius}/>
-      <Marker position={userData.location} icon={userIcon}/>
+      <Circle center={location} fillColor="blue" radius={circleRadius}/>
+      <Marker position={location} icon={userIcon}/>
       {filteredUsers && filteredUsers.map((visUser)=>{
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>
@@ -107,7 +121,7 @@ export default function MainMap({setUpdateData,setNewUser,userData,visibleUsers,
                 </Popup>
               </Marker>
       })}
-  </MapContainer>}
+    </MapContainer>}
   </div>
   )
 };

@@ -59,6 +59,13 @@ export default function Home() {
     /* useEffects
     ---------------------- */
 
+    useEffect(()=>{
+      //if user data returns null (doesnt exist yet) set user data to blank object for code to run to fill in 
+      if(userData === null) {
+          setNewUser([{displayName: user.displayName, location:{lat:'',lng:''}, show:true, distance:1}]);
+      } 
+    },[userData]);
+
     //useEffect for isFirstLogin state changes 
     useEffect(() => {
         //first login local storage change
@@ -84,11 +91,14 @@ export default function Home() {
 
     //useEffect to track advert count and set user show status accordingly
     useEffect(()=>{
-      //if first render and no prevAdCount exist, set to advert count and return
+      //if first render on login and no prevAdCount exist, set to advert count and return
       if(prevAdCount === null) {
         setPrevAdCount(advertCount);
         return
       };
+
+      //if user data doesnt exist (ie: user account has just been created) return
+      if(!userData) return;
 
       //if active advert count === 0 & user show status is true set user show status to false
       if(advertCount === 0 && userData.show === true) setUpdateData({show: false});
@@ -117,7 +127,7 @@ export default function Home() {
         {userModal && <MapUserInfoModal focusProfile={userModal} setFocusProfile={setUserModal}/>}
         {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
         <main>
-          {visibleUsers && <MainMap setUpdateData={setUpdateData} setNewUser={setNewUser} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}
+          {visibleUsers && <MainMap setUpdateData={setUpdateData} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}
           {myAccount && <MyAccountMain setMyAccount={setMyAccount} setUpdateData={setUpdateData} userData={userData} advertCount={advertCount}/>}
           {myBuddies && <MyBuddiesMain setMyBuddies={setMyBuddies}/>}
           <div className='nav-button-container'> 

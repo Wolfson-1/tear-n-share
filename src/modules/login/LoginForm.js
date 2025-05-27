@@ -2,12 +2,11 @@ import React, {useState} from 'react'
 import {auth} from '../../firebase/config';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 
-export default function LoginForm() {
+export default function LoginForm({loginError,setLoginError}) {
 
   //state for login user values & error
-  const [email,setEmail] = useState(null);
-  const [password,setPassword] = useState(null);
-  const [loginError,setLoginError] = useState(null);
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
 
   // Clear error if present for on click of input field
     const clearError = () => {
@@ -18,7 +17,7 @@ export default function LoginForm() {
   const submitForm = (event) => {
     event.preventDefault();
 
-    if(email === null || password === null) {
+    if(email === '' || password === '') {
       setLoginError('Please enter both email & password to login.');
       return;
     }
@@ -33,8 +32,6 @@ export default function LoginForm() {
       console.log(error.code);
       console.log(error.message);
       setLoginError("email or password incorrect, please try logging in again.");
-      setEmail(null);
-      setPassword(null);
     })
 };
 
@@ -49,7 +46,6 @@ export default function LoginForm() {
             <input type='password' id='password' name='password' placeholder='enter password' value={password} onClick={clearError} onChange={(e)=>{setPassword(e.target.value)}}></input>
         </label>
         <input type='submit' value='login' onClick={submitForm}></input>
-        {loginError && <p>{loginError}</p>}
     </form>
   )
 };

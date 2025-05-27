@@ -57,10 +57,10 @@ export default function UserRegistration({setShouldRegister, setUser}) {
 
     return (
     <div className='modal-background'>
-     <div className='user-reg-modal'>
-        <button onClick={()=>{setShouldRegister(false)}}>close</button>
+     <div className='modal-form-container registration'>
+        <button className='close-modal' onClick={()=>{setShouldRegister(false)}}>x</button>
         <h2>Please Register</h2> 
-        <form>
+        <form className='modal-form'>
         <label>
             User Name    
             <input type='text' id='user' name='user' placeholder='eg: Ilovebread123' value={userName} onClick={clearError} onChange={(e)=>{setUserName(e.target.value)}}></input>

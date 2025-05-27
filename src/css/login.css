@@ -53,12 +53,11 @@ header form label {
 }
 
 header form label input {
-    background-color: rgba(250, 235, 215, 0.37);
-    border: none;
     font-size: large;
 }
 
 header form input[type='submit'] {
+    background-color: rgba(255, 166, 0, 0.916);
     font-size: small;
     width: auto;
     height: auto;
@@ -89,49 +88,70 @@ main .login-info {
     margin-left: 50%;
 }
 
-main div > * {
+main .login-info > * {
     text-align: center;
 }
 
-main div h2 {
+main .login-info h2 {
     font-weight: bolder;
 }
 
-main div p {
+main .login-info p {
     font-size:large ;
     font-weight:bold;
     width: 80%;
 }
 
-main div .reg-container {
+main .login-info .reg-container {
     width: 60%;
 }
 
-main div .reg-container p {
+main .login-info .reg-container p {
     font-size: medium;
     font-weight: lighter;
     width: auto;
 }
 
-main div .reg-container button {
+main .login-info .reg-container button {
     background: none;
     border: none;
     font-size: medium;    
 }
 
-main div .reg-container button:hover {
+main .login-info .reg-container button:hover {
     text-decoration: underline;
 }
 
 /* registration modal & form */
 
-.user-reg-modal {
-    background-color: white;
+.modal-form-container.registration {
+    align-items: center;
+    height: auto;
+    padding: 1%;
 }
 
-.user-reg-error {
-    background-color: white;
+.modal-form-container.registration .modal-form {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2%;
 }
+
+.modal-form-container.registration .modal-form input {
+    width: 80%;
+}
+
+.modal-form-container.registration .modal-form label input {
+    width: 100%;
+    font-size: large;
+}
+
+.modal-form-container.registration .modal-form input[type='submit'] {
+    margin-top: 5%;
+}
+
+
 
 /* footer 
 ----------------------------------*/

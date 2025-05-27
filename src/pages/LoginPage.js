@@ -6,12 +6,14 @@ import '../css/login.css';
 export default function LoginPage({setUser}) {
     // state for registration pop up modal.
     const [shouldRegister,setShouldRegister] = useState(false);
+    //error state 
+    const [loginError,setLoginError] = useState(false);
 
     return (
     <div className='login-background'>
       <header className='login-section'>
         <h1>Tear N' Share</h1>
-        <LoginForm/>
+        <LoginForm loginError={loginError} setLoginError={setLoginError}/>
       </header>
       <main>
         <div className='login-info'>
@@ -20,6 +22,7 @@ export default function LoginPage({setUser}) {
           <div className='reg-container'>
             <p>Don't have an account? Register below!</p>
             <button onClick={()=>{setShouldRegister(true)}}>Register</button>
+            {loginError && <p>{loginError}</p>}
           </div>
         </div>
       </main>
