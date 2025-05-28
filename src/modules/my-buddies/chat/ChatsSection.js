@@ -18,8 +18,7 @@ export default function ChatsSection() {
   const [currentChat,setCurrentChat] = useState(null);
   // state for updating read status of message
   const [messageRead,setMessageRead] = useState({read:null,messageRead:null});
-  const [buddyIds,setBuddyIds] = useState([]);
-  
+  const [buddyIds,setBuddyIds] = useState(null);
 
   /* Hooks
   -------------- */

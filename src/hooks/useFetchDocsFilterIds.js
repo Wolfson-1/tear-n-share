@@ -6,9 +6,12 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!filterIds || filterIds.length === 0) {
-      setDataExport(null);
-      setError(null);
+
+
+    if (!filterIds) {
+      return;
+    } else if (filterIds.length === 0) {
+      setDataExport([]);
       return;
     }
 
@@ -29,7 +32,7 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
 
             tempData[index] = { ...docSnap.data(), id: docSnap.id };
 
-            if (tempData.every(item => item !== undefined)) {
+            if (tempData) {
               setDataExport([...tempData]);
             } else {
               console.log('setting empty arr')

@@ -11,6 +11,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
   //access user status from context
   const user = useContext(ContextUser);  
   
+  console.log('map running');
   // custom map icon  
   const userIcon = new Icon({
     iconUrl:'https://cdn-icons-png.flaticon.com/512/3425/3425073.png',

@@ -1,8 +1,6 @@
 # Tear-n-Share - A dynamic single page React application for users to share the cost of baked goods with other users within their local area
 
-
 ## Tech Stack
-
 
 - HTML
 - CSS

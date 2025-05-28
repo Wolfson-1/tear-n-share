@@ -90,12 +90,11 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
           })}
         </div>}
       </>}
-      {sharedUserData !== undefined &&
-      <>
-        {sharedUserData === null ? <p>match with other users & you will be able to chat with them here!</p>:
-        <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>}
-      </>
-      }
+        {sharedUserData !== undefined && 
+        <>
+          {sharedUserData.length > 0 ? <button className='add-button' onClick={()=>{setAddChatModal(true)}}>+</button>
+          : <p>Match with other users & you will be able to chat with them here!</p>}
+        </>}
       {addChatModal === true && <NewChatModal sharedUserData={sharedUserData} setCurrentChat={setCurrentChat} setAddChatModal={setAddChatModal} user={user}/>}
     </>
   )
