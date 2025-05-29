@@ -39,7 +39,7 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
       <button className='account-close' onClick={() => {setMyAccount(false)}}>{'<'}</button>
       <div className='profile-details'>
         <picture className='profile-img'>
-          <img alt='acc-img'></img>
+          <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='acc-img'></img>
         </picture>
         <h2>{user.displayName}</h2>
         <button>Profile Settings</button>

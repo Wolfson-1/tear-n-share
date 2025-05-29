@@ -113,7 +113,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
        return <Marker position={visUser.location} icon={visUserIcon}>
                 <Popup>
                   <picture className='profile-img'>
-                    <img alt='acc-img'></img> 
+                    <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='acc-img'></img> 
                   </picture>
                   <h3>{visUser.displayName}</h3>
                   <div className='spacer'></div>

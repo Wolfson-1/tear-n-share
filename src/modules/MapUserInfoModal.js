@@ -84,7 +84,7 @@ return (
       <div className='modal-form-container user-container'>
             <button className={'close-modal'} onClick={()=>{setFocusProfile(null)}}>x</button>
             <picture className='profile-img'>
-                <img alt='profile picture'></img>
+                <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='profile picture'></img>
             </picture>
             <h1>{focusProfile.displayName}</h1>
             <h3>Distance: {Math.round(focusProfile.distToUser * 100) / 100}</h3>        

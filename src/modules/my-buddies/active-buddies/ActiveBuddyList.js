@@ -17,7 +17,7 @@ export default function ActiveBuddyList({buddys,setManageBuddy,setMainSelector})
                         </div>
                     </div>
                     <picture className='profile-img'>
-                      <img alt={buddy.displayName}></img>
+                      <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt={buddy.displayName}></img>
                     </picture>
                </div>
       })}

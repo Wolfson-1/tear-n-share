@@ -84,7 +84,7 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
             <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button> 
             <div className='user-info'>
                 <picture className='profile-img'>
-                    <img alt='profile picture'></img>
+                    <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='profile picture'></img>
                 </picture>
                 <h1>{manageBuddy.displayName}</h1>
                 <button className='user-chat-button' onClick={()=>{setMainSelector('chat')}}>Chat</button>

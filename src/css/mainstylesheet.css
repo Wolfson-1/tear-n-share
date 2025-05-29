@@ -193,15 +193,14 @@ main {
 /* mapLeaflet css styling for user popups */
 
 .leaflet-popup .leaflet-popup-content-wrapper {
-  background-color: rgb(30, 34, 78);
+  background-color: rgba(0, 0, 0, 0.842);
 }
 
 .leaflet-popup .leaflet-popup-tip {
-  background-color:  rgb(30, 34, 78);
+  background-color: rgba(0, 0, 0, 0.842);
 }
 
 .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content {
-  color: antiquewhite;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -210,6 +209,7 @@ main {
 
 .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content > * {
   margin: 5% 0% 0% 0%;
+  color: antiquewhite;
 }
 
 .leaflet-popup .leaflet-popup-content-wrapper .leaflet-popup-content picture {
@@ -413,10 +413,15 @@ datalist {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 2px rgba(0, 0, 0, 0.189);
+  border: solid 3px antiquewhite;
   border-radius: 50%;
   width: 90px;
   height: 90px;
+  overflow: hidden;
+}
+
+.profile-img img {
+  height: 100%;
 }
 
 /* div cover css. for use when a certain container needs blocking out or rendering unusable */

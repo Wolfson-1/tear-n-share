@@ -64,7 +64,7 @@ Being a single page application gives the project a modern look & feel highlight
 
 ### Planned Improvements
 
-
+- Registration & login authentication improvements using reCAPTCHA
 - distance unit toggle so logged in user can choose between miles and kilometers & have this factored into map distance logic
 - the addition of firebase storage for the following purposes:
    - User upload of a profile picture on account creation as well as ability to change profile picture in account settings

@@ -78,8 +78,8 @@ export default function ExistingChatList({user,sharedUserData,setCurrentChat,set
             const date = dateTime.toDateString();
 
             return <div className='info-tile chat-preview' key={data.id} onClick={()=>{messageOnClick(data)}}>
-                      <picture className='profile-img'>
-                        <img alt={chatUser[0].userName}></img>
+                      <picture src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} className='profile-img'>
+                        <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt={chatUser[0].userName}></img>
                       </picture>
                       <div className='message-info'>
                         <h2>{chatUser[0].userName}</h2>
