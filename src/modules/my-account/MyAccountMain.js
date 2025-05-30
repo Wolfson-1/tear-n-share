@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import '../../css/accountstylesheet.css';
 import { ContextUser } from '../../context/ContextUser';
 import userSignOut from '../../utils/userSignOut';
+import AccountSettingsModal from './AccountSettingsModal';
 
 export default function MyAccountMain({ setMyAccount, setUpdateData, userData, advertCount }) {
   //access user status from context
@@ -13,6 +14,8 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
   //state values for user distance & show/dont show prefernces
   const [distance,setDistance] = useState(0);
   const [show,setShow] = useState(true);
+  //state for account settings modal
+  const [settings,setSettings] = useState(false);
 
   /* useEffects
   -------------------------*/
@@ -42,17 +45,18 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
           <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='acc-img'></img>
         </picture>
         <h2>{user.displayName}</h2>
-        <button>Profile Settings</button>
+        <button onClick={()=>{setSettings(true)}}>Profile Settings</button>
       </div>
     <div className='profile-inputs'>
       <div className='show-toggle-container'>
+        <h3>show</h3>
         <label class="switch">
-            Show?
-            <input type="checkbox" checked={show && show} onChange={(e) => {
+                                <input type="checkbox" checked={show && show} onChange={(e) => {
                                                                     setUpdateData({show: e.target.checked})
                                                                     setShow(userData.show)
                                                                     }}/>
-        </label>
+                                <span class="slider round"></span>
+                        </label>
         {advertCount === 0 && <div className='div-blocker'><p>visibility off due to no current active Ads</p></div>}
       </div>
       <label>
@@ -74,6 +78,7 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
     </div>
       <button className='user-signout' onClick={userSignOut}>logout</button>
       </>}
+    {settings && <AccountSettingsModal setSettings={setSettings}/>}
     </div>
   )
 }

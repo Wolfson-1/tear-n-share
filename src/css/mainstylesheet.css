@@ -290,67 +290,111 @@ main {
 /* basic form styling
 ------------------------------ */
 
-/* form input slider default styling */
-
-label {
-    display: flex;
-    flex-direction: column;
+/* Standard toggle slider default styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
 }
 
-input {
-  background-color: rgba(250, 235, 215, 0.37);
-  border: none;
-  padding: 2%;
-  color: rgb(46, 46, 46);
-  font-weight: bold;
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-select {
-  background-color: rgba(250, 235, 215, 0.37);
-  border: none;
-  padding: 2%;
-  color: rgb(46, 46, 46);
-  font-weight: bold;
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-datalist {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    writing-mode: vertical-lr;
-    width: 200px;
-  }
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
 
-  option {
-    padding: 0;
-  }
-  
-  input[type="range"] {
-    width: 200px;
-    margin: 0;
-  }
+input:checked + .slider {
+  background-color: #2196F3;
+}
 
-  /* Form checkbox basic styling */
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
 
-  .form-checkbox-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    list-style-type: circle;
-  }
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
 
-  .form-checkbox-list li {
-    margin: 3%;
-  }
 
-  input[type='submit'] {
-    width: 50%;
-    height: 8%;
-    font-size: larger;
-    border-radius: 5px;
-    border: rgba(0, 0, 0, 0.236) solid 2px;
-    background-color: rgba(210, 162, 5, 0.922);
-  }
+/* two value toggle slider default styling */
+
+.slider-toggle {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: rgb(41, 41, 41);
+  border-radius: 20px;
+}
+
+.slider-toggle input {
+  display: none;
+}
+
+.slider-toggle .labels {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.slider-toggle .label-on,
+.slider-toggle .label-off {
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  margin-top: 10%;
+}
+
+.slider-toggle .slider-icon {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #2196f3;
+  border-radius: 20px;
+  transition: left 0.3s;
+  z-index: 0;
+}
+
+/* Move slider when checked */
+.slider-toggle input:checked + .labels + .slider-icon {
+  left: 50%;
+}
 
   /* Generic icons & button styling 
   ---------------------------------------*/

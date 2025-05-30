@@ -7,7 +7,6 @@ export default function useFetchDocsFilterIds(database, path, filterIds) {
 
   useEffect(() => {
 
-
     if (!filterIds) {
       return;
     } else if (filterIds.length === 0) {

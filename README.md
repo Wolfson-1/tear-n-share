@@ -64,15 +64,18 @@ Being a single page application gives the project a modern look & feel highlight
 
 ### Planned Improvements
 
-- Registration & login authentication improvements using reCAPTCHA
-- distance unit toggle so logged in user can choose between miles and kilometers & have this factored into map distance logic
+- Registration & login authentication improvements Using reCAPTCHA
+- Improve form input controls & validation. Input character limits & type checks, varify username & email registration doesnt already exist before account creation.
+- Addition of profile settings modal so user can edit the following: 
+   - change username & password
+   - distance unit toggle between miles and kilometers
+   - deactivate account
 - the addition of firebase storage for the following purposes:
    - User upload of a profile picture on account creation as well as ability to change profile picture in account settings
    - Add images for proof of purchases and payment to other users in activity tracker of matched users
 - Further aesthetic improvements using CSS for the purpose of coordinating application style across all segments.
 - Mobile & smaller screen CSS addition. Currently setup only to work on full screen 
 - Addition of further react context/reduce functionality to enable ability click on notifications to take user to the section affiliated (eg: clicking a notification of a new message from a matched user takes logged in user to that chat window)
-- Addition of regex qualification of users email, username, and password upon account creation.
 
 
 ### Known Issues
