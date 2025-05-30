@@ -17,7 +17,7 @@ export default function LoginPage({setUser}) {
       </header>
       <main>
         <div className='login-info'>
-          <h2>Tear N' Share! - Only pay for the bread you need</h2>
+          <h2>Tear N' Share! - Let your dough stretch further</h2>
           <p>Share the cost of breads, pastries & baked goods with your community to pay for only what you need & save more</p>
           <div className='reg-container'>
             <p>Don't have an account? Register below!</p>

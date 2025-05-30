@@ -39,11 +39,11 @@ export default function LoginForm({loginError,setLoginError}) {
     <form>
         <label>
             Email    
-            <input type='email' id='email' name='email' placeholder='example@gmail.com' value={email} onClick={clearError} onChange={(e)=>{setEmail(e.target.value)}}></input>
+            <input className='input' type='email' id='email' name='email' placeholder='example@gmail.com' value={email} onClick={clearError} onChange={(e)=>{setEmail(e.target.value)}}></input>
         </label>
         <label>
             Password
-            <input type='password' id='password' name='password' placeholder='enter password' value={password} onClick={clearError} onChange={(e)=>{setPassword(e.target.value)}}></input>
+            <input className='input' type='password' id='password' name='password' placeholder='enter password' value={password} onClick={clearError} onChange={(e)=>{setPassword(e.target.value)}}></input>
         </label>
         <input type='submit' value='login' onClick={submitForm}></input>
     </form>
