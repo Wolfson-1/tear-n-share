@@ -22,8 +22,12 @@
     position: relative;
     width: 90%;
     margin-top: 2%;
-    background-color: rgb(205, 157, 2);
+    background-color: rgb(34, 34, 34);
     gap: 2%;
+}
+
+.sections-selector .active {
+    color: rgb(205, 157, 2);
 }
 
 .sections-selector > button {
@@ -40,7 +44,7 @@
 }
 
 .sections-selector > .inactive:hover {
-    border-bottom: rgba(0, 0, 0, 0.479) solid 3px;
+    border-bottom: rgba(205, 158, 2, 0.484) solid 3px;
 }
 
 /* underline animation CSS */
@@ -48,7 +52,7 @@
     position: absolute;
     bottom: 0;
     height: 3px;
-    background: black;
+    background: rgb(205, 157, 2);
     transition: all 0.5s ease;
     width: 25%;
     left: 0;
@@ -60,7 +64,7 @@
     width: 90%;
     height: 85%;
     border-radius: 0px 0px 0px 30px;
-    background-color: rgb(205, 157, 2);
+    background-color: rgb(34, 34, 34);
 }
 
 .buddies-container {
@@ -87,7 +91,7 @@
 }
 
 .active-inactive-toggle button.active {
-    color: rgb(84, 67, 12);
+    color: rgb(205, 157, 2);
 }
 
 /* advert section styling 
@@ -550,7 +554,7 @@
     align-items: center;
     height: 80%;
     width: 90%;
-    background-color: rgb(193, 149, 5);
+    background-color: rgb(34, 34, 34);
     border: solid white;
     overflow: hidden;
 }

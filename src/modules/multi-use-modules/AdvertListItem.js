@@ -11,7 +11,7 @@ const user = useContext(ContextUser);
 const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequests'],'adId',advert.id);
 
  return (
-<div className='bread-advert'>
+<div className='bread-advert info-tile'>
     <div className='key-ad-info'>
         <span>Bread Type: {advert.breadType}</span>
         <span>{advert.loafType}</span>
