@@ -1,11 +1,13 @@
-import { useState,useEffect, useReducer } from 'react';
+import { useState, useReducer } from 'react';
 import './css/mainstylesheet.css';
+import { db } from './firebase/config';
 import { ContextUser } from './context/ContextUser';
 import { ContextNotification } from './context/ContextNotification';
 import notificationReducer from './reducers/notificationReducer';
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
-import authUserCheck from './utils/authUserCheck';
+import useAuthUserCheck from './hooks/useAuthUserCheck';
+import useFetchDoc from './hooks/useFetchDoc';
 
 function App() {
 
@@ -17,13 +19,13 @@ function App() {
   //useReducer state for updating infomraiton to uplaod data for notifications.
   const [updateNotification,dispatch] = useReducer(notificationReducer, {updateObj:[],userId:null});
 
-  /* useEffects
+  /* Hooks
   ----------------------*/
+  //fetch userData
+  const userData = useFetchDoc(db,['userData'],user.userUid);
 
-  //Auth user check for if user is logged in. if logged in sets state for user
-  useEffect(()=> {
-    authUserCheck(setUser);
-  },[]);
+  // listener to set user data on login & on updates made by logged user
+  useAuthUserCheck(userData && userData.displayName,setUser);
 
   // wait for user logIn status before render 
   if(user.loggedIn === null) {
@@ -35,7 +37,7 @@ function App() {
     <>
     <ContextNotification.Provider value={{updateState:updateNotification, updateDispatch: dispatch}}>
       <ContextUser.Provider value={user}>
-        {<Home/>}
+        {<Home userData={userData}/>}
       </ContextUser.Provider>
     </ContextNotification.Provider>
     </>

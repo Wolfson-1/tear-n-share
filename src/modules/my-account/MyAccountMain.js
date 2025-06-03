@@ -16,6 +16,7 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
   const [show,setShow] = useState(true);
   //state for account settings modal
   const [settings,setSettings] = useState(false);
+  //state to update users display name
 
   /* useEffects
   -------------------------*/
@@ -78,7 +79,7 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
     </div>
       <button className='user-signout' onClick={userSignOut}>logout</button>
       </>}
-    {settings && <AccountSettingsModal setSettings={setSettings}/>}
+    {settings && <AccountSettingsModal setSettings={setSettings} user={user}/>}
     </div>
   )
 }

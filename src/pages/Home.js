@@ -63,7 +63,7 @@ export default function Home() {
       //if user data returns null (doesnt exist yet) set user data to blank object for code to run to fill in 
       if(userData === null) {
           setNewUser([{displayName: user.displayName, location:{lat:'',lng:''}, show:true, distance:1}]);
-      } 
+      };
     },[userData]);
 
     //useEffect for isFirstLogin state changes 
