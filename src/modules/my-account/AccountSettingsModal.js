@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {db} from '../../firebase/config';
 import useUpdateDoc from '../../hooks/useUpdateDoc';
 import { getAuth, updateProfile } from "firebase/auth";
+import ChangePasswordModal from './ChangePasswordModal';
 
 export default function AccountSettingsModal({setSettings, user}) {
 
@@ -12,6 +13,10 @@ export default function AccountSettingsModal({setSettings, user}) {
   const [newDispName,setNewDispName] = useState(user.displayName);
   // State to update user name
   const [updateObj,setUpdateObj] = useState(null);
+  //form error state
+  const [error,setError] = useState(null);
+  //change password modal popout state
+  const [changePassword,setChangePassword] = useState(false);
 
   /* Hooks
   --------------------------*/
@@ -21,7 +26,10 @@ export default function AccountSettingsModal({setSettings, user}) {
   const formHandle = (e) =>{
     e.preventDefault();
 
- 
+    if(!newDispName || newDispName === "") {
+        setError('cant set user name as blank');
+        return;
+    }
 
     //if no changes in data, set edit to false to close username edit & return
     if (newDispName === user.displayName) {
@@ -32,7 +40,6 @@ export default function AccountSettingsModal({setSettings, user}) {
     const auth = getAuth();
     const userAuth = auth.currentUser;
 
-    console.log(userAuth);
     //update auth user status 
     updateProfile(userAuth, {
         displayName: newDispName,
@@ -44,6 +51,23 @@ export default function AccountSettingsModal({setSettings, user}) {
 
     //set update object to update user display name
     setUpdateObj({displayName:newDispName});
+  };
+
+  //form handle function to change/update password
+  const submitPassword = (e) =>{
+    e.preventDefault();
+    console.log(e.target.value);
+
+    // //get current user
+    // const user = getAuth().currentUser;
+
+    // //update users password
+    // user.updatePassword(newPassword).then(() => {
+    //     // Update successful.
+    // }).catch((error) => {
+    //     // An error occurred
+    //     // ...
+    // });
   };
 
   /* useEffects
@@ -67,7 +91,9 @@ export default function AccountSettingsModal({setSettings, user}) {
                         <td>
                             {editUser ?  
                             <form>
-                                <input type='text' value={newDispName} onChange={(e) => {setNewDispName(e.target.value)}}></input>
+                                <input type='text' value={newDispName} onChange={(e) => {
+                                                                                setError(null);
+                                                                                setNewDispName(e.target.value)}}></input>
                                 <submit onClick={formHandle}>send</submit>
                             </form>
                             :
@@ -81,8 +107,7 @@ export default function AccountSettingsModal({setSettings, user}) {
                     <tr>
                         <th>Password</th>
                         <td>
-                            Example password
-                            <button>edit</button>
+                            <button onClick={()=>{setChangePassword(true)}}>Change Password</button>
                         </td>
                     </tr>
                     <tr>
@@ -99,9 +124,11 @@ export default function AccountSettingsModal({setSettings, user}) {
                         </td>
                     </tr>
                 </table>
+                {error && <p>{error}</p>}
                 <button>Deactivate Account</button>
             </div>
         </div>
+        {changePassword && <ChangePasswordModal submitPassword={submitPassword} setChangePassword={setChangePassword}/>}
     </div>
   )
 }
