@@ -74,12 +74,12 @@ export default function MyAccountMain({ setMyAccount, setUpdateData, userData, a
             <option value="40" label='40m'></option>
             <option value="50" label='50m'></option>
         </datalist>
-        <span>{distance} Miles</span>
+        <span>{distance} {userData.distanceUnit}</span>
       </label>
     </div>
       <button className='user-signout' onClick={userSignOut}>logout</button>
       </>}
-    {settings && <AccountSettingsModal setSettings={setSettings} user={user}/>}
+    {settings && <AccountSettingsModal setSettings={setSettings} userData={userData}/>}
     </div>
   )
 }

@@ -7,25 +7,30 @@ import {Icon} from 'react-icons-kit';
 import {pencil} from 'react-icons-kit/icomoon/pencil'
 import {floppyDisk} from 'react-icons-kit/icomoon/floppyDisk'
 
-export default function AccountSettingsModal({setSettings, user}) {
+export default function AccountSettingsModal({setSettings, userData}) {
 
   /* State
   --------------------- */
   //state for userName update
   const [editUser,setEditUser] = useState(false);
-  const [newDispName,setNewDispName] = useState(user.displayName);
+  const [newDispName,setNewDispName] = useState(userData.displayName);
   // State to update user name
   const [updateObj,setUpdateObj] = useState(null);
   //form error state
   const [error,setError] = useState(null);
   //change password modal popout state
   const [changePassword,setChangePassword] = useState(false);
+  //state for user unit preference
+  const [distUnit,setDistUser] = useState(userData.distanceUnit);
 
   /* Hooks
   --------------------------*/
   //hook to udate user name 
-  const updateUser = useUpdateDoc(updateObj,db,['userData',user.userUid]);
+  const updateUser = useUpdateDoc(updateObj,db,['userData',userData.id]);
 
+  /*Event handlers 
+  ---------------------------*/
+  // event handler to update user name
   const updateUserName = (e) =>{
     e.preventDefault();
 
@@ -35,7 +40,7 @@ export default function AccountSettingsModal({setSettings, user}) {
     }
 
     //if no changes in data, set edit to false to close username edit & return
-    if (newDispName === user.displayName) {
+    if (newDispName === userData.displayName) {
         setEditUser(false);
         return;
     };
@@ -60,7 +65,6 @@ export default function AccountSettingsModal({setSettings, user}) {
   const submitPassword = (e,formData,setError,setModal) =>{
     e.preventDefault();
     
-    console.log(formData);
     // form input error handling
     if(formData.password === '' || formData.reEnter === '') {
         setError('please fill in both fields')
@@ -84,14 +88,21 @@ export default function AccountSettingsModal({setSettings, user}) {
         //log error to console
         console.log(error);
     });
-    
   };
 
   /* useEffects
   ------------------------ */
   //useEffect to run when updating user name is complete to switch back from edit mode
   useEffect(()=>{
-    if(updateUser.isComplete === true) setEditUser(false)
+    //if there is no updateObject but isComplete is still true return
+    if(updateObj == null) return;
+
+    if(updateUser.isComplete === true && 'displayName' in updateObj) { //if update complete & updating display name
+        setEditUser(false);
+        setUpdateObj(null);
+    } else if(updateUser.isComplete === true && 'distanceUnit' in updateObj) { //if update complete & updating unit distance
+        setUpdateObj(null);
+    }
   },[updateUser.isComplete]);
 
   return (
@@ -115,7 +126,7 @@ export default function AccountSettingsModal({setSettings, user}) {
                             </form>
                             :
                             <div>
-                                <p>{user.displayName}</p>
+                                <p>{userData.displayName}</p>
                                 <Icon onClick={()=>{setEditUser('userName')}} icon={pencil} size={15}/>
                             </div>
                             }
@@ -131,7 +142,9 @@ export default function AccountSettingsModal({setSettings, user}) {
                         <th>Distance Units</th>
                         <td>
                         <label class="slider-toggle">
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={distUnit === 'M' ? true : false} onClick={()=>{
+                                                                                                            setDistUser(distUnit === 'M' ? 'KM' : 'M');
+                                                                                                            setUpdateObj({distanceUnit:distUnit === 'M' ? 'KM' : 'M'})}}/>
                             <div class="labels">
                                 <span class="label-on">KM</span>
                                 <span class="label-off">M</span>

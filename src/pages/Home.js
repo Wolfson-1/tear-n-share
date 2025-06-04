@@ -3,7 +3,6 @@ import {ContextUser} from '../context/ContextUser';
 import { ContextNotification } from '../context/ContextNotification';
 import { db } from '../firebase/config';
 import useUpdateDoc from '../hooks/useUpdateDoc';
-import useFetchDoc from '../hooks/useFetchDoc';
 import useFetchDocsFilter from '../hooks/useFetchDocsFilter';
 import useCollectionCount from '../hooks/useCollectionCount';
 import MainMap from '../modules/MainMap';
@@ -14,7 +13,7 @@ import MyBuddiesMain from '../modules/my-buddies/MyBuddiesMain';
 import useAddDoc from '../hooks/useAddDoc';
 import NotificationsMain from '../modules/notifications/NotificationsMain';
 
-export default function Home() {
+export default function Home({userData}) {
   //access user status from context
   const user = useContext(ContextUser);
   const notificationsUpdate = useContext(ContextNotification);
@@ -38,8 +37,6 @@ export default function Home() {
 
     /* Hooks
     -------------- */
-    //fetch userData
-    const userData = useFetchDoc(db,['userData'],user.userUid);
 
     //update user data in backend on change
     const updateUserInfo = useUpdateDoc(updateData,db,['userData',user.userUid]);
@@ -62,7 +59,7 @@ export default function Home() {
     useEffect(()=>{
       //if user data returns null (doesnt exist yet) set user data to blank object for code to run to fill in 
       if(userData === null) {
-          setNewUser([{displayName: user.displayName, location:{lat:'',lng:''}, show:true, distance:1}]);
+          setNewUser([{displayName: user.displayName, location:{lat:'',lng:''}, show:true, distance:1, distanceUnit:'KM'}]);
       };
     },[userData]);
 

@@ -32,6 +32,8 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
     const [location,setLocation] = useState(userData.location);
     //user distance
     const [distance,setDistance] = useState(userData.distance);
+    //user distance unit
+    const [distanceUnit,setDistanceUnit] = useState(userData.distanceUnit);
     //user circle radius in M
     const [circleRadius,setCircleRadius] = useState(null); 
     const [mapBounds,setMapBounds] = useState(null);
@@ -39,7 +41,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
     /* hooks 
     -------------------- */
 
-    const filteredUsers = useUserDist(location, distance, visibleUsers);
+    const filteredUsers = useUserDist(location, distance, distanceUnit, visibleUsers);
 
     /*useEffects
     -------------------- */
@@ -74,6 +76,9 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
     if (userData.distance && userData.location) {
       if(userData.distance !== distance) setDistance(userData.distance);
       if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
+      if(userData.distanceUnit !== distanceUnit) {
+        console.log('changing!')
+        setDistanceUnit(userData.distanceUnit)}
     }
   }, [userData]);
 

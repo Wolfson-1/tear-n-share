@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 
 // function to filter users within distance range
-export default function useUserDist(location, distanceInKm, users) {    
-    // earths radius in miles
-    const R = 3958.8;
+export default function useUserDist(location, distance, distanceUnit, users) {    
+    
+    // set earth radius to either M or KM based on distanceUnit preference
+    const R = distanceUnit === 'M' ? 3963.1 : 6378;
 
     //init array for filtered list of users by distance 
     const [returnUsers,setReturnUsers] = useState([]);
 
-    console.log(location)
-    console.log(distanceInKm)
     //function to calculate distances between other users & logged in user.
     const userDistances = () => {
         let filteredArr = [];
@@ -35,10 +34,10 @@ export default function useUserDist(location, distanceInKm, users) {
             //Haversine formula to calculate distance
             const a  = Math.pow(Math.sin(dlat/2),2) + Math.cos(latRad) * Math.cos(lat2Rad) * Math.pow(Math.sin(dlng/2),2);
             const c  = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); // great circle distance in radians
-            const d = c * R; // Distance from user in km
+            const d = c * R; // Distance from user in either miles or KM
 
             // logic to push user into returnUsers if withihn logged in users distance parameters.
-            if (d < distanceInKm && d !== 0) filteredArr.push({...user,distToUser:d});
+            if (d < distance && d !== 0) filteredArr.push({...user,distToUser:d});
     });
 
     setReturnUsers(filteredArr);
@@ -46,7 +45,7 @@ export default function useUserDist(location, distanceInKm, users) {
 
     useEffect(() => {
         userDistances();
-    },[location,distanceInKm]);
+    },[location,distance,distanceUnit]);
     
     return returnUsers;
 }
