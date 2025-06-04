@@ -66,10 +66,7 @@ Being a single page application gives the project a modern look & feel highlight
 
 - Registration & login authentication improvements Using reCAPTCHA
 - Improve form input controls & validation. Input character limits & type checks, varify username & email registration doesnt already exist before account creation.
-- Addition of profile settings modal so user can edit the following: 
-   - change username & password
-   - distance unit toggle between miles and kilometers
-   - deactivate account
+- Addition of delete account & linked data logic into profile settings section. required look into server side code for this.
 - the addition of firebase storage for the following purposes:
    - User upload of a profile picture on account creation as well as ability to change profile picture in account settings
    - Add images for proof of purchases and payment to other users in activity tracker of matched users

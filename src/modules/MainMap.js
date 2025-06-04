@@ -84,12 +84,19 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
 
   //Convert & set radius for map circle layer based on user set distance prefference change
   useEffect(() => {
-    const mInMile = 1609.344 // number of meters in a mile
-    if (userData.distance) {
-      const mDist = userData.distance * mInMile;
-      setCircleRadius(mDist); 
-    }
-  },[distance]);
+
+  const mInMile = 1609.344 // number of meters in a mile
+
+  //set value for multiplying 
+  const forMultiply = distanceUnit === 'M' ? mInMile : 1000;
+
+  //work out distance based on miles or KM 
+  const dist = distance * forMultiply;
+
+  //set distance
+  setCircleRadius(dist);
+
+  },[distance,distanceUnit]);
 
   //useEffect to run on set of location to create map bounds so user cant scroll across whole planet.
   useEffect(()=>{

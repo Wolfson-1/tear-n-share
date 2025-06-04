@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {db} from '../../firebase/config';
+import {Icon} from 'react-icons-kit';
+import {pencil} from 'react-icons-kit/icomoon/pencil'
+import {floppyDisk} from 'react-icons-kit/icomoon/floppyDisk';
 import useUpdateDoc from '../../hooks/useUpdateDoc';
 import { getAuth, updateProfile, updatePassword } from "firebase/auth";
 import ChangePasswordModal from './ChangePasswordModal';
-import {Icon} from 'react-icons-kit';
-import {pencil} from 'react-icons-kit/icomoon/pencil'
-import {floppyDisk} from 'react-icons-kit/icomoon/floppyDisk'
 
 export default function AccountSettingsModal({setSettings, userData}) {
 
@@ -18,10 +18,10 @@ export default function AccountSettingsModal({setSettings, userData}) {
   const [updateObj,setUpdateObj] = useState(null);
   //form error state
   const [error,setError] = useState(null);
-  //change password modal popout state
-  const [changePassword,setChangePassword] = useState(false);
   //state for user unit preference
   const [distUnit,setDistUser] = useState(userData.distanceUnit);
+  //change password modal popout state
+  const [changePassword,setChangePassword] = useState(false);
 
   /* Hooks
   --------------------------*/
@@ -118,14 +118,14 @@ export default function AccountSettingsModal({setSettings, userData}) {
                         <th>User Name</th>
                         <td>
                             {editUser ?  
-                            <form className='modal-form'>
+                            <form className='username-update'>
                                 <input type='text' value={newDispName} onChange={(e) => {
                                                                                 setError(null);
                                                                                 setNewDispName(e.target.value)}}></input>
                                 <Icon onClick={(e)=>{updateUserName(e)}} icon={floppyDisk} size={15}/>
                             </form>
                             :
-                            <div>
+                            <div className='username-update'>
                                 <p>{userData.displayName}</p>
                                 <Icon onClick={()=>{setEditUser('userName')}} icon={pencil} size={15}/>
                             </div>
@@ -155,7 +155,6 @@ export default function AccountSettingsModal({setSettings, userData}) {
                     </tr>
                 </table>
                 {error && <p>{error}</p>}
-                <button>Deactivate Account</button>
             </div>
         </div>
         {changePassword && <ChangePasswordModal submitPassword={submitPassword} setChangePassword={setChangePassword}/>}

@@ -105,3 +105,25 @@
     text-align: center;
 }
 
+.modal-form-container .settings-container td .username-update * {
+    display: inline-block;
+    margin: 5%;
+}
+
+.modal-form-container .settings-container td .username-update input {
+    background: none;
+}
+
+
+.modal-form-container .settings-container td button {
+    background: none;
+    border: none;
+    font-size:medium;
+}
+
+.modal-form-container .settings-container td button:hover {
+    text-decoration: underline;
+}
+
+
+
