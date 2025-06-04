@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {db} from '../../firebase/config';
 import useUpdateDoc from '../../hooks/useUpdateDoc';
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile, updatePassword } from "firebase/auth";
 import ChangePasswordModal from './ChangePasswordModal';
+import {Icon} from 'react-icons-kit';
+import {pencil} from 'react-icons-kit/icomoon/pencil'
+import {floppyDisk} from 'react-icons-kit/icomoon/floppyDisk'
 
 export default function AccountSettingsModal({setSettings, user}) {
 
@@ -23,7 +26,7 @@ export default function AccountSettingsModal({setSettings, user}) {
   //hook to udate user name 
   const updateUser = useUpdateDoc(updateObj,db,['userData',user.userUid]);
 
-  const formHandle = (e) =>{
+  const updateUserName = (e) =>{
     e.preventDefault();
 
     if(!newDispName || newDispName === "") {
@@ -54,20 +57,34 @@ export default function AccountSettingsModal({setSettings, user}) {
   };
 
   //form handle function to change/update password
-  const submitPassword = (e) =>{
+  const submitPassword = (e,formData,setError,setModal) =>{
     e.preventDefault();
-    console.log(e.target.value);
+    
+    console.log(formData);
+    // form input error handling
+    if(formData.password === '' || formData.reEnter === '') {
+        setError('please fill in both fields')
+        return;
+    } else if(formData.password !== formData.reEnter) {
+        setError('password does not match!')
+        return;
+    };
+    
+    //get auth and current user
+    const auth = getAuth();
+    const userAuth = auth.currentUser;
 
-    // //get current user
-    // const user = getAuth().currentUser;
-
-    // //update users password
-    // user.updatePassword(newPassword).then(() => {
-    //     // Update successful.
-    // }).catch((error) => {
-    //     // An error occurred
-    //     // ...
-    // });
+    //update user password if form value checks pass
+    updatePassword(userAuth, formData.password).then(() => {
+        console.log('password update sucess!');
+        setModal(false);
+    }).catch((error) => {
+        //set error state
+        setError('there was an error in updating your password. Please try again later');
+        //log error to console
+        console.log(error);
+    });
+    
   };
 
   /* useEffects
@@ -90,16 +107,16 @@ export default function AccountSettingsModal({setSettings, user}) {
                         <th>User Name</th>
                         <td>
                             {editUser ?  
-                            <form>
+                            <form className='modal-form'>
                                 <input type='text' value={newDispName} onChange={(e) => {
                                                                                 setError(null);
                                                                                 setNewDispName(e.target.value)}}></input>
-                                <submit onClick={formHandle}>send</submit>
+                                <Icon onClick={(e)=>{updateUserName(e)}} icon={floppyDisk} size={15}/>
                             </form>
                             :
                             <div>
                                 <p>{user.displayName}</p>
-                                <button onClick={()=>{setEditUser('userName')}}>edit</button>
+                                <Icon onClick={()=>{setEditUser('userName')}} icon={pencil} size={15}/>
                             </div>
                             }
                         </td>
