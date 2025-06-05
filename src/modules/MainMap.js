@@ -1,7 +1,7 @@
 import React, {useContext,useEffect,useState} from 'react'
 import {ContextUser} from '../context/ContextUser';
 import "leaflet/dist/leaflet.css";
-import {MapContainer, TileLayer, ZoomControl,Circle,Marker, Popup} from 'react-leaflet';
+import {MapContainer, TileLayer, ZoomControl,Circle,Marker, Popup, useMap} from 'react-leaflet';
 import {Icon} from 'leaflet';
 import useWindowDimentions from '../hooks/useWindowDimentions';
 import geoLocation from '../utils/geoLocation';
@@ -40,7 +40,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
 
     /* hooks 
     -------------------- */
-
+    //hook to fetch filtered users for map bounds 
     const filteredUsers = useUserDist(location, distance, distanceUnit, visibleUsers);
 
     /*useEffects
@@ -71,13 +71,21 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
       });
     },[]);
 
+    //useEffect to reset map centre on change
+    useEffect(()=>{
+
+    },[])
+
   //update distance & location values for map when userData changes
   useEffect(() => {
     if (userData.distance && userData.location) {
       if(userData.distance !== distance) setDistance(userData.distance);
-      if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) setLocation(userData.location);
+      
+      if(userData.location.lat !== location.lat || userData.location.lng !== location.lng) {
+        setLocation(userData.location)
+      };
+      
       if(userData.distanceUnit !== distanceUnit) {
-        console.log('changing!')
         setDistanceUnit(userData.distanceUnit)}
     }
   }, [userData]);
@@ -112,12 +120,23 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
 
   /* -------------------- */
 
+  // additional component to refresh map centre on change of location
+  function ChangeView({ center }) {
+    const map = useMap();
+    useEffect(() => {
+      map.setView(center);
+    }, [center, map]);
+
+    return null;
+  }
+
   return (
     <div className={'main-map-container'} style={{width: width + 'px', height:height + 'px'}}>
     {mapBounds && location &&
     <MapContainer style={{width: '100%', height: '100%'}} center={location} maxBounds={[mapBounds.swLatLong,mapBounds.neLatLong]} maxBoundsViscosity={1.0} zoom={13} minZoom={8} zoomsnap={0.25} zoomControl={false} scrollWheelZoom={true} id='main-map'>
       <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+      <ChangeView center={location}/>
       <ZoomControl position="bottomright" zoomInText="+" zoomOutText="-" />
       <Circle center={location} fillColor="blue" radius={circleRadius}/>
       <Marker position={location} icon={userIcon}/>

@@ -114,7 +114,6 @@
     background: none;
 }
 
-
 .modal-form-container .settings-container td button {
     background: none;
     border: none;
@@ -124,6 +123,3 @@
 .modal-form-container .settings-container td button:hover {
     text-decoration: underline;
 }
-
-
-

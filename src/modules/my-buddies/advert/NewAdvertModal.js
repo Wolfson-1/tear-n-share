@@ -108,15 +108,18 @@ export default function NewAdvertModal( {closeModal,advertId,setUpdateData,setUp
                     >
                         <option value="" selected disabled hidden>Choose bread type</option>
                         <option value="loaf">Loaf</option>
-                        <option value="bunsBagels">Buns {'&'} Bagels</option>
+                        <option disabled>More options soon!</option>
+                        {/* commented out for now until further options are built */
+                        /* <option value="bunsBagels">Buns {'&'} Bagels</option>
                         <option value="pastry">Pastries</option>
-                        <option value='others'>Others</option>
+                        <option value='others'>Others</option> */}
                     </select>
                 </label>
                 {formData.breadType === 'loaf' ? <LoafForm formData={formData} setFormData={setFormData}/> : null}
-                {formData.breadType === 'bunsBagels' ? <BunBagelForm/> : null}
+                {/* commented out for now until further options are built */
+                /* {formData.breadType === 'bunsBagels' ? <BunBagelForm/> : null}
                 {formData.breadType === 'pastry' ? <PastryForm/> : null}
-                {formData.breadType === 'others' ? <OtherBreadForm/> : null}
+                {formData.breadType === 'others' ? <OtherBreadForm/> : null} */}
                 <GeneralFormSliders formData={formData} setFormData={setFormData}/>
                 <label>
                     Reduced Hunter

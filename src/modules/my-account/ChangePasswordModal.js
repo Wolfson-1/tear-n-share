@@ -29,7 +29,7 @@ export default function ChangePasswordModal({setChangePassword,submitPassword}) 
                 <input id='reEnter' value={formData.reEnter} type={passwordShow.reEnter ? 'text' : 'password'} onClick={()=>{setError(null)}} onChange={(e)=>formHandlingUtils.onChangeHandle(e,formData,setFormData)}></input>
                 <Icon onClick={() => setPasswordShow(prev => ({ ...prev, reEnter: !prev.reEnter }))} icon={passwordShow.reEnter ?  eye : eyeOff} size={25}/>
             </label>
-            <submit onClick={(e)=>{submitPassword(e,formData,setError,setChangePassword)}}>Set New Password</submit>
+            <input type='submit' value='Set New Password' onClick={(e)=>{submitPassword(e,formData,setError,setChangePassword)}}></input>
         </form>
         {error && <p>{error}</p>}
     </div>

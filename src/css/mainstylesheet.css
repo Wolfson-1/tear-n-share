@@ -1,4 +1,4 @@
-/* topline structure css */
+/* topline & universal structure css */
 
 body {
     padding: 0;
@@ -14,6 +14,20 @@ main {
 * {
   font-family: cursive;
   color: antiquewhite;
+}
+
+input[type='text'], input[type='password'], select, option {
+  color: rgb(41, 41, 41);
+}
+
+input[type='submit'] {
+  border-radius: 20px;
+  background-color: rgb(65, 65, 65);
+  color: antiquewhite;
+  border: none;
+  margin-bottom: 20px 0px 20px 0px;
+  width: 200px;
+  height: 30px;
 }
 
  /* main page
