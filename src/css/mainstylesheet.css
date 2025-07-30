@@ -519,3 +519,32 @@ input:checked + .slider:before {
   border: rgba(0, 0, 0, 0.236) solid 2px;
   background-color: rgba(210, 162, 5, 0.922);
 }
+
+/* User advert list item for user map modal
+------------------------ */
+
+.info-tile.bread-advert {
+  height: 75px;
+  align-items: center;
+}
+
+.info-tile.bread-advert > * {
+  height: 100%;
+}
+
+
+.info-tile.bread-advert > div {
+  margin-left: 3%;
+}
+
+.info-tile.bread-advert button { 
+  background-color: rgba(250, 235, 215, 0.375);
+  border-radius: 0% 40% 40% 0%;
+  border: none;
+  height: 100%;
+}
+
+.info-tile.bread-advert button:hover { 
+  background-color: rgba(250, 235, 215, 0.555);
+}
+

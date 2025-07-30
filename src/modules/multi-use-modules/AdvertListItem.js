@@ -32,11 +32,11 @@ const existingRequest = useFetchDocsFilter(db,['userData',user.userUid,'sentRequ
         : 
         <>
         {focusProfile.distToUser < advert.maxDistance ? 
-        <button onClick={() => {
-            requestEventHandler(user,focusProfile,advert,[focusProfile.id,'receivedRequests']);    
-            }}>
-            Request
-        </button>
+            <button onClick={() => {
+                requestEventHandler(user,focusProfile,advert,[focusProfile.id,'receivedRequests']);
+                }}>
+                Request
+            </button>
         : <p>Max distance to user exceeded for this advert.</p>}
         </>
     }

@@ -6,10 +6,12 @@ import useFetchDocsFilter from '../hooks/useFetchDocsFilter'
 import useAddDoc from '../hooks/useAddDoc';
 import AdvertListItem from './multi-use-modules/AdvertListItem';
 
-export default function UserInfoModal({focusProfile,setFocusProfile}) {  
+export default function UserInfoModal({userData,focusProfile,setFocusProfile}) {  
 //access user status & notifications update state from context
 const user = useContext(ContextUser);
 const notificationsUpdate = useContext(ContextNotification);
+
+console.log(user);
 
 /* state
 ----------- */
@@ -29,7 +31,8 @@ const adRequestDoc  = useAddDoc(userRequest,db,['userData',...requestAdPath]);
 //hook to log request tracker for user when advert request made
 const userRequestTracker = useAddDoc(requestTracker,db,['userData',user.userUid,'sentRequests']);
 
-/* useEffects */
+/* useEffects
+---------------- */
 
 //check for when updateDistance is complete to clear out state for updateFig
 useEffect(() => {
@@ -87,14 +90,14 @@ return (
                 <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='profile picture'></img>
             </picture>
             <h1>{focusProfile.displayName}</h1>
-            <h3>Distance: {Math.round(focusProfile.distToUser * 100) / 100}</h3>        
+            <h3>Distance: {Math.round(focusProfile.distToUser * 100) / 100}{userData.distanceUnit}</h3>        
             <div className={'advert-section'}>
                 <h3>Adverts</h3>
                 <div className='advert-list-container'>
                     {adverts && <div className='advert-list'>
                         {adverts.map((advert)=> {
                             return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest} key={advert.id}/>
-                        })}   
+                        })}
                     </div>}
                 </div>
             </div>

@@ -59,7 +59,7 @@ export default function Home({userData}) {
     useEffect(()=>{
       //if user data returns null (doesnt exist yet) set user data to blank object for code to run to fill in 
       if(userData === null) {
-          setNewUser([{displayName: user.displayName, location:{lat:'',lng:''}, show:true, distance:1, distanceUnit:'KM'}]);
+          setNewUser([{displayName: user.displayName, location:{lat:0,lng:0}, show:false, distance:1, distanceUnit:'KM'}]);
       };
     },[userData]);
 
@@ -121,7 +121,7 @@ export default function Home({userData}) {
     return (
     <>
       {userData && <div>
-        {userModal && <MapUserInfoModal focusProfile={userModal} setFocusProfile={setUserModal}/>}
+        {userModal && <MapUserInfoModal userData={userData} focusProfile={userModal} setFocusProfile={setUserModal}/>}
         {firstLoginCheck === 'true' ? <UserWelcome setIsFirstLogin={setIsFirstLogin}/> : null}
         <main>
           {visibleUsers && <MainMap setUpdateData={setUpdateData} userData={userData} visibleUsers={visibleUsers} setUserModal={setUserModal}/>}

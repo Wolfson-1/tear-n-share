@@ -11,7 +11,7 @@ const useAuthUserCheck = (displayName, setUser) => {
           loggedIn: true,
           userUid: user.uid,
           email: user.email,
-          displayName: user.displayName,
+          displayName: user.displayName
         });
       } else {
         setUser({ loggedIn: false, email: '', displayName: '' });

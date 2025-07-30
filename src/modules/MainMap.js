@@ -10,8 +10,7 @@ import useUserDist from '../hooks/useUserDist';
 export default function MainMap({setUpdateData,userData,visibleUsers,setUserModal}) {
   //access user status from context
   const user = useContext(ContextUser);  
-  
-  console.log('map running');
+
   // custom map icon  
   const userIcon = new Icon({
     iconUrl:'https://cdn-icons-png.flaticon.com/512/3425/3425073.png',
@@ -54,6 +53,7 @@ export default function MainMap({setUpdateData,userData,visibleUsers,setUserModa
           userData.location.lat !== data.lat ||
           userData.location.lng !== data.lng
         ) {
+          console.log('setting');
           setUpdateData({ location: data });
         }
       }) //if there is an error in fetching geoLocation. set backup co-ordinates.
