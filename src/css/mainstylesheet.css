@@ -49,17 +49,20 @@ input[type='submit'] {
   align-self: center;
 }
 
-/* main nav buttons */
+/* main nav buttons 
+---------------------------*/
 
 .nav-button-container {
     position: absolute;
-    top: 80%;
+    bottom: 6%;
     right: 0;
     left: 0;
     z-index: 2;
     margin: auto;
-    width: 280px;
-    height: 100px;
+    width: 20%;
+    min-width: 200px;
+    height: 14%;
+    min-height: 80px;
     display: flex;
     justify-content: space-between;
     background-color: rgba(0, 0, 0, 0.842);
@@ -67,7 +70,7 @@ input[type='submit'] {
 }
 
 .nav-button-container button {
-  height: inherit;
+  height: 100%;
   width: 50%;
   border: none;
   transition: all 0.2s;
@@ -122,6 +125,15 @@ input[type='submit'] {
     border-radius: 30px 0px 0px 30px;
 }
 
+ /* Mobile CSS for pull out sections */
+
+@media(max-width:850px) {
+  .my-account-main, .my-buddies-main {
+    width: 50%;
+    overflow-x: scroll;
+  }
+}
+
 /*Notification section styling */
 
 .notifications-container {
@@ -132,7 +144,7 @@ input[type='submit'] {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 550px;
+  width: 45%;
   margin: auto;
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.566);
@@ -480,6 +492,15 @@ input:checked + .slider:before {
 
 .profile-img img {
   height: 100%;
+}
+
+/* Mobile CSS for profile-img */ 
+
+@media(max-width:850px) {
+  .profile-img {
+    width: 45px;
+    height: 45px;
+  }
 }
 
 /* div cover css. for use when a certain container needs blocking out or rendering unusable */
