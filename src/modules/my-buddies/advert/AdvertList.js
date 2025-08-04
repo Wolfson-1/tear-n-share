@@ -8,21 +8,14 @@ export default function AdvertList({adverts,activeStatus,toggleAd,editAd}) {
         return <div className='info-tile bread-advert active' key={advert.id}>
                     <div className='ad-info'>
                         <div className='key-info'>
-                            <span>Bread Type: {advert.breadType}</span>
-                            <span> | </span>
-                            <span>{advert.loafType}</span>
+                            <span>Bread Type: {advert.breadType} | {advert.loafType}</span>
                         </div>
-                        <div>
                             <div className='carousel'>
-                                <span>Max spend: £{advert.breadSpend}</span>
-                                <span> | </span>
-                                <span>Split: {advert.breadSplit}%</span>
+                                <span>Max spend: £{advert.breadSpend} | Split: {advert.breadSplit}%  | {advert.reduced === true ? "Reduced: True" : "Reduced: False" }</span>
                             </div>
-                            {advert.reduced === true ? <span>Reduced: True</span> : <span>Reduced: False</span>}
-                        </div>
                     </div>
                     <div className='button-container'>
-                        {activeStatus === true && <button onClick={()=>{editAd(advert.id)}}>{`Info & Edit`}</button>}
+                        {activeStatus === true && <button onClick={()=>{editAd(advert.id)}}>{`Edit`}</button>}
                         {activeStatus === true && <button onClick={()=>{toggleAd(advert.id,false)}}>Deactivate</button>}
                         {activeStatus === false && <button onClick={()=>{toggleAd(advert.id,true)}}>ReActivate</button>}
                     </div>

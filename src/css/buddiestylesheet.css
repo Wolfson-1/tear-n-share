@@ -94,11 +94,20 @@
     color: rgb(205, 157, 2);
 }
 
+/* section selector mobile css */
+
+@media(max-width:600px) {
+    .active-inactive-toggle button {
+        font-size: medium;
+    }
+}
+
 /* advert section styling 
 ------------------------------------------ */
 
 .buddies-container.advert .listed-adverts-container {
     display: flex;
+    flex:1;
     flex-direction: column;
     align-items: center;
     width: 100%;
@@ -120,14 +129,46 @@
 }
 
 .buddies-container.advert .listed-adverts-container .bread-advert .ad-info {
-    flex: 1;
+    width: 60%;
     margin: 2% 0% 2% 5%;
     gap: 5%;
     border-right:solid rgba(52, 51, 51, 0.199) 2px ;
 }
 
+.buddies-container.advert .listed-adverts-container .bread-advert .ad-info div {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    flex: 1;
+    align-items: center;
+}
+
+
+.buddies-container.advert .listed-adverts-container .bread-advert .ad-info div span {
+    text-wrap:nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    transform: translateX(0%);
+    will-change: transform;
+}
+
+
+.buddies-container.advert .listed-adverts-container .bread-advert .ad-info div span:hover {
+    animation: scroll-left 10s linear infinite;
+}
+
+/* Keyframes for left scroll */
+@keyframes scroll-left {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
 .buddies-container.advert .listed-adverts-container .bread-advert .button-container {
-    flex: 0.6;
+    width: 200px;
     align-items: center;
 }
 
@@ -141,10 +182,18 @@
     font-weight: bold;
 }
 
+
 .buddies-container.advert .listed-adverts-container .button-container button:hover {
     background-color: rgba(255, 255, 255, 0.086);
 }
 
+.buddies-container.advert .listed-adverts-container .button-container button:hover:first-child {
+    border-radius: 0px 15px 0px 0px;
+}
+
+.buddies-container.advert .listed-adverts-container .button-container button:hover:last-child {
+    border-radius: 0px 0px 15px 0px;
+}
 
 .buddies-container.advert .add-advert {
     display: flex;
@@ -236,6 +285,11 @@
     margin: 5% 0% 0.5% 0%;
 } 
 
+.active-buddy > .user-info h3 {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .active-buddy .user-info hr {
     width: 100%;
     border: solid rgba(0, 0, 0, 0.189) 1px;
@@ -243,12 +297,14 @@
     padding: 0%;
 } 
 
+
 .active-buddy .user-info > div {
     display: flex;
     margin-bottom: 10%;
     gap: 5%;
     width: 100%;
     height: 40%;
+    flex-wrap: wrap;
 } 
 
 .active-buddy .user-info > div > button {
@@ -268,9 +324,16 @@
     margin-right: 10%;
 }
 
-/* Styling specifc for active user modal  */
+/* mobile css */
 
-/* matched actice buddy modal styling  */
+@media(max-width:1200px) {
+   .active-buddy .profile-img {
+        width: 60px;
+        height: 60px;
+        min-height: 60px;
+        min-width: 60px;
+    }
+}
 
 
 .modal-form-container.user-container {

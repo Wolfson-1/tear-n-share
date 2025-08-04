@@ -96,10 +96,6 @@ export default function useSetNewMatch(user,receivedRequests) {
         //check to ensure fetchAdvert exists before proceeding
         if(!fetchAdvert) return;
 
-        console.log(fetchAdvert);
-        console.log(currentBuddys);
-        console.log(changedRequest);
-
         //delete id from fetchAdvert as not needed
         delete fetchAdvert['id']
 

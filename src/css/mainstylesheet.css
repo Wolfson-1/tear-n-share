@@ -313,6 +313,21 @@ input[type='submit'] {
     align-items: flex-start;
 }
 
+/* Mobile modal CSS */
+
+@media(max-width:850px) {
+  .modal-form-container {
+    width: 40%;
+  }
+}
+
+@media(max-width:600px) {
+  .modal-form-container {
+    width: 80%;
+  }
+}
+
+
 /* basic form styling
 ------------------------------ */
 
@@ -487,6 +502,8 @@ input:checked + .slider:before {
   border-radius: 50%;
   width: 90px;
   height: 90px;
+  min-height: 90px;
+  min-width: 90px;
   overflow: hidden;
 }
 
@@ -500,6 +517,8 @@ input:checked + .slider:before {
   .profile-img {
     width: 45px;
     height: 45px;
+    min-height: 45px;
+    min-width: 45px;
   }
 }
 
@@ -541,7 +560,7 @@ input:checked + .slider:before {
   background-color: rgba(210, 162, 5, 0.922);
 }
 
-/* User advert list item for user map modal
+/* User advert list item css
 ------------------------ */
 
 .info-tile.bread-advert {
@@ -569,3 +588,11 @@ input:checked + .slider:before {
   background-color: rgba(250, 235, 215, 0.555);
 }
 
+/* Mobile CSS */
+
+@media(max-width:600px) {
+  .info-tile.bread-advert {
+    height: 150px;
+    font-size: smaller;
+  }
+}
