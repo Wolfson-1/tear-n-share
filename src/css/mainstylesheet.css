@@ -560,39 +560,103 @@ input:checked + .slider:before {
   background-color: rgba(210, 162, 5, 0.922);
 }
 
-/* User advert list item css
------------------------- */
 
-.info-tile.bread-advert {
-  height: 75px;
+/* Standard advert list section styling 
+------------------------------------------ */
+
+.listed-adverts-container {
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  height: auto;
+  overflow-y: scroll;
+}
+
+.listed-adverts-container .bread-advert {
+  flex-direction: row;
   align-items: center;
 }
 
-.info-tile.bread-advert > * {
+.listed-adverts-container .bread-advert > div {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  justify-content: center;
+}
+
+.listed-adverts-container .bread-advert .ad-info {
+  width: 60%;
+  margin: 2% 0% 2% 5%;
+  gap: 5%;
+  border-right:solid rgba(52, 51, 51, 0.199) 2px ;
+}
+
+.listed-adverts-container .bread-advert .ad-info div {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  flex: 1;
+  align-items: center;
 }
 
 
-.info-tile.bread-advert > div {
-  margin-left: 3%;
+.listed-adverts-container .bread-advert .ad-info div span {
+  text-wrap:nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  transform: translateX(0%);
+  will-change: transform;
 }
 
-.info-tile.bread-advert button { 
-  background-color: rgba(250, 235, 215, 0.375);
-  border-radius: 0% 40% 40% 0%;
+
+.listed-adverts-container .bread-advert .ad-info div span:hover {
+  animation: scroll-left 10s linear infinite;
+}
+
+/* Keyframes for left scroll */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.listed-adverts-container .bread-advert .button-container {
+  width: 200px;
+  align-items: center;
+}
+
+.listed-adverts-container .bread-advert .button-container button {
+  width: 100%;
+  height: 50%;
+  height: auto;
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0);
   border: none;
-  height: 100%;
+  font-weight: bold;
 }
 
-.info-tile.bread-advert button:hover { 
-  background-color: rgba(250, 235, 215, 0.555);
+.listed-adverts-container .button-container button:hover {
+  background-color: rgba(255, 255, 255, 0.086);
+}
+
+.listed-adverts-container .button-container button:hover:first-child {
+  border-radius: 0px 15px 0px 0px;
+}
+
+.listed-adverts-container .button-container button:hover:last-child {
+  border-radius: 0px 0px 15px 0px;
 }
 
 /* Mobile CSS */
 
 @media(max-width:600px) {
   .info-tile.bread-advert {
-    height: 150px;
-    font-size: smaller;
+    font-size: small;
   }
 }

@@ -91,16 +91,12 @@ return (
             </picture>
             <h1>{focusProfile.displayName}</h1>
             <h3>Distance: {Math.round(focusProfile.distToUser * 100) / 100}{userData.distanceUnit}</h3>        
-            <div className={'advert-section'}>
-                <h3>Adverts</h3>
-                <div className='advert-list-container'>
-                    {adverts && <div className='advert-list'>
-                        {adverts.map((advert)=> {
-                            return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest} key={advert.id}/>
-                        })}
-                    </div>}
-                </div>
-            </div>
+                {adverts && <div className='listed-adverts-container'>
+                    <h3>Adverts</h3>
+                    {adverts.map((advert)=> {
+                        return <AdvertListItem focusProfile={focusProfile} advert={advert} requestEventHandler={submitAdvertRequest} key={advert.id}/>
+                    })}
+                </div>}
       </div>
     </div>
   )

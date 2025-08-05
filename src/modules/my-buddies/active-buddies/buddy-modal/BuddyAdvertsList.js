@@ -7,7 +7,7 @@ export default function BuddyAdvertsList({matchedAdverts,setManageAd,setDeleteUs
   return (
     <>    
         {matchedAdverts ? 
-          <div className='advert-section'>
+          <div className='listed-adverts-container'>
                 {matchedAdverts.length > 0 ? matchedAdverts.map((advert)=>{
                     return <BuddyAdListItem advert={advert} setManageAd={setManageAd}/>
                   })
