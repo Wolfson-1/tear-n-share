@@ -286,7 +286,6 @@
     margin: 1% 0% 0% 1%;
 }
 
-
 .modal-form-container.buddy-container .user-info .profile-img {
     width:30px;
     height:30px;
@@ -317,16 +316,22 @@
     height: 100%;
     width: 90%;
     align-items: center;
+    overflow-y:scroll ;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info {
     display: flex;
-    flex-direction: column;
-    columns: 2;
-    height: 20%;
     flex-wrap: wrap;
     align-items: center;
-    width: 100%;
+    width: 75%;
+    gap: 10%;
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .advert-info p {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 50%;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info-ammend {
@@ -351,27 +356,47 @@
     color: rgb(141, 4, 4);
 }
 
+/* paid and purchase current status/stats section css*/
+
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status {
     position: relative;
     display: flex;
-    height: 25%;
     width:100%;
+    padding: 2% 0% 2% 0%;
     justify-content: center;
     align-items: center;
+    border-top: solid rgba(250, 235, 215, 0.252) 1px;
+    border-bottom: solid rgba(250, 235, 215, 0.252) 1px;
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status div p {
+    margin: 10px;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .purchase-status {
-    width: 60%;
+    flex: 0.6;
+    border-right: solid rgba(250, 235, 215, 0.252) 1px;
 }
 
-.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .paid-status {
-    width: 40%;
-    align-items: center;
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .balance-status {
+    flex: 0.4;
+}
+
+.modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .balance-status p {
+    margin: 1px;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .paid-and-purchase-status .balance-status > div  {
-    display: flex;
-    gap:5px;
+    flex-direction: row;
+    gap:10px;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .log-activity  {
