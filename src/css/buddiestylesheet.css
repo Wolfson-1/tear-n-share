@@ -275,27 +275,34 @@
     display:flex;
 }
 
-.modal-form-container.buddy-container .user-info {
-    align-self: flex-start;
+.modal-form-container.buddy-container .top-header {
+    width: 100%;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    position: absolute;
-    height: 5%;
-    width: 25%;
-    gap: 10%;
+}
+
+.modal-form-container.buddy-container .top-header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+    height: 100%;
     margin: 1% 0% 0% 1%;
 }
 
-.modal-form-container.buddy-container .user-info .profile-img {
+.modal-form-container.buddy-container .top-header .user-info .profile-img {
     width:30px;
     height:30px;
     min-width: 30px;
     min-height: 30px;
-    margin-left: 30%;
 }
 
-.modal-form-container.buddy-container .user-info h1 {
+.modal-form-container.buddy-container .top-header .user-info h1 {
     font-size: medium;
+}
+
+.modal-form-container.buddy-container .top-header .close-modal {
+    text-align: center;
+    height: 100%;
 }
 
 .modal-form-container.buddy-container .back-button {
