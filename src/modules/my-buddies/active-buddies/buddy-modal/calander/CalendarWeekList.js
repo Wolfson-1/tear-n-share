@@ -33,7 +33,11 @@ export default function CalendarWeekList({currCalendar,setCalEvent,loggedData,co
             <p>{day}</p>
             <p>{currCalendar[index].day}</p>
           </div>
-          {logged && logged.length > 0 && <DayInformation logged={logged} setCalEvent={setCalEvent}/>}
+          <div className='day-event-space'>
+            <div className='container-events'>
+              {logged && logged.length > 0 ? <DayInformation logged={logged} setCalEvent={setCalEvent}/> : <p></p>}
+            </div>
+          </div>
         </div>
       })}
     </div>

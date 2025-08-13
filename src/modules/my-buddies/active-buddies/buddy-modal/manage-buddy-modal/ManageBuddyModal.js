@@ -82,6 +82,7 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
         <div className='modal-background'>
         <div className={manageAd ? 'modal-form-container buddy-container' : 'modal-form-container user-container'}>
             <div className='top-header'>
+                <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button>
                 <div className='user-info'>
                     <picture className='profile-img'>
                         <img src={'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331256_1280.png'} alt='profile picture'></img>
@@ -89,7 +90,6 @@ export default function ManageBuddyModal({manageBuddy,setManageBuddy,setMainSele
                     <h1>{manageBuddy.displayName}</h1>
                     <button className='user-chat-button' onClick={()=>{setMainSelector('chat')}}>Chat</button>
                 </div>
-                <button className='close-modal' onClick={()=>{setManageBuddy(null)}}>x</button>
             </div> 
             {!manageAd ?
             <BuddyAdvertsList matchedAdverts={matchedAdverts} setManageAd={setManageAd} setDeleteUserModal={setDeleteUserModal}/>

@@ -248,12 +248,24 @@
     align-items: center;
 }
 
-.modal-form-container.user-container .user-info {
+.modal-form-container.user-container .top-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.modal-form-container.user-container .top-header .close-modal {
+    align-self: flex-end;
+}
+
+.modal-form-container.user-container .top-header .user-info {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
+
+
 
 .modal-form-container.user-container .listed-adverts-container {
     flex: 2;
@@ -277,6 +289,7 @@
 
 .modal-form-container.buddy-container .top-header {
     width: 100%;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
 }
@@ -345,11 +358,10 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    gap: 5px;
+    margin: 10% 0% 5% 0%;
 }
 
 .modal-form-container.buddy-container .buddy-modal-manageAd .advert-info-ammend > button {
-    width:60%;
     margin: none;
     background: none;
     border: none;
@@ -464,8 +476,7 @@
     display: grid;
     grid-template-columns: repeat(7,1fr);
     width:100%;
-    min-height: 60%;
-    height: 60%;
+    flex: 1;
 }
 
 .calendar .calendar-elements .calendar-day {
@@ -473,43 +484,53 @@
     flex-direction: column;
     justify-content: flex-start;
     border: solid 1px;
-    height: 90%;
-    overflow: hidden;
+    height: 100%;
 }
 
 .calendar .calendar-elements .calendar-day .day-date {
     display: flex;
     flex-direction: column;
-    height: 33%;
+    flex: 0.34;
+    min-height: 34%;
     background-color: rgba(255, 255, 255, 0.129);
-    gap: 2%;
 }
 
 .calendar .calendar-elements .calendar-day .day-date > p {
-    font-size: small;
+    font-size: x-small;
     padding: 0;
     margin: 0;
 }
 
-.calendar .calendar-elements .calendar-day .logged-event {
-    font-size:small;
+.calendar .calendar-elements .calendar-day .day-event-space {
+    flex: 1 1 66%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar .calendar-elements .calendar-day .container-events {
+    max-width: 90%;
+    max-height: 90%;
+    min-width: 90%;
+    min-height: 90%;
+    overflow: none;
+}
+
+.calendar .calendar-elements .calendar-day .day-event-space .container-events .logged-event {
     padding: 0;
-    margin: 5% 2% 0% 2%;
+    max-width: 80%;
     border-radius: 5%;
-    text-overflow: ellipsis;
-    white-space: wrap;
     overflow: hidden;
 }
 
-.calendar .calendar-elements .calendar-day .logged-event:hover {
-    border: solid 0.1px rgba(255, 255, 255, 0);
-    border-radius: 5%;
-}
-
-.calendar .calendar-elements .calendar-day .logged-event > p {
-    font-size:small;
+.calendar .calendar-elements .calendar-day .day-event-space .container-events .logged-event > p {
+    height: 100%;
+    font-size:xx-small;
     padding: 0;
-    margin: 5%;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /* Week only calendar CSS */
@@ -548,22 +569,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
     width: 95%;
-    padding: 2%;
+    flex: 0.98;
 }
 
 .weeks-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 80%;
     width: 100%;
-    flex: 1;
-}
-
-.calendar.month .weeks-container .calendar-elements {
-    min-height: 15%;
 }
 
 /* Modal to log purchase & payment events
