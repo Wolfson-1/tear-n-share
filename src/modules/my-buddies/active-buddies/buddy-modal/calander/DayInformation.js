@@ -14,7 +14,6 @@ export default function DayInformation({logged,setCalEvent}) {
     logged.length < 5 ? logged.map((log)=>{
         return <div onClick={()=>{setCalEvent(log)}} className='logged-event' style={log.eventType === 'purchase' ? {backgroundColor:logged.paid ? css.paid : css.unpaid,maxHeight:`${dynamicHeight}%`} : {backgroundColor:'#5973a6',maxHeight:`${dynamicHeight}%`}}>
             <p>event:</p>
-            <p>{log.eventType}</p>
         </div>
     }) 
     : 

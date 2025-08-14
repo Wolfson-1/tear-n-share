@@ -476,7 +476,6 @@
     display: grid;
     grid-template-columns: repeat(7,1fr);
     width:100%;
-    flex: 1;
 }
 
 .calendar .calendar-elements .calendar-day {
@@ -490,42 +489,44 @@
 .calendar .calendar-elements .calendar-day .day-date {
     display: flex;
     flex-direction: column;
-    flex: 0.34;
-    min-height: 34%;
+    height: 45%;
     background-color: rgba(255, 255, 255, 0.129);
 }
 
 .calendar .calendar-elements .calendar-day .day-date > p {
-    font-size: x-small;
+    height: 50%;
+    font-size: xx-small;
     padding: 0;
     margin: 0;
 }
 
 .calendar .calendar-elements .calendar-day .day-event-space {
-    flex: 1 1 66%;
+    height: 55%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.calendar .calendar-elements .calendar-day .container-events {
+.calendar .calendar-elements .calendar-day .day-event-space .container-events {
+    flex: 1;
     max-width: 90%;
     max-height: 90%;
     min-width: 90%;
     min-height: 90%;
-    overflow: none;
+    overflow-y: auto;
 }
 
 .calendar .calendar-elements .calendar-day .day-event-space .container-events .logged-event {
+    flex: 1;
     padding: 0;
     max-width: 80%;
     border-radius: 5%;
     overflow: hidden;
+    margin-top: 2%;
 }
 
 .calendar .calendar-elements .calendar-day .day-event-space .container-events .logged-event > p {
-    height: 100%;
     font-size:xx-small;
     padding: 0;
     margin: 0;
@@ -535,6 +536,8 @@
 
 /* Week only calendar CSS */
 .calendar.week {
+    display: flex;
+    flex-direction:column ;
     margin-top: 5%;
     height: 25%;
     width:90%;
@@ -542,6 +545,11 @@
 }
 
 /* Month calendar popout CSS */
+
+.calendar.month .weeks-container .calendar-elements {
+    flex: 1;
+}
+
 .modal-form-container.month {
     align-items: center;
     height: 80%;
